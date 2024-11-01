@@ -12,12 +12,7 @@ function Menu() {
 
     return(
         <div className = "container">
-            <div className = "leftinner">
-                
-                <div className = "orderbox"></div>
-                <div className = "completeorderbutton" onClick = {redirect}></div>
-                
-            </div>
+            <Orders />
             <div className = "mealbox"></div>
             <div className = "addonbox"></div>
         </div>

@@ -5,7 +5,9 @@ import {useNavigate} from "react-router-dom";
 function Orders() {
     return(
         <div className = "orderbox">
-            hi
+            Order
+            <div className = "separator" />
+            <div className = "completeorderbutton" />
         </div>
     );
 }
