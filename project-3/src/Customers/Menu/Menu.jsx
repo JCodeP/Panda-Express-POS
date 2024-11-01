@@ -4,11 +4,7 @@ import {useNavigate} from "react-router-dom";
 import Orders from "./Orders.jsx";
 
 function Menu() {
-    const navigate = useNavigate();
-
-    const redirect = () => {
-        navigate("../ordercomplete");
-    }
+    
 
     return(
         <div className = "container">
