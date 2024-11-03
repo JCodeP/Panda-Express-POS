@@ -2,7 +2,7 @@ import React from 'react';
 import "./CustomerHome.css";
 import {Routes, Route, Outlet, Navigate} from "react-router-dom";
 import Welcome from "./Welcome.jsx";
-import Menu from "./Menu/Menu.jsx"
+import Menu from "./Menu/Menu.jsx";
 import OrderComplete from "./OrderComplete.jsx";
 
 function CustomerHome() {

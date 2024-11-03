@@ -1,0 +1,66 @@
+.submit-screen {
+    display: flex;
+    height: 90vh;
+    width: 95vw;
+}
+
+.order-list-container {
+    width: 25%;
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.pay-order-list {
+    list-style-type: none;
+    padding: 0;
+    height: 81.6%;
+    overflow-y: auto;
+}
+
+.pay-order-list li {
+    border-bottom: 1px solid black;
+    color: black;
+    padding: 10px;
+}
+
+.back-button {
+    display: flex;
+    justify-content: center;
+    width: 100%
+}
+
+.back-button button {
+    background-color: green;
+    font-weight: bold;
+    width: 100%
+}
+
+.pay-buttons {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 75%;
+}
+
+.pay-button-container {
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.pay-button-container button {
+    font-size: 2em;
+    font-weight: bold;
+    flex-grow: 1;
+    margin: 10px;
+    height: 75px;
+    min-width: 100px;
+    text-align: center;
+    place-items: center;
+    white-space: normal;
+}
