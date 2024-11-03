@@ -6,12 +6,13 @@ function Orders() {
     const navigate = useNavigate();
 
     const [order, setOrder] = useState([
+        //Temp values
         { name: 'Combo Meal', price: 9.99 },
         { name: 'Appetizer', price: 4.50 },
         { name: 'Drink', price: 1.99 }
     ]);
-    // const [selectedIndex, setSelectedIndex] = useState(null);
 
+    //Deletes item from list
     const deleteItem = (index) => {
         setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
         if (index === selectedIndex) {
@@ -35,8 +36,6 @@ function Orders() {
                 {order.map((item, index) => (
                     <li
                         key={index}
-                        // className={index === selectedIndex ? "selected" : ""}
-                        // onClick={() => setSelectedIndex(index)}
                     >
                         <button
                             className="delete-button"

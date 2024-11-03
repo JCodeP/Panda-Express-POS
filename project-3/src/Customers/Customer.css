@@ -58,6 +58,38 @@
     overflow-y: auto;
 }
 
+.order-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.delete-button {
+    height: 3vh;
+    width: 3vh;
+    margin:  0 10px;
+    background-color: white;
+    color: black;
+    border-style: solid;
+    border-color: black;
+    border-radius: 100%;
+    padding: 2px 5px;
+    cursor: pointer;
+    font-size: 1vh;
+}
+
+.item-name {
+    flex-grow: 1; /* Takes up remaining space */
+    text-align: left;
+}
+
+.item-price {
+    margin-left: auto; /* Pushes the price to the far right */
+    font-weight: bold;
+}
+
 .complete-order-button {
     display: flex;
     justify-content: center; /* Centers horizontally */
@@ -109,34 +141,3 @@
     text-align: center;
 }
 
-.delete-button {
-    height: 3vh;
-    width: 3vh;
-    margin:  0 10px;
-    background-color: white;
-    color: black;
-    border-style: solid;
-    border-color: black;
-    border-radius: 100%;
-    padding: 2px 5px;
-    cursor: pointer;
-    font-size: 1vh;
-}
-
-.order-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-}
-
-.item-name {
-    flex-grow: 1; /* Takes up remaining space */
-    text-align: left;
-}
-
-.item-price {
-    margin-left: auto; /* Pushes the price to the far right */
-    font-weight: bold;
-}
