@@ -63,6 +63,11 @@
     flex-grow: 1;
 }
 
+.cancel-button {
+    background-color: #ad0009;
+    font-weight: bold;
+}
+
 .pay-button {
     display: flex;
     justify-content: center;
