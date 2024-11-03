@@ -23,7 +23,21 @@
     box-sizing: border-box;
 }
 
-.orderbox {
+.box-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: black;
+    line-height: normal;
+}
+
+.separator {
+    width: 80%;
+    height: 1px;
+    background-color: black;
+    margin: 10px 0;
+}
+
+.order-box {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -36,7 +50,15 @@
     flex: 0 1 auto;
 }
 
-.completeorderbutton {
+.order-list {
+    list-style-type: none;
+    padding: 0;
+    height: 70%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.complete-order-button {
     display: flex;
     justify-content: center; /* Centers horizontally */
     align-items: center; /* Centers vertically */
@@ -50,7 +72,7 @@
     font-weight: bold;
 }
 
-.cancelorderbutton {
+.cancel-order-button {
     display: flex;
     justify-content: center; /* Centers horizontally */
     align-items: center; /* Centers vertically */
@@ -62,7 +84,7 @@
     font-size: 18px;
 }
 
-.addonbox {
+.addon-box {
     width: 25vw;
     height: 95vh;
     background-color: white;
@@ -73,7 +95,7 @@
     flex: 0 1 auto;
 }
 
-.mealbox {
+.meal-box {
     width: 50vw;
     height: 80vh;
     background-color: white;
@@ -87,23 +109,34 @@
     text-align: center;
 }
 
-/* .backbutton {
-    width: 9vw;
-    height: 5vh;
+.delete-button {
+    height: 3vh;
+    width: 3vh;
+    margin:  0 10px;
     background-color: white;
-    border-radius: 10px;
-    position: absolute;
-    left: 20px;
-    top: 20px;
     color: black;
-    align-content: left;
-} */
+    border-style: solid;
+    border-color: black;
+    border-radius: 100%;
+    padding: 2px 5px;
+    cursor: pointer;
+    font-size: 1vh;
+}
 
+.order-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
 
+.item-name {
+    flex-grow: 1; /* Takes up remaining space */
+    text-align: left;
+}
 
-.separator {
-    width: 80%;
-    height: 1px;
-    background-color: black;
-    margin: 10px 0;
+.item-price {
+    margin-left: auto; /* Pushes the price to the far right */
+    font-weight: bold;
 }

@@ -9,8 +9,8 @@ function Menu() {
     return(
         <div className = "container">
             <Orders />
-            <div className = "mealbox"></div>
-            <div className = "addonbox"></div>
+            <div className = "meal-box"></div>
+            <div className = "addon-box"></div>
         </div>
         
     );
