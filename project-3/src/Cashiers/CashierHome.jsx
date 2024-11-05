@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Routes, useNavigate } from 'react-router-dom';
 
 import { useMenu } from "../MenuContext";
-
 import { useOrder } from "./CashierOrderContext";
+
+import CashierComboScreen from "./CashierComboScreen";
 
 import "./CashierHome.css";
 
@@ -22,6 +23,10 @@ function CashierHome() {
     // Adds to order list
     const addItemToOrder = (item) => {
         setOrder((prevOrder) => [...prevOrder, item]);
+
+        if (item.category === "Combos") {
+            navigate("/cashiers/combos");
+        }
     };
 
     // Deletes highlighted item from order
