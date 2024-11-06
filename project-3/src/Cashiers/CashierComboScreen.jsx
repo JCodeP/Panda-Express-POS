@@ -1,14 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { useMenu } from "../MenuContext";
 import { useOrder } from "./CashierOrderContext";
 
 import "./CashierHome.css";
 
 function CashierComboScreen() {
     const { order, setOrder } = useOrder();
-    const { navigate } = useNavigate();
+    const navigate = useNavigate();
 
+    const { entrees } = useMenu();
     const [selectedIndex, setSelectedIndex] = useState(null);
 
     const addItemToOrder = (item) => {
@@ -75,6 +77,15 @@ function CashierComboScreen() {
                 </div>
                 <div className="pay-button">
                     <button onClick={submitScreen}>Pay: ${getTotalPrice}</button>
+                </div>
+            </div>
+            <div className="buttons">
+                <div className="button-container">
+                    {entrees.map((entree) => (
+                        <button key={entree.id}>
+                            {entree.name}
+                        </button>
+                    ))}
                 </div>
             </div>
         </div>

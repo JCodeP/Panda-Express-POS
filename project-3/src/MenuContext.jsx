@@ -20,6 +20,13 @@ export const MenuProvider = ({ children }) => {
         { id: 12, name: "Water Bottle", price: 1.99, category: "Drinks" },
     ]);
 
+    const [entrees, setEntrees] = useState([
+        { id: 1, name: "Orange Chicken" },
+        { id: 2, name: "Kung Pao Chicken" },
+        { id: 3, name: "Honey Sesame Chicken Breast" },
+        { id: 4, name: "Teriyaki Chicken" },
+    ]);
+
     const addMenuItem = (newItem) => {
         setMenuItems((prevItems) => [...prevItems, newItem]);
     };
@@ -29,7 +36,7 @@ export const MenuProvider = ({ children }) => {
     };
 
     return (
-        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem }}>
+        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem, entrees }}>
             {children}
         </MenuContext.Provider>
     );
