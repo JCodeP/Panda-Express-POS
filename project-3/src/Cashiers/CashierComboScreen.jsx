@@ -1,26 +1,18 @@
 import React, { useState, useMemo } from 'react';
-import { Routes, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useMenu } from "../MenuContext";
 import { useOrder } from "./CashierOrderContext";
 
-import CashierComboScreen from "./CashierComboScreen";
-
 import "./CashierHome.css";
 
-/**
- * @author Kade Lieder 
- * 
- * The landing page for the cashier. Allows the cashier to add combos, appetizers, and drinks to the order
- */
-function CashierHome() {
-
-    const navigate = useNavigate();
-    const { menuItems, addMenuItem, removeMenuItem } = useMenu();
+function CashierComboScreen() {
     const { order, setOrder } = useOrder();
+    const navigate = useNavigate();
+
+    const { entrees } = useMenu();
     const [selectedIndex, setSelectedIndex] = useState(null);
 
-    // Adds to order list
     const addItemToOrder = (item) => {
         setOrder((prevOrder) => [...prevOrder, item]);
 
@@ -29,7 +21,6 @@ function CashierHome() {
         }
     };
 
-    // Deletes highlighted item from order
     const deleteSelectedItem = () => {
         if (selectedIndex === null) {
             return;
@@ -53,15 +44,6 @@ function CashierHome() {
     const clearOrder = () => {
         setOrder([]);
     };
-
-    // Organizes items by category
-    const itemsByCategory = menuItems.reduce((acc, item) => {
-        if (!acc[item.category]) {
-            acc[item.category] = [];
-        }
-        acc[item.category].push(item);
-        return acc;
-    }, {});
 
     // Sums price of items in order
     const getTotalPrice = useMemo(() => {
@@ -98,18 +80,16 @@ function CashierHome() {
                 </div>
             </div>
             <div className="buttons">
-                {Object.entries(itemsByCategory).map(([category, items]) => (
-                    <div key={category} className="button-container">
-                        {items.map((item) => (
-                            <button key={item.id} onClick={() => addItemToOrder(item)}>
-                                {item.name}
-                            </button>
-                        ))}
-                    </div>
-                ))}
+                <div className="button-container">
+                    {entrees.map((entree) => (
+                        <button key={entree.id}>
+                            {entree.name}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default CashierHome;
+export default CashierComboScreen;
