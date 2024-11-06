@@ -1,47 +1,33 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
-import "./ManagerHome.css";
+import { Link,  Routes, Route, Outlet } from 'react-router-dom'; // Import Link for navigation
+import ManagerNavBar from './ManagerNavBar';
+import EmployeePage from './EmployeePage';
+import HistoryGraphs from './HistoryGraphs';
+import InventoryPage from './InventoryPage';
+import CreateOrderPage from './CreateOrderPage';
+import ManageMenu from './ManageMenu'
 
 function ManagerHome() {
     return (
-        <div className="manager-home">
-            <h1 className="manager-home-heading">Manager Home</h1>
-            <div className="box-container">
-                <div className="box">
-                    <Link to="/managers/employeepage" className="box-link">
-                        <div className="box-content"> {/* New div for content */}
-                            <img src="https://placehold.co/150x100" alt="placeholder" />
-                            <h2>Employee Management</h2>
-                        </div>
-                    </Link>
-                </div>
-                <div className="box">
-                    <Link to="/managers/historygraphs" className="box-link">
-                        <div className="box-content"> {/* New div for content */}
-                            <img src="https://placehold.co/150x100" alt="placeholder" />
-                            <h2>Item Order History</h2>
-                        </div>
-                    </Link>
-                </div>
-                <div className="box">
-                    <Link to="/managers/inventorypage" className="box-link">
-                        <div className="box-content"> {/* New div for content */}
-                            <img src="https://placehold.co/150x100" alt="placeholder" />
-                            <h2>Inventory</h2>
-                        </div>
-                    </Link>
-                </div>
-                <div className="box">
-                    <Link to="/managers/createorderpage" className="box-link">
-                        <div className="box-content"> {/* New div for content */}
-                            <img src="https://placehold.co/150x100" alt="placeholder" />
-                            <h2>Create Order</h2>
-                        </div>
-                    </Link>
-                </div>
-            </div>
+        
+        <div>
+            <Routes>
+                <Route path="/" element={<ManagerNavBar/>}/>
+                <Route path="employeepage" element={<EmployeePage />} />
+                <Route path="historygraphs" element={<HistoryGraphs />} />
+                <Route path="inventorypage" element={<InventoryPage />} />
+                <Route path="createorderpage" element={<CreateOrderPage />} />
+                <Route path="managemenu" element={<ManageMenu/>}/>
+            </Routes>
+            
+            {/* Outlet renders the matching child route component */}
+            <Outlet />
+            
+            
         </div>
+    
+        
     );
 }
 
-export default ManagerHome;
+export default ManagerHome

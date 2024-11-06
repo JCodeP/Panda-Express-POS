@@ -19,7 +19,7 @@
 }
 
 .menu h2 {
-    font-size: 1.8em;
+    font-size: 3em;
     color: #000;
     margin-bottom: 10px;
 }
@@ -33,34 +33,23 @@
     gap: 10px;
 }
 
-.size ul li,
-.sides ul li,
-.appetizers ul li {
-    width: 120px;
-    height: 160px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    color: #333;
-    text-align: center;
-    padding: 10px;
-    font-weight: bold;
-}
 
+.size ul,
+.sides ul,
+.appetizers ul,
 .entrees ul {
+    font-size: 1.6em;
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
     gap: 10px; 
     font-weight: bold;
 }
 
+.size ul li,
+.sides ul li,
+.appetizers ul li,
 .entrees ul li {
-    height: 121px;
+    height: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -79,8 +68,8 @@
 .sides ul li img,
 .entrees ul li img,
 .appetizers ul li img {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     margin-bottom: 5px;
     border-radius: 5px;
     object-fit: cover;

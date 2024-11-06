@@ -25,6 +25,12 @@
     padding: 10px;
 }
 
+.pay-order-list li:hover {
+    background-color: gray;
+    transition: 0.1s;
+    cursor: pointer;
+}
+
 .back-button {
     display: flex;
     justify-content: center;

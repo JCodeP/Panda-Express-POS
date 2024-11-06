@@ -2,12 +2,12 @@ import React from 'react'
 
 
 
-function EmployeePage() {
+function InventoryPage() {
     return (
-        <h1>Employee Management</h1>
+        <h1>Amount of Inventory Needed</h1>
 
     );
 }
 
 
-export default EmployeePage
+export default InventoryPage

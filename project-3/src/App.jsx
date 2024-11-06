@@ -9,6 +9,10 @@ import CashierSubmitScreen from "./Cashiers/CashierSubmitScreen.jsx";
 import ManagerHome from "./Managers/ManagerHome.jsx";
 import CustomerHome from "./Customers/CustomerHome.jsx";
 import MenuBoard from "./MenuBoard/MenuBoard.jsx";
+import OrderSize from "./MenuBoard/OrderSize.jsx";
+import Sides from "./MenuBoard/Sides.jsx";
+import Entrees from "./MenuBoard/Entrees.jsx";
+import ExtraItems from "./MenuBoard/ExtraItems.jsx";
 
 import { MenuProvider } from "./MenuContext.jsx";
 import { CashierOrderProvider } from "./Cashiers/CashierOrderContext.jsx";
@@ -25,7 +29,7 @@ function App() {
             </>
           }
           />
-          <Route path="/managers" element={<ManagerHome />} />
+          <Route path="/managers/*" element={<ManagerHome />} />
           <Route path="/cashiers/*" element={
             <CashierOrderProvider>
               <Routes>
@@ -35,7 +39,11 @@ function App() {
             </CashierOrderProvider>
           } />
           <Route path="/customers/*" element={<CustomerHome />} />
-          <Route path="/menu" element={<MenuBoard />} />
+          <Route path="/menu/*" element={<MenuBoard />} />
+          <Route path="/menu/order-size" element={<OrderSize />} />
+          <Route path="/menu/sides" element={<Sides />} />
+          <Route path="/menu/entrees" element={<Entrees />} />
+          <Route path="/menu/extra-items" element={<ExtraItems />} />
         </Routes>
       </Router>
     </MenuProvider>
