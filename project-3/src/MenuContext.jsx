@@ -26,6 +26,13 @@ export const MenuProvider = ({ children }) => {
         { id: 3, name: "Bigger Plate", maxEntrees: 3, price: 10.00 },
     ]);
 
+    const [sides, setSides] = useState([
+        { id: 1, name: "White Rice" },
+        { id: 2, name: "Fried Rice" },
+        { id: 3, name: "Chow Mein" },
+        { id: 4, name: "Super Greens" },
+    ]);
+
     const [entrees, setEntrees] = useState([
         { id: 1, name: "Orange Chicken" },
         { id: 2, name: "Kung Pao Chicken" },
@@ -42,7 +49,7 @@ export const MenuProvider = ({ children }) => {
     };
 
     return (
-        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem, entrees, comboOptions }}>
+        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem, entrees, sides, comboOptions }}>
             {children}
         </MenuContext.Provider>
     );
