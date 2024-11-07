@@ -20,6 +20,12 @@ export const MenuProvider = ({ children }) => {
         { id: 12, name: "Water Bottle", price: 1.99, category: "Drinks" },
     ]);
 
+    const [comboOptions, setComboOptions] = useState([
+        { id: 1, name: "Bowl", maxEntrees: 1, price: 7.80 },
+        { id: 2, name: "Plate", maxEntrees: 2, price: 8.90 },
+        { id: 3, name: "Bigger Plate", maxEntrees: 3, price: 10.00 },
+    ]);
+
     const [entrees, setEntrees] = useState([
         { id: 1, name: "Orange Chicken" },
         { id: 2, name: "Kung Pao Chicken" },
@@ -36,7 +42,7 @@ export const MenuProvider = ({ children }) => {
     };
 
     return (
-        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem, entrees }}>
+        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem, entrees, comboOptions }}>
             {children}
         </MenuContext.Provider>
     );

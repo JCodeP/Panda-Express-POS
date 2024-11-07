@@ -22,10 +22,10 @@ function CashierHome() {
 
     // Adds to order list
     const addItemToOrder = (item) => {
-        setOrder((prevOrder) => [...prevOrder, item]);
-
         if (item.category === "Combos") {
-            navigate("/cashiers/combos");
+            addComboToOrder(item);
+        } else {
+            setOrder((prevOrder) => [...prevOrder, item]);
         }
     };
 
@@ -45,7 +45,17 @@ function CashierHome() {
             return;
         }
 
-        addItemToOrder(order[selectedIndex]);
+        if (order[selectedIndex].category === "Combos") {
+            const combo = order[selectedIndex];
+            const updatedCombo = {
+                ...combo,
+                entrees: combo.entrees.map(entree => ({ ...entree })),
+            };
+            setOrder((prevOrder) => [...prevOrder, updatedCombo]);
+        }
+        else {
+            addItemToOrder(order[selectedIndex]);
+        }
 
         setSelectedIndex(null);
     }
@@ -73,6 +83,13 @@ function CashierHome() {
         navigate("/cashiers/submit", { state: { order } });
     }
 
+    const addComboToOrder = (combo) => {
+        const comboWithEntrees = { ...combo, entrees: [] };
+        setOrder((prevOrder) => [...prevOrder, comboWithEntrees]);
+
+        navigate("/cashiers/combos", { state: { order, comboId: comboWithEntrees.id } });
+    };
+
     return (
         <div className="cashier-home">
             <div className="order-list-container">
@@ -85,6 +102,15 @@ function CashierHome() {
                             onClick={() => setSelectedIndex(index)}
                         >
                             {item.name} - ${item.price.toFixed(2)}
+                            {item.entrees && item.entrees.length > 0 && (
+                                <ul>
+                                    {item.entrees.map((entree, i) => (
+                                        <li key={i}>
+                                            {entree.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </li>
                     ))}
                 </ul>

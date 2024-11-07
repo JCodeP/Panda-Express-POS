@@ -8,10 +8,17 @@ import "./CashierHome.css";
 
 function CashierComboScreen() {
     const { order, setOrder } = useOrder();
+    const { entrees, comboOptions } = useMenu();
+    const [selectedIndex, setSelectedIndex] = useState(null);
+
+    const location = useLocation();
     const navigate = useNavigate();
 
-    const { entrees } = useMenu();
-    const [selectedIndex, setSelectedIndex] = useState(null);
+    const { comboId } = location.state || {};
+    const comboIndex = order.findIndex(item => item.id === comboId);
+    const combo = order[comboIndex];
+    const maxEntrees = comboOptions.find(option => option.id === comboId)?.maxEntrees || 0;
+
 
     const addItemToOrder = (item) => {
         setOrder((prevOrder) => [...prevOrder, item]);
@@ -55,6 +62,26 @@ function CashierComboScreen() {
         navigate("/cashiers/submit", { state: { order } });
     }
 
+    const goBack = () => {
+        navigate("/cashiers/home", { state: { order } });
+    }
+
+    if (combo && !combo.entrees) {
+        combo.entrees = [];
+    }
+
+    const addEntreeToCombo = (entree) => {
+        if (combo && combo.entrees.length < maxEntrees) {
+            const updatedCombo = {
+                ...combo,
+                entrees: [...combo.entrees, entree],
+            };
+            const newOrder = [...order];
+            newOrder[comboIndex] = updatedCombo;
+            setOrder(newOrder);
+        }
+    };
+
     return (
         <div className="cashier-home">
             <div className="order-list-container">
@@ -67,6 +94,15 @@ function CashierComboScreen() {
                             onClick={() => setSelectedIndex(index)}
                         >
                             {item.name} - ${item.price.toFixed(2)}
+                            {item.entrees && item.entrees.length > 0 && (
+                                <ul>
+                                    {item.entrees.map((entree, i) => (
+                                        <li key={i}>
+                                            {entree.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </li>
                     ))}
                 </ul>
@@ -82,10 +118,13 @@ function CashierComboScreen() {
             <div className="buttons">
                 <div className="button-container">
                     {entrees.map((entree) => (
-                        <button key={entree.id}>
+                        <button key={entree.id} onClick={() => addEntreeToCombo(entree)}>
                             {entree.name}
                         </button>
                     ))}
+                </div>
+                <div className="button-container">
+                    <button onClick={goBack}>Back</button>
                 </div>
             </div>
         </div>
