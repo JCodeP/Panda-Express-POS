@@ -84,7 +84,7 @@ function CashierHome() {
     }
 
     const addComboToOrder = (combo) => {
-        const comboWithEntrees = { ...combo, entrees: [] };
+        const comboWithEntrees = { ...combo, side: null, entrees: [] };
         setOrder((prevOrder) => [...prevOrder, comboWithEntrees]);
 
         navigate("/cashiers/combos", { state: { order, comboId: comboWithEntrees.id } });
@@ -102,15 +102,20 @@ function CashierHome() {
                             onClick={() => setSelectedIndex(index)}
                         >
                             {item.name} - ${item.price.toFixed(2)}
-                            {item.entrees && item.entrees.length > 0 && (
-                                <ul>
-                                    {item.entrees.map((entree, i) => (
+                            <ul>
+                                {item.side && (
+                                    <li>
+                                        {item.side.name}
+                                    </li>
+                                )}
+                                {item.entrees && item.entrees.length > 0 && (
+                                    item.entrees.map((entree, i) => (
                                         <li key={i}>
                                             {entree.name}
                                         </li>
-                                    ))}
-                                </ul>
-                            )}
+                                    ))
+                                )}
+                            </ul>
                         </li>
                     ))}
                 </ul>

@@ -8,7 +8,7 @@ import "./CashierHome.css";
 
 function CashierComboScreen() {
     const { order, setOrder } = useOrder();
-    const { entrees, comboOptions } = useMenu();
+    const { entrees, comboOptions, sides } = useMenu();
     const [selectedIndex, setSelectedIndex] = useState(null);
 
     const location = useLocation();
@@ -70,6 +70,18 @@ function CashierComboScreen() {
         combo.entrees = [];
     }
 
+    const addSideToCombo = (side) => {
+        if (combo) {
+            const updatedCombo = {
+                ...combo,
+                side,
+            };
+            const newOrder = [...order];
+            newOrder[comboIndex] = updatedCombo;
+            setOrder(newOrder);
+        }
+    };
+
     const addEntreeToCombo = (entree) => {
         if (combo && combo.entrees.length < maxEntrees) {
             const updatedCombo = {
@@ -94,15 +106,19 @@ function CashierComboScreen() {
                             onClick={() => setSelectedIndex(index)}
                         >
                             {item.name} - ${item.price.toFixed(2)}
-                            {item.entrees && item.entrees.length > 0 && (
-                                <ul>
-                                    {item.entrees.map((entree, i) => (
+                            <ul>
+                                {item.side && (
+                                    <li>
+                                        {item.side.name}
+                                    </li>
+                                )}
+                                {item.entrees && item.entrees.length > 0 && (
+                                    item.entrees.map((entree, i) => (
                                         <li key={i}>
                                             {entree.name}
                                         </li>
-                                    ))}
-                                </ul>
-                            )}
+                                    )))}
+                            </ul>
                         </li>
                     ))}
                 </ul>
@@ -116,6 +132,13 @@ function CashierComboScreen() {
                 </div>
             </div>
             <div className="buttons">
+                <div className="button-container">
+                    {sides.map((side) => (
+                        <button key={side.id} onClick={() => addSideToCombo(side)}>
+                            {side.name}
+                        </button>
+                    ))}
+                </div>
                 <div className="button-container">
                     {entrees.map((entree) => (
                         <button key={entree.id} onClick={() => addEntreeToCombo(entree)}>
