@@ -63,6 +63,16 @@ function CashierComboScreen() {
     }
 
     const goBack = () => {
+        if (combo && !combo.side) {
+            alert("Please select a side.");
+            return;
+        }
+
+        if (combo && combo.entrees.length !== maxEntrees) {
+            alert(`Please select exactly ${maxEntrees} entree(s).`);
+            return;
+        }
+
         navigate("/cashiers/home", { state: { order } });
     }
 
@@ -93,6 +103,24 @@ function CashierComboScreen() {
             setOrder(newOrder);
         }
     };
+
+    const resetChoices = () => {
+        if (combo) {
+            const resetCombo = {
+                ...combo,
+                side: null,      // Clear the side
+                entrees: [],     // Clear the entrees
+            };
+            const newOrder = [...order];
+            newOrder[comboIndex] = resetCombo;
+            setOrder(newOrder);
+        }
+    };
+
+    const removeFromOrder = () => {
+        setOrder((prevOrder) => prevOrder.filter((item) => item.id !== comboId));
+        navigate("/cashiers/home", { state: { order } });
+    }
 
     return (
         <div className="cashier-home">
@@ -147,7 +175,9 @@ function CashierComboScreen() {
                     ))}
                 </div>
                 <div className="button-container">
-                    <button onClick={goBack}>Back</button>
+                    <button onClick={goBack}>Done</button>
+                    <button onClick={resetChoices}>Reset Choices</button>
+                    <button onClick={removeFromOrder}>Remove From Order</button>
                 </div>
             </div>
         </div>
