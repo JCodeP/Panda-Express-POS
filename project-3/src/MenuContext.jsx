@@ -34,10 +34,18 @@ export const MenuProvider = ({ children }) => {
     ]);
 
     const [entrees, setEntrees] = useState([
-        { id: 1, name: "Orange Chicken" },
-        { id: 2, name: "Kung Pao Chicken" },
-        { id: 3, name: "Honey Sesame Chicken Breast" },
-        { id: 4, name: "Teriyaki Chicken" },
+        { id: 1, name: "Beijing Beef" },
+        { id: 2, name: "Broccoli Beef" },
+        { id: 3, name: "Black Pepper Angus Steak" },
+        { id: 4, name: "Black Pepper Chicken" },
+        { id: 5, name: "Grilled Teriyaki Chicken" },
+        { id: 6, name: "Honey Sesame Chicken Breast" },
+        { id: 7, name: "Kung Pao Chicken" },
+        { id: 8, name: "Mushroom Chicken" },
+        { id: 9, name: "Orange Chicken" },
+        { id: 10, name: "Sweet Fire Chicken Breast" },
+        { id: 11, name: "String Bean Chicken Breast" },
+        { id: 12, name: "Honey Walnut Shrimp" },
     ]);
 
     const addMenuItem = (newItem) => {
