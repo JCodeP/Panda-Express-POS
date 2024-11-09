@@ -27,7 +27,7 @@ function CashierSubmitScreen() {
                     ))}
                 </ul>
                 <div className="back-button">
-                    <button onClick={() => navigate(-1)}>Back to Order</button>
+                    <button onClick={() => navigate("/cashiers/home")}>Back to Order</button>
                 </div>
             </div>
             <div className="pay-buttons">

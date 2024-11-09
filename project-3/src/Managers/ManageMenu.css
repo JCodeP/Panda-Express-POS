@@ -1,0 +1,56 @@
+.create-order-page {
+    text-align: center;
+    padding: 5vh;
+    background-color: #ffffff; /* Solid background color */
+}
+
+.table-container-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 5vw; /* Space between the two tables */
+}
+
+.table-container {
+    background-color: #f2f2f2; /* Background color for each table container */
+    padding: 3vh 2vw;
+    border-radius: 1vh;
+    box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+}
+
+.food-table {
+    width: 100%; /* Table takes full width of its container */
+    border-collapse: collapse;
+}
+
+.food-table th, .food-table td {
+    border: 0.2vh solid #ddd;
+    padding: 2vh 1vw;
+    text-align: left;
+}
+
+.food-table th {
+    background-color: #e0e0e0;
+    color: black;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 2vw;
+    margin-top: 2vh;
+}
+
+.button-group button {
+    padding: 1.5vh 2vw;
+    font-size: 2vh;
+    cursor: pointer;
+    border: none;
+    border-radius: 0.8vh;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.button-group button:hover {
+    background-color: #0056b3;
+}

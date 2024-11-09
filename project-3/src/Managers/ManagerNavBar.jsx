@@ -17,6 +17,14 @@ function ManagerNavBar() {
                     </Link>
                 </div>
                 <div className="box">
+                    <Link to="/managers/managemenu" className="box-link">
+                        <div className="box-content"> {/* New div for content */}
+                            <img src="https://placehold.co/150x100" alt="placeholder" />
+                            <h2>Manage Menu</h2>
+                        </div>
+                    </Link>
+                </div>
+                <div className="box">
                     <Link to="/managers/historygraphs" className="box-link">
                         <div className="box-content"> {/* New div for content */}
                             <img src="https://placehold.co/150x100" alt="placeholder" />

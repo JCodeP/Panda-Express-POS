@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Routes, useNavigate } from 'react-router-dom';
 
 import { useMenu } from "../MenuContext";
-
 import { useOrder } from "./CashierOrderContext";
+
+import CashierComboScreen from "./CashierComboScreen";
 
 import "./CashierHome.css";
 
@@ -21,7 +22,11 @@ function CashierHome() {
 
     // Adds to order list
     const addItemToOrder = (item) => {
-        setOrder((prevOrder) => [...prevOrder, item]);
+        if (item.category === "Combos") {
+            addComboToOrder(item);
+        } else {
+            setOrder((prevOrder) => [...prevOrder, item]);
+        }
     };
 
     // Deletes highlighted item from order
@@ -40,7 +45,17 @@ function CashierHome() {
             return;
         }
 
-        addItemToOrder(order[selectedIndex]);
+        if (order[selectedIndex].category === "Combos") {
+            const combo = order[selectedIndex];
+            const updatedCombo = {
+                ...combo,
+                entrees: combo.entrees.map(entree => ({ ...entree })),
+            };
+            setOrder((prevOrder) => [...prevOrder, updatedCombo]);
+        }
+        else {
+            addItemToOrder(order[selectedIndex]);
+        }
 
         setSelectedIndex(null);
     }
@@ -68,6 +83,13 @@ function CashierHome() {
         navigate("/cashiers/submit", { state: { order } });
     }
 
+    const addComboToOrder = (combo) => {
+        const comboWithEntrees = { ...combo, side: null, entrees: [] };
+        setOrder((prevOrder) => [...prevOrder, comboWithEntrees]);
+
+        navigate("/cashiers/combos", { state: { order, comboId: comboWithEntrees.id } });
+    };
+
     return (
         <div className="cashier-home">
             <div className="order-list-container">
@@ -80,6 +102,20 @@ function CashierHome() {
                             onClick={() => setSelectedIndex(index)}
                         >
                             {item.name} - ${item.price.toFixed(2)}
+                            <ul>
+                                {item.side && (
+                                    <li>
+                                        {item.side.name}
+                                    </li>
+                                )}
+                                {item.entrees && item.entrees.length > 0 && (
+                                    item.entrees.map((entree, i) => (
+                                        <li key={i}>
+                                            {entree.name}
+                                        </li>
+                                    ))
+                                )}
+                            </ul>
                         </li>
                     ))}
                 </ul>

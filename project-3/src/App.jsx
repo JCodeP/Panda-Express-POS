@@ -6,6 +6,7 @@ import Header from "./Homepage/Header.jsx";
 import SiteNavBar from "./Homepage/SiteNavBar.jsx";
 import CashierHome from "./Cashiers/CashierHome.jsx";
 import CashierSubmitScreen from "./Cashiers/CashierSubmitScreen.jsx";
+import CashierNavigator from "./Cashiers/CashierNavigator.jsx";
 import ManagerHome from "./Managers/ManagerHome.jsx";
 import CustomerHome from "./Customers/CustomerHome.jsx";
 import MenuBoard from "./MenuBoard/MenuBoard.jsx";
@@ -16,6 +17,7 @@ import ExtraItems from "./MenuBoard/ExtraItems.jsx";
 
 import { MenuProvider } from "./MenuContext.jsx";
 import { CashierOrderProvider } from "./Cashiers/CashierOrderContext.jsx";
+
 
 function App() {
   return (
@@ -32,10 +34,7 @@ function App() {
           <Route path="/managers/*" element={<ManagerHome />} />
           <Route path="/cashiers/*" element={
             <CashierOrderProvider>
-              <Routes>
-                <Route path="" element={<CashierHome />} />
-                <Route path="submit" element={<CashierSubmitScreen />} />
-              </Routes>
+              <CashierNavigator />
             </CashierOrderProvider>
           } />
           <Route path="/customers/*" element={<CustomerHome />} />

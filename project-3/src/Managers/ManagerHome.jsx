@@ -5,6 +5,7 @@ import EmployeePage from './EmployeePage';
 import HistoryGraphs from './HistoryGraphs';
 import InventoryPage from './InventoryPage';
 import CreateOrderPage from './CreateOrderPage';
+import ManageMenu from './ManageMenu'
 
 function ManagerHome() {
     return (
@@ -16,6 +17,7 @@ function ManagerHome() {
                 <Route path="historygraphs" element={<HistoryGraphs />} />
                 <Route path="inventorypage" element={<InventoryPage />} />
                 <Route path="createorderpage" element={<CreateOrderPage />} />
+                <Route path="managemenu" element={<ManageMenu/>}/>
             </Routes>
             
             {/* Outlet renders the matching child route component */}
