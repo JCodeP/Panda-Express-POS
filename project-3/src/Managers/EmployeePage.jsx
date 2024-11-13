@@ -6,14 +6,15 @@ import './ManagerHome.css';
 
 function EmployeePage() {
 
-    const [isAddVisible, setIsAddVisible] = useState(false);
+    const [activePopup, setActivePopup] = useState(null);
 
-    const handleAddClick = () => {
-        setIsAddVisible(true);
+    const openPopup = (type) => {
+        setActivePopup(type);
+        initialize();
     };
 
-    const handleClosePopup = () => {
-        setIsAddVisible(false);
+    const closePopup = () => {
+        setActivePopup(null);
     };
 
 
@@ -37,20 +38,48 @@ function EmployeePage() {
         setData(sampleData); // You can set it to [] to test with no data
     }, []);
 
+    const nameOptions = [...new Set(sampleData.map((row) => row.name))];
 
-    const [textInput, setTextInput] = useState('');
+    function initialize() {
+        setNameInput('');
+        setSelectedOption('');
+        setSalaryInput('');
+        setWeeklyHoursInput('');
+        setEmployeeOption('');
+    }
+
+
+    const [nameInput, setNameInput] = useState('');
+
+    const [salaryInput, setSalaryInput] = useState('');
+
+    const [weeklyHoursInput, setWeeklyHoursInput] = useState('');
     
     // State to store the selected option from dropdown
     const [selectedOption, setSelectedOption] = useState('');
 
+    const [employeeOption, setEmployeeOption] = useState('');
+
     // Handler for text input changes
-    const handleTextInputChange = (event) => {
-        setTextInput(event.target.value);
+    const handleNameChange = (event) => {
+        setNameInput(event.target.value);
+    };
+
+    const handleSalaryChange = (event) => {
+        setSalaryInput(event.target.value);
+    };
+
+    const handleHoursChange = (event) => {
+        setWeeklyHoursInput(event.target.value);
     };
 
     // Handler for dropdown selection changes
     const handleDropdownChange = (event) => {
         setSelectedOption(event.target.value);
+    };
+
+    const handleEmployeeChange = (event) => {
+        setEmployeeOption(event.target.value);
     };
 
     return (
@@ -81,14 +110,14 @@ function EmployeePage() {
             </div>
 
             <div className="buttonContainer">
-                <button onClick={handleAddClick}> Add Employee</button>
+                <button onClick={() => openPopup('add')}> Add Employee</button>
 
-                {isAddVisible && (
-                    <div className="addPopUp">
-                        <div className="addContent">
-                            <div className="addHeader">
+                {activePopup == 'add' && (
+                    <div className="popUp">
+                        <div className="popupContent">
+                            <div className="popupHeader">
                                 <h2>Enter Employee Information</h2>
-                                <button className="x" onClick={handleClosePopup}>&times;</button>
+                                <button className="x" onClick={closePopup}>&times;</button>
                                 
 
 
@@ -97,8 +126,8 @@ function EmployeePage() {
                                 Name:
                                 <input
                                     type="text"
-                                    value={textInput}
-                                    onChange={handleTextInputChange}
+                                    value={nameInput}
+                                    onChange={handleNameChange}
                                 />
                             </label>
                             <label>
@@ -113,25 +142,119 @@ function EmployeePage() {
                                 Salary:
                                 <input
                                     type="text"
-                                    value={textInput}
-                                    onChange={handleTextInputChange}
+                                    value={salaryInput}
+                                    onChange={handleSalaryChange}
                                 />
                             </label>
                             <label>
                                 Weekly Hours:
                                 <input
                                     type="text"
-                                    value={textInput}
-                                    onChange={handleTextInputChange}
+                                    value={weeklyHoursInput}
+                                    onChange={handleHoursChange}
                                 />
                             </label>
 
                         </div>
                     </div>    
                 )}
-                <button> Delete Employee</button>
-                <button> Change Salary</button>
-                <button> Change Weekly Hours</button>
+                <button onClick={() => openPopup('delete')}> Delete Employee</button>
+
+                {activePopup == 'delete' && (
+                    <div className="popUp">
+                        <div className="popupContent">
+                            <div className="popupHeader">
+                                <h2>Select an employee to delete</h2>
+                                <button className="x" onClick={closePopup}>&times;</button>
+
+
+                            </div>
+                            <label>
+                                List of employee names:
+                                <select value={employeeOption} onChange={handleEmployeeChange}>
+                                    <option value="">Select...</option> {/* Placeholder option */}
+                                    {nameOptions.map((name, index) => (
+                                        <option key={index} value={name}>
+                                            {name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+
+
+                        </div>
+
+
+                    </div>    
+                
+                
+                
+                )}
+                
+
+            
+                <button onClick={() => openPopup('salary')}> Change Salary</button>
+                {activePopup == 'salary' && (
+                    <div className="popUp">
+                        <div className="popupContent">
+                            <div className="popupHeader">
+                                <h2>Select an employee and new salary</h2>
+                                <button className="x" onClick={closePopup}>&times;</button>
+                            </div>
+                            <label>
+                                List of employee names:
+                                <select value={employeeOption} onChange={handleEmployeeChange}>
+                                    <option value="">Select...</option> {/* Placeholder option */}
+                                    {nameOptions.map((name, index) => (
+                                        <option key={index} value={name}>
+                                            {name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                            <label>
+                                Weekly Hours:
+                                <input
+                                    type="text"
+                                    value={weeklyHoursInput}
+                                    onChange={handleHoursChange}
+                                />
+                            </label>
+                            
+                        </div>
+                    </div>    
+                )}
+                <button onClick={() => openPopup('hours')}> Change Weekly Hours</button>
+                {activePopup == 'hours' && (
+                    <div className="popUp">
+                        <div className="popupContent">
+                            <div className="popupHeader">
+                                <h2>Select an employee and new hours</h2>
+                                <button className="x" onClick={closePopup}>&times;</button>
+                            </div>
+                            <label>
+                                List of employee names:
+                                <select value={employeeOption} onChange={handleEmployeeChange}>
+                                    <option value="">Select...</option> {/* Placeholder option */}
+                                    {nameOptions.map((name, index) => (
+                                        <option key={index} value={name}>
+                                            {name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                            <label>
+                                Salary:
+                                <input
+                                    type="text"
+                                    value={salaryInput}
+                                    onChange={handleSalaryChange}
+                                />
+                            </label>
+                            
+                        </div>
+                    </div>    
+                )}
             </div>
         </div>
 
