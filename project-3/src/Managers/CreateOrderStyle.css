@@ -1,31 +1,44 @@
 .CreateOrderContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: top;
     align-items: center;
     width: 98vw;
     height: 100vh;
+    
+    
+}
+.create-order-header {
+    font-size: 2.2em;
+    flex-shrink: 0;
 }
 
 .body-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 70%;
+    width: 100%;
+    justify-content: space-between;
+   
+   
 
 }
 
-.tableContainer {
+.tableContainerTwo {
     width: 80%;
     max-width: 80%;
-    height: 60%; /* Fixed height for the container */
+    height: 90%; /* Fixed height for the container */
     border: 1px solid #ddd;
     border-radius: 4px;
     overflow-y: auto;
     background-color: white;
     flex-shrink: 0;
-    margin-top: 1%;
+    margin-left: 10%;
+
+    
 }
-.table-header {
+.table-header-two {
     display: flex; /* Flex layout for the header */
     background-color: #f2f2f2; /* Header background color */
     position: sticky; /* Make header sticky */
@@ -34,18 +47,18 @@
     
 }
   
-.table-cell {
+.table-cell-two {
     flex: 1; /* Distribute space evenly among cells */
     padding: 10px;
     border-bottom: 1px solid #ddd; /* Add a separator between rows */
 }
   
-.table-body {
+.table-body-two {
     display: flex;
     flex-direction: column; /* Stack rows vertically */
 }
   
-.table-row {
+.table-row-two {
     display: flex; /* Flex layout for rows */
 }
   
@@ -53,6 +66,20 @@ tbody tr:hover {
     background-color: #f1f1f1; /* Highlight row on hover */
 }
 
+.edit-instructions {
+    font-size: 1.5em;
+    margin-left: 2%;
+    width: 10%;
+    margin-bottom: 22%;
+}
+
 .submit {
     width: 20%;
+    margin-top: 2%;
+    background-color: green;
+    
+}
+
+.submit:hover {
+    border-color: white;
 }
