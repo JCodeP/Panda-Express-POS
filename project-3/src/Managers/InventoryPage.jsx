@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -85,7 +85,34 @@ const options = {
 
 
 
+
+
 function InventoryPage() {
+    const [activePopup, setActivePopup] = useState(null);
+    
+    
+    const openPopup = (type) => {
+      setActivePopup(type);
+
+    };
+
+    const closePopup = () => {
+      setActivePopup(null);
+    };
+
+    const [selectedOption, setSelectedOption] = useState('');
+
+    const nameOptions = [...new Set(data.map((row) => row.name))];
+
+    const handleDropdownChange = (event) => {
+      setSelectedOption(event.target.value);
+    };
+
+    const [quantity, setQuantity] = useState('');
+
+    const handleQuantityChange = (event) => {
+      setQuantity(event.target.value);
+    };
     return (
         <div className="inventory-page-container">
             <h1 className="inventory-header"> Amount of Inventory Needed</h1>
@@ -93,7 +120,46 @@ function InventoryPage() {
                 <Bar data={chartData} options={options} />
             </div>
             <div className="inventory-buttons">
-                <button> Add to Order</button>
+                <button onClick={() => openPopup('add')}> Add to Order</button>
+                {activePopup == 'add'  && (
+                  <div className="popUp">
+                  <div className="popupContent">
+                      <div className="popupHeader">
+                          <h2>Select an item and quantity</h2>
+                          <button className="x" onClick={closePopup}>&times;</button>
+
+
+                      </div>
+                      <label>
+                          Item:
+                          <select value={selectedOption} onChange={handleDropdownChange}>
+                              <option value="">Select...</option> {/* Placeholder option */}
+                              {nameOptions.map((name, index) => (
+                                  <option key={index} value={name}>
+                                      {name}
+                                  </option>
+                              ))}
+                          </select>
+                      </label>
+
+                      <label>
+                          Weekly Hours:
+                          <input
+                            type="text"
+                            value={quantity}
+                            onChange={handleQuantityChange}
+                          />
+                      </label>
+
+
+                  </div>
+
+
+              </div>    
+                
+                
+                
+              )}
                 <button> View Order</button>
             </div>
 
