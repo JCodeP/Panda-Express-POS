@@ -2,6 +2,7 @@ import React from "react";
 import "../Customer.css";
 import {useNavigate} from "react-router-dom";
 import Orders from "./Orders.jsx";
+import Combos from "./Combos.jsx";
 
 function Menu() {
     
@@ -9,7 +10,7 @@ function Menu() {
     return(
         <div className = "container">
             <Orders />
-            <div className = "meal-box"></div>
+            <Combos />
             <div className = "addon-box"></div>
         </div>
         
