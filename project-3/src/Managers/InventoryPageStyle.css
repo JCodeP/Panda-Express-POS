@@ -1,0 +1,55 @@
+.inventory-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+    width: 98vw;
+    height: 100vh;
+}
+
+.inventory-header {
+    font-size: 2.2em;
+    flex-shrink: 0;
+}
+
+
+
+.inventory-graph {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 60%;
+    border-radius: 2vw;
+   
+    
+
+}
+
+.inventory-graph-height {
+    border-radius: 5vh;
+}
+
+.inventory-buttons {
+    display: flex;
+    
+    justify-content: space-between;
+    margin-top: 4%;
+   
+    
+    
+    
+
+    width: 60%;
+    height: 15%;
+    
+
+   
+}
+
+.inventory-buttons button {
+    width: 40%;
+    font-size: 1.8em;
+    
+}

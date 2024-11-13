@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './EmployeePageStyle.css';
+import './ManagerHome.css';
 
 
 
@@ -54,7 +55,7 @@ function EmployeePage() {
 
     return (
         <div className="employeePageContainer">
-            <h1 className="employeeHeader">Employee Management</h1>
+            <h1 className="manager-page-header">Employee Management</h1>
             <div className="tableContainer">
                 <div className="table-header">
                     <div className="table-cell">Name</div>
