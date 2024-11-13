@@ -76,7 +76,7 @@ tbody tr:hover {
     
 }
 
-.addPopUp {
+.popUp {
     position: fixed;
     top: 0;
     left: 0;
@@ -89,7 +89,7 @@ tbody tr:hover {
     z-index: 1000;
 }
 
-.addContent {
+.popupContent {
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -101,7 +101,7 @@ tbody tr:hover {
     height: 25%;
 }
 
-.addHeader {
+.popupHeader {
     display: flex;
 
 }
