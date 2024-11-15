@@ -28,6 +28,13 @@ function CashierComboScreen() {
         }
     };
 
+    const deleteItem = (index) => {
+        setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
+        if (index === selectedIndex) {
+            setSelectedIndex(null);
+        }
+    };
+
     const deleteSelectedItem = () => {
         if (selectedIndex === null) {
             return;
@@ -133,6 +140,13 @@ function CashierComboScreen() {
                             className={index === selectedIndex ? "selected" : ""}
                             onClick={() => setSelectedIndex(index)}
                         >
+                            <button
+                                className="delete-button"
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevents the parent `li`'s onClick from firing
+                                    deleteItem(index);
+                                }}
+                            >X</button>
                             {item.name} - ${item.price.toFixed(2)}
                             <ul>
                                 {item.side && (

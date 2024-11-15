@@ -90,6 +90,18 @@
     background-color: gray;
 }
 
+.delete-button {
+    height: 3vh;
+    width: 3vh;
+    margin:  0 10px;
+    background-color: white;
+    color: black;
+    border-style: solid;
+    border-color: black;
+    border-radius: 100%;
+    cursor: pointer;
+    font-weight: bolder;
+}
 
 h2 {
     color: black;
