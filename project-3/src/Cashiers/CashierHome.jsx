@@ -29,6 +29,13 @@ function CashierHome() {
         }
     };
 
+    const deleteItem = (index) => {
+        setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
+        if (index === selectedIndex) {
+            setSelectedIndex(null);
+        }
+    };
+
     // Deletes highlighted item from order
     const deleteSelectedItem = () => {
         if (selectedIndex === null) {
@@ -101,6 +108,13 @@ function CashierHome() {
                             className={index === selectedIndex ? "selected" : ""}
                             onClick={() => setSelectedIndex(index)}
                         >
+                            <button
+                                className="delete-button"
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevents the parent `li`'s onClick from firing
+                                    deleteItem(index);
+                                }}
+                            >X</button>
                             {item.name} - ${item.price.toFixed(2)}
                             <ul>
                                 {item.side && (
@@ -120,7 +134,6 @@ function CashierHome() {
                     ))}
                 </ul>
                 <div className="adjust-buttons">
-                    <button onClick={deleteSelectedItem}>Delete</button>
                     <button onClick={duplicateSelectedItem}>Duplicate</button>
                     <button className="cancel-button" onClick={clearOrder}>Cancel</button>
                 </div>
@@ -138,7 +151,11 @@ function CashierHome() {
                         ))}
                     </div>
                 ))}
+                <div className="back-button-container">
+                    <button onClick={() => navigate('/', { replace: true })}>Back</button>
+                </div>
             </div>
+
         </div>
     );
 }
