@@ -92,9 +92,9 @@ function CashierHome() {
 
     const addComboToOrder = (combo) => {
         const comboWithEntrees = { ...combo, side: null, entrees: [] };
-        setOrder((prevOrder) => [...prevOrder, comboWithEntrees]);
+        setOrder((prevOrder) => [...prevOrder, comboWithEntrees])
 
-        navigate("/cashiers/combos", { state: { order, comboId: comboWithEntrees.id } });
+        navigate("/cashiers/combos", { state: { order, comboId: combo.id } });
     };
 
     return (

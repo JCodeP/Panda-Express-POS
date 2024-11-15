@@ -15,7 +15,7 @@ function CashierComboScreen() {
     const navigate = useNavigate();
 
     const { comboId } = location.state || {};
-    const comboIndex = order.findIndex(item => item.id === comboId);
+    const comboIndex = order.length - 1;
     const combo = order[comboIndex];
     const maxEntrees = comboOptions.find(option => option.id === comboId)?.maxEntrees || 0;
 
@@ -108,6 +108,8 @@ function CashierComboScreen() {
             const newOrder = [...order];
             newOrder[comboIndex] = updatedCombo;
             setOrder(newOrder);
+        } else {
+            alert(`Cannot add more than ${maxEntrees} entrees.`);
         }
     };
 
@@ -115,8 +117,8 @@ function CashierComboScreen() {
         if (combo) {
             const resetCombo = {
                 ...combo,
-                side: null,      // Clear the side
-                entrees: [],     // Clear the entrees
+                side: null,
+                entrees: [],
             };
             const newOrder = [...order];
             newOrder[comboIndex] = resetCombo;
