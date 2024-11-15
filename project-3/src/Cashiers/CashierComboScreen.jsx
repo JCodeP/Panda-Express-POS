@@ -30,8 +30,13 @@ function CashierComboScreen() {
 
     const deleteItem = (index) => {
         setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
+
         if (index === selectedIndex) {
             setSelectedIndex(null);
+        }
+
+        if (index === comboIndex) {
+            navigate("/cashiers/home", { state: { order } });
         }
     };
 
@@ -167,7 +172,6 @@ function CashierComboScreen() {
                     ))}
                 </ul>
                 <div className="adjust-buttons">
-                    <button onClick={deleteSelectedItem}>Delete</button>
                     <button onClick={duplicateSelectedItem}>Duplicate</button>
                     <button className="cancel-button" onClick={clearOrder}>Cancel</button>
                 </div>

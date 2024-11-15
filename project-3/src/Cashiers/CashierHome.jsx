@@ -134,7 +134,6 @@ function CashierHome() {
                     ))}
                 </ul>
                 <div className="adjust-buttons">
-                    <button onClick={deleteSelectedItem}>Delete</button>
                     <button onClick={duplicateSelectedItem}>Duplicate</button>
                     <button className="cancel-button" onClick={clearOrder}>Cancel</button>
                 </div>
@@ -152,7 +151,11 @@ function CashierHome() {
                         ))}
                     </div>
                 ))}
+                <div className="back-button-container">
+                    <button onClick={() => navigate('/', { replace: true })}>Back</button>
+                </div>
             </div>
+
         </div>
     );
 }
