@@ -3,6 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import pkg from 'pg';
 
+import { fetchWeather } from './APIs/Weather.js';
+
 const { Pool } = pkg;
 
 dotenv.config();
@@ -24,6 +26,16 @@ app.get('/api/data', async (req, res) => {
   } catch (err) {
     console.error("Query error:", err.message);
     res.status(500).json({ error: "Query Error", details: err.message });
+  }
+});
+
+app.get('/api/weather', async (req, res) => {
+  try {
+    const weather = await fetchWeather();
+    res.json(weather); // Send full weather data to the client
+  } catch (err) {
+    console.error('Error fetching weather:', err.message);
+    res.status(500).json({ error: 'Failed to fetch weather', details: err.message });
   }
 });
 
