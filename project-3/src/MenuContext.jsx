@@ -24,6 +24,7 @@ export const MenuProvider = ({ children }) => {
         { id: 1, name: "Bowl", maxEntrees: 1, price: 7.80 },
         { id: 2, name: "Plate", maxEntrees: 2, price: 8.90 },
         { id: 3, name: "Bigger Plate", maxEntrees: 3, price: 10.00 },
+        { id: 4, name: "A La Carte", maxEntrees: 1, price: 4.00}
     ]);
 
     const [sides, setSides] = useState([
