@@ -66,8 +66,10 @@ function CashierComboScreen({ priceModifier }) {
 
     // Sums price of items in order
     const getTotalPrice = useMemo(() => {
-        return order.reduce((total, item) => total + item.price, 0).toFixed(2);
-    }, [order]);
+        const total = order.reduce((total, item) => total + item.price, 0);
+
+        return (total * (priceModifier || 1)).toFixed(2);
+    }, [order, priceModifier]);
 
     // Navigates to submit screen
     const submitScreen = () => {
@@ -136,10 +138,20 @@ function CashierComboScreen({ priceModifier }) {
         navigate("/cashiers/home", { state: { order } });
     }
 
+    const getDiscountMessage = (priceModifier) => {
+        if (priceModifier === 0.9) {
+            return "Current Order - 10% discount active";
+        } else if (priceModifier === 0.95) {
+            return "Current Order - 5% discount active";
+        } else {
+            return "Current Order";
+        }
+    };
+
     return (
         <div className="cashier-home">
             <div className="order-list-container">
-                <h2>Current Order - Click to Select</h2>
+                <h2>{getDiscountMessage(priceModifier)}</h2>
                 <ul className="order-list">
                     {order.map((item, index) => (
                         <li
