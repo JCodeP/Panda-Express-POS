@@ -6,7 +6,7 @@ import { useOrder } from "./CashierOrderContext";
 
 import "./CashierSubmitScreen.css";
 
-function CashierSubmitScreen() {
+function CashierSubmitScreen({ priceModifier }) {
     const location = useLocation();
     const navigate = useNavigate();
     const { order } = useOrder();

@@ -6,7 +6,7 @@ import { useOrder } from "./CashierOrderContext";
 
 import "./CashierHome.css";
 
-function CashierComboScreen() {
+function CashierComboScreen({ priceModifier }) {
     const { order, setOrder } = useOrder();
     const { entrees, comboOptions, sides } = useMenu();
     const [selectedIndex, setSelectedIndex] = useState(null);
