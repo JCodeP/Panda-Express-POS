@@ -24,6 +24,7 @@ export const MenuProvider = ({ children }) => {
         { id: 1, name: "Bowl", maxEntrees: 1, price: 7.80 },
         { id: 2, name: "Plate", maxEntrees: 2, price: 8.90 },
         { id: 3, name: "Bigger Plate", maxEntrees: 3, price: 10.00 },
+        { id: 4, name: "A La Carte", maxEntrees: 1, price: 4.00}
     ]);
 
     const [sides, setSides] = useState([
@@ -46,6 +47,7 @@ export const MenuProvider = ({ children }) => {
         { id: 10, name: "Sweet Fire Chicken Breast" },
         { id: 11, name: "String Bean Chicken Breast" },
         { id: 12, name: "Honey Walnut Shrimp" },
+        // {id:13, name: "poop"}
     ]);
 
     const addMenuItem = (newItem) => {
