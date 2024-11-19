@@ -1,5 +1,6 @@
 export const fetchWeather = async (apiKey) => {
     try {
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=College Station&units=metric&appid=${apiKey}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
