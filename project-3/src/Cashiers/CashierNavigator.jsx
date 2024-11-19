@@ -18,7 +18,13 @@ function CashierNavigator() {
 
         const fetchAndCalculate = async () => {
             try {
-                const weather = await fetchWeather();
+                const response = await fetch("http://localhost:5001/api/weather");
+                if (!response.ok) {
+                    throw new Error(`Error fetching weather data: ${response.status}`);
+                }
+
+                const weather = await response.json();
+
                 setWeatherData(weather);
 
                 const modifier = calculatePriceModifier(weather);
@@ -27,6 +33,7 @@ function CashierNavigator() {
                 setError(err.message);
             } finally {
                 setLoading(false);
+                console.log("Loading state set to false");
             }
         };
 
@@ -34,8 +41,8 @@ function CashierNavigator() {
     }, []);
 
     const calculatePriceModifier = (weather) => {
-        const weatherSummary = weather.weather.summary.toLowerCase();
-        const weatherDescription = weather.weather.description.toLowerCase();
+        const weatherSummary = weather.main.toLowerCase();
+        const weatherDescription = weather.description.toLowerCase();
 
         if (weatherSummary.includes("rain") || weatherDescription.includes("rain")) {
             return 0.9; // 10% discount if it’s raining

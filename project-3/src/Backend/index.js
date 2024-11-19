@@ -31,10 +31,10 @@ app.get('/api/data', async (req, res) => {
 
 app.get('/api/weather', async (req, res) => {
   try {
-    const weather = await fetchWeather();
+    const weather = await fetchWeather(process.env.weatherApiKey); // This now calls OpenWeather API
     res.json(weather); // Send full weather data to the client
   } catch (err) {
-    console.error('Error fetching weather:', err.message);
+    console.error('Error fetching weather from OpenWeather API:', err.message);
     res.status(500).json({ error: 'Failed to fetch weather', details: err.message });
   }
 });

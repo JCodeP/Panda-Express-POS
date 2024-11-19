@@ -1,15 +1,22 @@
-
-export const fetchWeather = async () => {
+export const fetchWeather = async (apiKey) => {
     try {
-        const response = await fetch("http://localhost:5001/api/weather");
+        const response = await fetch(apiUrl);
+
         if (!response.ok) {
-            throw new Error(`Error fetching weather data from backend: ${response.status}`);
+            throw new Error(`Failed to fetch weather: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
-        return data;
+
+        // Extract only the necessary data
+        const weatherInfo = {
+            main: data.weather[0].main,
+            description: data.weather[0].description,
+        };
+
+        return weatherInfo; // Return full weather data
     } catch (error) {
-        console.error("Error fetching weather from backend:", error);
+        console.error("Error fetching weather from OpenWeather API:", error.message);
         throw error;
     }
 };
