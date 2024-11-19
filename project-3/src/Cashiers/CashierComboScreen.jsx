@@ -15,7 +15,7 @@ function CashierComboScreen() {
     const navigate = useNavigate();
 
     const { comboId } = location.state || {};
-    const comboIndex = order.findIndex(item => item.id === comboId);
+    const comboIndex = order.length - 1;
     const combo = order[comboIndex];
     const maxEntrees = comboOptions.find(option => option.id === comboId)?.maxEntrees || 0;
 
@@ -25,6 +25,18 @@ function CashierComboScreen() {
 
         if (item.category === "Combos") {
             navigate("/cashiers/combos");
+        }
+    };
+
+    const deleteItem = (index) => {
+        setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
+
+        if (index === selectedIndex) {
+            setSelectedIndex(null);
+        }
+
+        if (index === comboIndex) {
+            navigate("/cashiers/home", { state: { order } });
         }
     };
 
@@ -101,6 +113,8 @@ function CashierComboScreen() {
             const newOrder = [...order];
             newOrder[comboIndex] = updatedCombo;
             setOrder(newOrder);
+        } else {
+            alert(`Cannot add more than ${maxEntrees} entrees.`);
         }
     };
 
@@ -108,8 +122,8 @@ function CashierComboScreen() {
         if (combo) {
             const resetCombo = {
                 ...combo,
-                side: null,      // Clear the side
-                entrees: [],     // Clear the entrees
+                side: null,
+                entrees: [],
             };
             const newOrder = [...order];
             newOrder[comboIndex] = resetCombo;
@@ -133,6 +147,13 @@ function CashierComboScreen() {
                             className={index === selectedIndex ? "selected" : ""}
                             onClick={() => setSelectedIndex(index)}
                         >
+                            <button
+                                className="delete-button"
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevents the parent `li`'s onClick from firing
+                                    deleteItem(index);
+                                }}
+                            >X</button>
                             {item.name} - ${item.price.toFixed(2)}
                             <ul>
                                 {item.side && (
@@ -151,7 +172,6 @@ function CashierComboScreen() {
                     ))}
                 </ul>
                 <div className="adjust-buttons">
-                    <button onClick={deleteSelectedItem}>Delete</button>
                     <button onClick={duplicateSelectedItem}>Duplicate</button>
                     <button className="cancel-button" onClick={clearOrder}>Cancel</button>
                 </div>
