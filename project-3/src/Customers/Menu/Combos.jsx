@@ -54,7 +54,7 @@ function Combos() {
             {showCombos ? (
                 <div className = "combo-box">
                     <div className = "box-title">Combos</div>
-                    <div className = "separator"/> {/*????*/}
+                    <div className = "separator"/>
                     <div className = "combo-button-box">
                         {comboOptions.map(combo => (
                         <button className = "combo-button" key = {combo.id} onClick = {chooseCombo(combo)}>
