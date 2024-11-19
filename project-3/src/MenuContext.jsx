@@ -47,6 +47,7 @@ export const MenuProvider = ({ children }) => {
         { id: 10, name: "Sweet Fire Chicken Breast" },
         { id: 11, name: "String Bean Chicken Breast" },
         { id: 12, name: "Honey Walnut Shrimp" },
+        // {id:13, name: "poop"}
     ]);
 
     const addMenuItem = (newItem) => {
