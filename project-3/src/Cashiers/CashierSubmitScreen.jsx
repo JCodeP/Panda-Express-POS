@@ -6,14 +6,16 @@ import { useOrder } from "./CashierOrderContext";
 
 import "./CashierSubmitScreen.css";
 
-function CashierSubmitScreen() {
+function CashierSubmitScreen({ priceModifier }) {
     const location = useLocation();
     const navigate = useNavigate();
     const { order } = useOrder();
 
     const getTotalPrice = useMemo(() => {
-        return order.reduce((total, item) => total + item.price, 0).toFixed(2);
-    }, [order]);
+        const total = order.reduce((total, item) => total + item.price, 0);
+
+        return (total * (priceModifier || 1)).toFixed(2);
+    }, [order, priceModifier]);
 
     return (
         <div className="submit-screen">
