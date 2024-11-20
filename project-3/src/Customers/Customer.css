@@ -289,3 +289,16 @@
     color: white;
 }
 
+.combo-button img,
+.side-button img {
+    width: 100%; 
+    height: auto; 
+    border-radius: 50%;
+    object-fit: cover;
+}
+.entree-button img {
+    width: 80%; 
+    height: auto; 
+    border-radius: 50%;
+    object-fit: cover;
+}
