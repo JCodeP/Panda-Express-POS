@@ -4,12 +4,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useOrder } from "./CashierOrderContext";
 
-import "./CashierSubmitScreen.css";
+import "./CashierHome.css";
 
 function CashierSubmitScreen({ priceModifier }) {
     const location = useLocation();
     const navigate = useNavigate();
-    const { order } = useOrder();
+    const { order, setOrder } = useOrder();
+    const [selectedIndex, setSelectedIndex] = useState(null);
 
     const getTotalPrice = useMemo(() => {
         const total = order.reduce((total, item) => total + item.price, 0);
@@ -17,19 +18,91 @@ function CashierSubmitScreen({ priceModifier }) {
         return (total * (priceModifier || 1)).toFixed(2);
     }, [order, priceModifier]);
 
+    const deleteItem = (index) => {
+        setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
+        if (index === selectedIndex) {
+            setSelectedIndex(null);
+        }
+    };
+
+    const addItemToOrder = (item) => {
+        if (item.category === "Combos") {
+            addComboToOrder(item);
+        } else {
+            setOrder((prevOrder) => [...prevOrder, item]);
+        }
+    };
+
+    const duplicateSelectedItem = () => {
+        if (selectedIndex === null) {
+            return;
+        }
+
+        if (order[selectedIndex].category === "Combos") {
+            const combo = order[selectedIndex];
+            const updatedCombo = {
+                ...combo,
+                entrees: combo.entrees.map(entree => ({ ...entree })),
+            };
+            setOrder((prevOrder) => [...prevOrder, updatedCombo]);
+        }
+        else {
+            addItemToOrder(order[selectedIndex]);
+        }
+
+        setSelectedIndex(null);
+    }
+
+    const clearOrder = () => {
+        setOrder([]);
+    };
+
+    const goBack = () => {
+        navigate("/cashiers/home", { state: order });
+    }
+
     return (
-        <div className="submit-screen">
+        <div className="cashier-home">
             <div className="order-list-container">
-                <h2>Current Order - {getTotalPrice}</h2>
-                <ul className="pay-order-list">
+                <h2>Current Order - ${getTotalPrice}</h2>
+                <ul className="order-list">
                     {order.map((item, index) => (
-                        <li key={index}>
+                        <li
+                            key={index}
+                            className={index === selectedIndex ? "selected" : ""}
+                            onClick={() => setSelectedIndex(index)}
+                        >
+                            <button
+                                className="delete-button"
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevents the parent `li`'s onClick from firing
+                                    deleteItem(index);
+                                }}
+                            >X</button>
                             {item.name} - ${item.price.toFixed(2)}
+                            <ul>
+                                {item.side && (
+                                    <li>
+                                        {item.side.name}
+                                    </li>
+                                )}
+                                {item.entrees && item.entrees.length > 0 && (
+                                    item.entrees.map((entree, i) => (
+                                        <li key={i}>
+                                            {entree.name}
+                                        </li>
+                                    ))
+                                )}
+                            </ul>
                         </li>
                     ))}
                 </ul>
-                <div className="back-button">
-                    <button onClick={() => navigate("/cashiers/home")}>Back to Order</button>
+                <div className="adjust-buttons">
+                    <button onClick={duplicateSelectedItem}>Duplicate</button>
+                    <button className="cancel-button" onClick={clearOrder}>Cancel</button>
+                </div>
+                <div className="pay-button">
+                    <button onClick={goBack}>Go Back</button>
                 </div>
             </div>
             <div className="pay-buttons">
