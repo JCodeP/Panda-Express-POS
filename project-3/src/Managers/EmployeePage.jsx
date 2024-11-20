@@ -58,6 +58,7 @@ function EmployeePage() {
         };
     }, []);
 
+
     const nameOptions = [...new Set(sampleData.map((row) => row.name))];
 
     function initialize() {

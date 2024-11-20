@@ -38,6 +38,8 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
+
+
 app.get('/api/weather', async (req, res) => {
   try {
     const weather = await fetchWeather(process.env.weatherApiKey); // This now calls OpenWeather API
