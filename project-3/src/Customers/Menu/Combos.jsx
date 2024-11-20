@@ -69,7 +69,7 @@ function Combos() {
                     <div className = "combo-button-box">
                         {comboOptions.map(combo => (
                         <button className = "combo-button" key = {combo.id} onClick = {() => chooseCombo(combo)}>
-                            <img src="https://placehold.co/200x200" alt="placeholder" />
+                            <img src= {combo.imageURL} alt={combo.name} />
                             {/* <div className="separator" /> */}
                             <span>{combo.name}</span>
                         </button>
@@ -94,14 +94,14 @@ function Combos() {
                         {showEntrees ? (
                             entreeOptions.map(entree => (
                                 <button className = {`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key = {entree.id} onClick = {() => handleSelectEntrees(entree, currentCombo)}>
-                                    <img src="https://placehold.co/100x100" alt="placeholder" />
+                                    <img src= {entree.imageURL} alt={entree.name} />
                                     <span>{entree.name}</span>
                                 </button>
                             ))
                         ) : (
                             sideOptions.map(side => (
                                 <button className = {`side-button ${selectedSide === side ? "selected" : ""}`} key = {side.id} onClick = {() => handleSelectSide(side)}>
-                                    <img src="https://placehold.co/200x200" alt="placeholder" />
+                                    <img src={side.imageURL} alt= "side.name" />
                                     <span>{side.name}</span>
                                 </button>
                             ))

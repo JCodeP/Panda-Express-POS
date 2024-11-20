@@ -21,32 +21,32 @@ export const MenuProvider = ({ children }) => {
     ]);
 
     const [comboOptions, setComboOptions] = useState([
-        { id: 1, name: "Bowl", maxEntrees: 1, price: 7.80 },
-        { id: 2, name: "Plate", maxEntrees: 2, price: 8.90 },
-        { id: 3, name: "Bigger Plate", maxEntrees: 3, price: 10.00 },
-        { id: 4, name: "A La Carte", maxEntrees: 1, price: 4.00}
+        { id: 1, name: "Bowl", maxEntrees: 1, price: 7.80, imageURL: "/rsc/menu_icons/bowl.avif" },
+        { id: 2, name: "Plate", maxEntrees: 2, price: 8.90, imageURL: "/rsc/menu_icons/plate.avif" },
+        { id: 3, name: "Bigger Plate", maxEntrees: 3, price: 10.00, imageURL: "/rsc/menu_icons/biggerplate.avif" },
+        { id: 4, name: "A La Carte", maxEntrees: 1, price: 4.00, imageURL: "/rsc/menu_icons/alacarte.avif" }
     ]);
 
     const [sides, setSides] = useState([
-        { id: 1, name: "White Rice" },
-        { id: 2, name: "Fried Rice" },
-        { id: 3, name: "Chow Mein" },
-        { id: 4, name: "Super Greens" },
+        { id: 1, name: "White Rice", imageURL: "/rsc/menu_icons/whiterice.webp" },
+        { id: 2, name: "Fried Rice", imageURL: "/rsc/menu_icons/friedrice.webp" },
+        { id: 3, name: "Chow Mein", imageURL: "/rsc/menu_icons/chowmein.webp" },
+        { id: 4, name: "Super Greens", imageURL: "/rsc/menu_icons/supergreens.webp" },
     ]);
 
     const [entrees, setEntrees] = useState([
-        { id: 1, name: "Beijing Beef" },
-        { id: 2, name: "Broccoli Beef" },
-        { id: 3, name: "Black Pepper Angus Steak" },
-        { id: 4, name: "Black Pepper Chicken" },
-        { id: 5, name: "Grilled Teriyaki Chicken" },
-        { id: 6, name: "Honey Sesame Chicken Breast" },
-        { id: 7, name: "Kung Pao Chicken" },
-        { id: 8, name: "Mushroom Chicken" },
-        { id: 9, name: "Orange Chicken" },
-        { id: 10, name: "Sweet Fire Chicken Breast" },
-        { id: 11, name: "String Bean Chicken Breast" },
-        { id: 12, name: "Honey Walnut Shrimp" },
+        { id: 1, name: "Beijing Beef", imageURL: "/rsc/menu_icons/beijing.webp" },
+        { id: 2, name: "Broccoli Beef", imageURL: "/rsc/menu_icons/broccoli.webp" },
+        { id: 3, name: "Black Pepper Angus Steak", imageURL: "/rsc/menu_icons/steak.webp" },
+        { id: 4, name: "Black Pepper Chicken", imageURL: "/rsc/menu_icons/blackpepper.webp" },
+        { id: 5, name: "Grilled Teriyaki Chicken", imageURL: "/rsc/menu_icons/teriyaki.webp" },
+        { id: 6, name: "Honey Sesame Chicken Breast", imageURL: "/rsc/menu_icons/sesame.webp" },
+        { id: 7, name: "Kung Pao Chicken", imageURL: "/rsc/menu_icons/kungpao.webp" },
+        { id: 8, name: "Mushroom Chicken", imageURL: "/rsc/menu_icons/mushroom.webp" },
+        { id: 9, name: "Orange Chicken", imageURL: "/rsc/menu_icons/orange.webp" },
+        { id: 10, name: "Sweet Fire Chicken Breast", imageURL: "/rsc/menu_icons/sweetfire.jpg" },
+        { id: 11, name: "String Bean Chicken Breast", imageURL: "/rsc/menu_icons/stringbean.jpg" },
+        { id: 12, name: "Honey Walnut Shrimp", imageURL: "/rsc/menu_icons/walnut.webp" },
         // {id:13, name: "poop"}
     ]);
 
