@@ -110,6 +110,9 @@ tbody tr:hover {
    
 
 }
+.deleteButton {
+    background-color: red;
+}
 
 .employeeSubmit {
     background-color: green;

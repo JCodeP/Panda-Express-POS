@@ -50,6 +50,9 @@ function EmployeePage() {
           } else if (message.employee) {
             // If the message contains a new employee, add it to the list
             setData(prevEmployees => [...prevEmployees, message.employee]);
+          } else if (message.deleteName) {
+            // Remove the deleted employee from the table
+            setData((prevEmployees) => prevEmployees.filter((emp) => emp.name !== message.deleteName));
           }
         };
     
@@ -135,6 +138,21 @@ function EmployeePage() {
 
     };
 
+    const handleDeleteEmployee = (name) => {
+        if (name === 'null') {
+            name = ' ';
+        }
+        fetch(`http://localhost:5001/api/delete/${name}`, {
+          method: 'DELETE',
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Employee deleted:', data);
+            // Optimistic update handled by SSE
+          })
+          .catch((error) => console.error('Error deleting employee:', error));
+    };
+
 
     return (
         <div className="employeePageContainer">
@@ -146,6 +164,7 @@ function EmployeePage() {
                         <div className="table-cell">Role</div>
                         <div className="table-cell">Salary</div>
                         <div className="table-cell">Weekly Hours</div>
+                        <div className="table-cell">Actions</div>
                 </div>
                 <div className="table-body">
                     {data.length === 0 ? (
@@ -160,6 +179,9 @@ function EmployeePage() {
                             <div className="table-cell">{row.role}</div>
                             <div className="table-cell">{row.pay_rate}</div>
                             <div className="table-cell">{row.weekly_hours}</div>
+                            <div className="table-cell">
+                                <button className="deleteButton" onClick={() => handleDeleteEmployee(row.name)}>Delete</button>
+                                </div>
                             </div>
                         ))
                     )}
@@ -216,38 +238,6 @@ function EmployeePage() {
 
                         </div>
                     </div>    
-                )}
-                <button onClick={() => openPopup('delete')}> Delete Employee</button>
-
-                {activePopup == 'delete' && (
-                    <div className="popUp">
-                        <div className="popupContent">
-                            <div className="popupHeader">
-                                <h2>Select an employee to delete</h2>
-                                <button className="x" onClick={closePopup}>&times;</button>
-
-
-                            </div>
-                            <label>
-                                List of employee names:
-                                <select value={employeeOption} onChange={handleEmployeeChange}>
-                                    <option value="">Select...</option> {/* Placeholder option */}
-                                    {nameOptions.map((name, index) => (
-                                        <option key={index} value={name}>
-                                            {name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
-
-
-                        </div>
-
-
-                    </div>    
-                
-                
-                
                 )}
                 
 
