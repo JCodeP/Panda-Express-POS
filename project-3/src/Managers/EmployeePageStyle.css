@@ -3,7 +3,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 98vw;
+    
+    width: 100vw;
     height: 100vh;
     
 }
@@ -76,7 +77,7 @@ tbody tr:hover {
     
 }
 
-.popUp {
+.employeePopUp {
     position: fixed;
     top: 0;
     left: 0;
@@ -89,7 +90,7 @@ tbody tr:hover {
     z-index: 1000;
 }
 
-.popupContent {
+.employeePopupContent {
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -98,10 +99,26 @@ tbody tr:hover {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     text-align: center;
     width: 25%;
-    height: 25%;
+    height: 40%;
+    justify-content: space-between;
+    margin:auto;
+   
 }
 
 .popupHeader {
     display: flex;
+   
 
+}
+
+.employeeSubmit {
+    background-color: green;
+   
+    
+    min-width: 25%;
+    height: 15%;
+    margin-left: 35%;
+    margin-top: 2%;
+   
+    
 }

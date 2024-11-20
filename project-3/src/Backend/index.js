@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import pkg from 'pg';
+import employeeRoutes from './employeeRoutes.js';
 
 import { fetchWeather } from './APIs/Weather.js';
 
@@ -17,7 +18,15 @@ app.use(cors());
 
 const connection = new Pool({
   connectionString: process.env.DATABASE_URL,
+  user: process.env.PSQL_USER,
+  host: process.env.PSQL_HOST,
+  database: process.env.PSQL_DATABASE,
+  password: process.env.PSQL_PASSWORD,
+  port: process.env.PSQL_PORT,
+  ssl: {rejectUnauthorized: false}
 });
+
+app.use('/api', employeeRoutes(connection));
 
 app.get('/api/data', async (req, res) => {
   try {
@@ -28,6 +37,8 @@ app.get('/api/data', async (req, res) => {
     res.status(500).json({ error: "Query Error", details: err.message });
   }
 });
+
+
 
 app.get('/api/weather', async (req, res) => {
   try {

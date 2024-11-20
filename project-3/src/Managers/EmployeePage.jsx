@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './EmployeePageStyle.css';
-import './ManagerHome.css';
 
 
 
@@ -32,11 +31,33 @@ function EmployeePage() {
     ];
     
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const wsURL = 'ws://localhost:5001';
     
     useEffect(() => {
-        // Set to sampleData to see the table with data
-        setData(sampleData); // You can set it to [] to test with no data
+        // Listen for SSE updates when the component mounts
+        const eventSource = new EventSource('http://localhost:5001/api/events'); // URL to the SSE endpoint on the backend
+    
+        eventSource.onmessage = (event) => {
+          const message = JSON.parse(event.data);
+          console.log('Received SSE message:', message);
+    
+          // If the message contains the full employee list (on initial connection)
+          if (Array.isArray(message)) {
+            setData(message);  // Set the initial list of employees
+          } else if (message.employee) {
+            // If the message contains a new employee, add it to the list
+            setData(prevEmployees => [...prevEmployees, message.employee]);
+          }
+        };
+    
+        return () => {
+          eventSource.close(); // Clean up when component is unmounted
+        };
     }, []);
+
 
     const nameOptions = [...new Set(sampleData.map((row) => row.name))];
 
@@ -61,25 +82,57 @@ function EmployeePage() {
     const [employeeOption, setEmployeeOption] = useState('');
 
     // Handler for text input changes
-    const handleNameChange = (event) => {
-        setNameInput(event.target.value);
+    const handleNameChange = (e) => {
+        setNameInput(e.target.value);
+        
     };
 
-    const handleSalaryChange = (event) => {
-        setSalaryInput(event.target.value);
+    const handleSalaryChange = (e) => {
+        setSalaryInput(e.target.value);
     };
 
-    const handleHoursChange = (event) => {
-        setWeeklyHoursInput(event.target.value);
+    const handleHoursChange = (e) => {
+        setWeeklyHoursInput(e.target.value);
     };
 
     // Handler for dropdown selection changes
-    const handleDropdownChange = (event) => {
-        setSelectedOption(event.target.value);
+    const handleDropdownChange = (e) => {
+        setSelectedOption(e.target.value);
     };
 
-    const handleEmployeeChange = (event) => {
-        setEmployeeOption(event.target.value);
+    const handleEmployeeChange = (e) => {
+        setEmployeeOption(e.target.value);
+    };
+
+    const getNextId = () => {
+        if (data.length === 0) return 1; // Start with 1 if the table is empty
+        const maxId = Math.max(...data.map((emp) => emp.employee_id));
+        return maxId + 1; // Increment the highest ID
+    };
+
+    const handleSubmit = () => {
+        const id = getNextId();
+        const addedData = {id, nameInput, selectedOption, salaryInput, weeklyHoursInput};
+
+        fetch('http://localhost:5001/api/addData', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(addedData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Employee added:', data);
+                setNameInput('');
+                setSelectedOption('');
+                setSalaryInput('');
+                setWeeklyHoursInput('');
+            })
+            .catch((error) => console.error('Error adding employee:', error));
+
+
+
+        closePopup();
+
     };
 
     return (
@@ -87,8 +140,9 @@ function EmployeePage() {
             <h1 className="manager-page-header">Employee Management</h1>
             <div className="tableContainer">
                 <div className="table-header">
-                    <div className="table-cell">Name</div>
-                        <div className="table-cell">Position</div>
+                    <div className="table-cell">id</div>
+                        <div className="table-cell">Name</div>
+                        <div className="table-cell">Role</div>
                         <div className="table-cell">Salary</div>
                         <div className="table-cell">Weekly Hours</div>
                 </div>
@@ -99,10 +153,12 @@ function EmployeePage() {
                         </div>
                     ) : (
                         data.map((row) => (
-                            <div className="table-row" key={row.id}>
-                            <div className="table-cell">{row.id}</div>
+                            <div className="table-row" key={row.employee_id}>
+                            <div className="table-cell">{row.employee_id}</div>
                             <div className="table-cell">{row.name}</div>
-                            <div className="table-cell">{row.email}</div>
+                            <div className="table-cell">{row.role}</div>
+                            <div className="table-cell">{row.pay_rate}</div>
+                            <div className="table-cell">{row.weekly_hours}</div>
                             </div>
                         ))
                     )}
@@ -113,8 +169,8 @@ function EmployeePage() {
                 <button onClick={() => openPopup('add')}> Add Employee</button>
 
                 {activePopup == 'add' && (
-                    <div className="popUp">
-                        <div className="popupContent">
+                    <div className="employeePopUp">
+                        <div className="employeePopupContent">
                             <div className="popupHeader">
                                 <h2>Enter Employee Information</h2>
                                 <button className="x" onClick={closePopup}>&times;</button>
@@ -154,6 +210,8 @@ function EmployeePage() {
                                     onChange={handleHoursChange}
                                 />
                             </label>
+                            <button className="employeeSubmit" onClick={handleSubmit}>Submit</button>
+                            
 
                         </div>
                     </div>    
