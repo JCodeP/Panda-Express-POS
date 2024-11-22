@@ -53,6 +53,9 @@ function EmployeePage() {
           } else if (message.deleteName) {
             // Remove the deleted employee from the table
             setData((prevEmployees) => prevEmployees.filter((emp) => emp.name !== message.deleteName));
+          } else if (message.nameUpdated) {
+            console.log('update condition worked');
+            setData(prevData => prevData.map(row => (row.name === message.nameUpdated.name ? message.nameUpdated : row)));
           }
         };
     
@@ -62,7 +65,7 @@ function EmployeePage() {
     }, []);
 
 
-    const nameOptions = [...new Set(sampleData.map((row) => row.name))];
+    const nameOptions = [...new Set(data.map((row) => row.name))];
 
     function initialize() {
         setNameInput('');
@@ -152,6 +155,21 @@ function EmployeePage() {
           })
           .catch((error) => console.error('Error deleting employee:', error));
     };
+    const handleUpdate = (name, attributeName, newValue) => {
+        fetch('http://localhost:5001/api/update-row', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, attributeName, newValue }),
+        })
+            .then(response => response.json())
+            .then(data =>  {
+                console.log('Row updated:', data);
+            })
+            .catch(error => console.error('Error updating row:', error));
+
+        closePopup();
+
+    };
 
 
     return (
@@ -213,8 +231,11 @@ function EmployeePage() {
                                 Position:
                                 <select value={selectedOption} onChange={handleDropdownChange}>
                                     <option value="">Select an option</option>
-                                    <option value="cashier">Cashier</option>
-                                    <option value="manager">Manager</option>
+                                    <option value="Cashier">Cashier</option>
+                                    <option value="Manager">Manager</option>
+                                    <option value="Cook">Cook</option>
+                                    <option value="Janitor">Janitor</option>
+                                    
                                 </select>
                             </label>
                             <label>
@@ -243,42 +264,13 @@ function EmployeePage() {
 
             
                 <button onClick={() => openPopup('salary')}> Change Salary</button>
+
+
                 {activePopup == 'salary' && (
-                    <div className="popUp">
-                        <div className="popupContent">
+                    <div className="employeePopUp">
+                        <div className="employeePopupContent">
                             <div className="popupHeader">
                                 <h2>Select an employee and new salary</h2>
-                                <button className="x" onClick={closePopup}>&times;</button>
-                            </div>
-                            <label>
-                                List of employee names:
-                                <select value={employeeOption} onChange={handleEmployeeChange}>
-                                    <option value="">Select...</option> {/* Placeholder option */}
-                                    {nameOptions.map((name, index) => (
-                                        <option key={index} value={name}>
-                                            {name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
-                            <label>
-                                Weekly Hours:
-                                <input
-                                    type="text"
-                                    value={weeklyHoursInput}
-                                    onChange={handleHoursChange}
-                                />
-                            </label>
-                            
-                        </div>
-                    </div>    
-                )}
-                <button onClick={() => openPopup('hours')}> Change Weekly Hours</button>
-                {activePopup == 'hours' && (
-                    <div className="popUp">
-                        <div className="popupContent">
-                            <div className="popupHeader">
-                                <h2>Select an employee and new hours</h2>
                                 <button className="x" onClick={closePopup}>&times;</button>
                             </div>
                             <label>
@@ -300,6 +292,39 @@ function EmployeePage() {
                                     onChange={handleSalaryChange}
                                 />
                             </label>
+                            <button className="employeeSubmit" onClick={() => handleUpdate(employeeOption, 'pay_rate', salaryInput)}>Submit</button>
+                            
+                        </div>
+                    </div>    
+                )}
+                <button onClick={() => openPopup('hours')}> Change Weekly Hours</button>
+                {activePopup == 'hours' && (
+                    <div className="employeePopUp">
+                        <div className="employeePopupContent">
+                            <div className="popupHeader">
+                                <h2>Select an employee and new hours</h2>
+                                <button className="x" onClick={closePopup}>&times;</button>
+                            </div>
+                            <label>
+                                List of employee names:
+                                <select value={employeeOption} onChange={handleEmployeeChange}>
+                                    <option value="">Select...</option> {/* Placeholder option */}
+                                    {nameOptions.map((name, index) => (
+                                        <option key={index} value={name}>
+                                            {name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                            <label>
+                                Weekly Hours:
+                                <input
+                                    type="text"
+                                    value={weeklyHoursInput}
+                                    onChange={handleHoursChange}
+                                />
+                            </label>
+                            <button className="employeeSubmit" onClick={() => handleUpdate(employeeOption, 'weekly_hours', weeklyHoursInput)}>Submit</button>
                             
                         </div>
                     </div>    
