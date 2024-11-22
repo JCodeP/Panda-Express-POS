@@ -77,6 +77,12 @@ function CashierComboScreen({ priceModifier }) {
     }
 
     const goBack = () => {
+
+        if (combo && (combo.side || combo.entrees.length > 0)) {
+            navigate("/cashiers/home", { state: { order } });
+            return;
+        }
+
         if (combo && !combo.side) {
             alert("Please select a side.");
             return;
@@ -96,27 +102,55 @@ function CashierComboScreen({ priceModifier }) {
 
     const addSideToCombo = (side) => {
         if (combo) {
-            const updatedCombo = {
-                ...combo,
-                side,
-            };
-            const newOrder = [...order];
-            newOrder[comboIndex] = updatedCombo;
-            setOrder(newOrder);
+            if (combo.name === "A La Carte") {
+                // Clear previous selection and replace with the new side
+                const updatedCombo = {
+                    ...combo,
+                    side,
+                    entrees: [], // Ensure no entrees are present
+                };
+                const newOrder = [...order];
+                newOrder[comboIndex] = updatedCombo;
+                setOrder(newOrder);
+            } else {
+                // For other combos, add the side as usual
+                const updatedCombo = {
+                    ...combo,
+                    side,
+                };
+                const newOrder = [...order];
+                newOrder[comboIndex] = updatedCombo;
+                setOrder(newOrder);
+            }
         }
     };
 
     const addEntreeToCombo = (entree) => {
-        if (combo && combo.entrees.length < maxEntrees) {
-            const updatedCombo = {
-                ...combo,
-                entrees: [...combo.entrees, entree],
-            };
-            const newOrder = [...order];
-            newOrder[comboIndex] = updatedCombo;
-            setOrder(newOrder);
-        } else {
-            alert(`Cannot add more than ${maxEntrees} entrees.`);
+        if (combo) {
+            if (combo.name === "A La Carte") {
+                // Clear previous selection and replace with the new entree
+                const updatedCombo = {
+                    ...combo,
+                    entrees: [entree], // Ensure only this entree is present
+                    side: null, // Ensure no sides are present
+                };
+                const newOrder = [...order];
+                newOrder[comboIndex] = updatedCombo;
+                setOrder(newOrder);
+            } else {
+                // For other combos, add the entree as usual
+                if (combo.entrees.length < maxEntrees) {
+                    const updatedCombo = {
+                        ...combo,
+                        entrees: [...combo.entrees, entree],
+                    };
+                    const newOrder = [...order];
+                    newOrder[comboIndex] = updatedCombo;
+                    setOrder(newOrder);
+                } else {
+                    alert(`Cannot add more than ${maxEntrees} entrees.`);
+                }
+            }
         }
     };
 
