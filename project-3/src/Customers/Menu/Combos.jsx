@@ -4,8 +4,8 @@ import {useNavigate} from "react-router-dom";
 import { useMenu } from "../../MenuContext";
 
 function QuantityButton ({quantity, updateQuantity, maxQuantity}) {
-    const increaseQuantity = () => { if (quantity < maxQuantity) updateQuantity(quantity + 1); };
-    const decreaseQuantity = () => updateQuantity(quantity > 0 ? quantity - 1 : 0);
+    const increaseQuantity = () => {if (quantity < maxQuantity) updateQuantity(quantity + 1);};
+    const decreaseQuantity = () => {if (quantity > 1) updateQuantity(quantity - 1);};
     return (
         <div className="quantity-button">
             <button className="decrease" onClick={decreaseQuantity}>-</button>
@@ -15,7 +15,7 @@ function QuantityButton ({quantity, updateQuantity, maxQuantity}) {
     );
 }
 
-function Combos() {
+function Combos({addItems}) {
     //setting menu variables
     const { comboOptions } = useMenu()
     const { entrees } = useMenu();
@@ -32,7 +32,7 @@ function Combos() {
     const [selectedSide, setSelectedSide] = useState(null);
     const [selectedEntrees, setSelectedEntrees] = useState([]);
     const [entreeQuantities, setEntreeQuantities] = useState({});
-    const [sideQuantities, setSideQuantities] = useState({});
+
 
     //functions for combo screen state control
     const chooseCombo = (combo) => {
@@ -119,9 +119,7 @@ function Combos() {
                                         <QuantityButton
                                             quantity={entreeQuantities[entree.id] || 1}
                                             maxQuantity={currentCombo.maxEntrees - Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0) + (entreeQuantities[entree.id] || 0)}
-                                            updateQuantity={(quantity) => {
-                                                setEntreeQuantities({...entreeQuantities, [entree.id]: quantity});
-                                            }}
+                                            updateQuantity={(quantity) => {setEntreeQuantities({...entreeQuantities, [entree.id]: quantity});}}
                                         />
                                     )}
                                 </div>
