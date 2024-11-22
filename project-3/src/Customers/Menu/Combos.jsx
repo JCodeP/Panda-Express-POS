@@ -3,9 +3,16 @@ import "../Customer.css";
 import {useNavigate} from "react-router-dom";
 import { useMenu } from "../../MenuContext";
 
-function QuantityButton ({quantity, updateQuantity, maxQuantity}) {
+function QuantityButton ({quantity, updateQuantity, maxQuantity, entree, removeEntree}) {
     const increaseQuantity = () => {if (quantity < maxQuantity) updateQuantity(quantity + 1);};
-    const decreaseQuantity = () => {if (quantity > 1) updateQuantity(quantity - 1);};
+    const decreaseQuantity = () => {
+        if (quantity > 1) {
+            updateQuantity(quantity - 1);
+        }
+        else {
+            removeEntree(entree.id);
+        }
+    };
     return (
         <div className="quantity-button">
             <button className="decrease" onClick={decreaseQuantity}>-</button>
@@ -76,6 +83,13 @@ function Combos({addItems}) {
         
     }
 
+    const removeEntree = (id) => {
+        setSelectedEntrees(selectedEntrees.filter(entree => entree.id !== id));
+        const updatedQuantities = { ...entreeQuantities };
+        delete updatedQuantities[id];
+        setEntreeQuantities(updatedQuantities);
+    };
+
     return(
         <>
             
@@ -117,9 +131,11 @@ function Combos({addItems}) {
                                     </button>
                                     {selectedEntrees.includes(entree) && (
                                         <QuantityButton
+                                            entree={entree}
                                             quantity={entreeQuantities[entree.id] || 1}
                                             maxQuantity={currentCombo.maxEntrees - Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0) + (entreeQuantities[entree.id] || 0)}
                                             updateQuantity={(quantity) => {setEntreeQuantities({...entreeQuantities, [entree.id]: quantity});}}
+                                            removeEntree={removeEntree}
                                         />
                                     )}
                                 </div>
