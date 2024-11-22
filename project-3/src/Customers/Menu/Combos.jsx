@@ -3,6 +3,18 @@ import "../Customer.css";
 import {useNavigate} from "react-router-dom";
 import { useMenu } from "../../MenuContext";
 
+function QuantityButton ({quantity, updateQuantity, maxQuantity}) {
+    const increaseQuantity = () => { if (quantity < maxQuantity) updateQuantity(quantity + 1); };
+    const decreaseQuantity = () => updateQuantity(quantity > 0 ? quantity - 1 : 0);
+    return (
+        <div className="quantity-button">
+            <button className="decrease" onClick={decreaseQuantity}>-</button>
+            <span className="quantity-counter">{quantity}</span>
+            <button className="increase" onClick={increaseQuantity}>+</button>
+        </div>
+    );
+}
+
 function Combos() {
     //setting menu variables
     const { comboOptions } = useMenu()
@@ -19,7 +31,8 @@ function Combos() {
     //variables for combo selection validation
     const [selectedSide, setSelectedSide] = useState(null);
     const [selectedEntrees, setSelectedEntrees] = useState([]);
-    const [numSelectedEntrees, setNumSelectedEntrees] = useState(0);
+    const [entreeQuantities, setEntreeQuantities] = useState({});
+    const [sideQuantities, setSideQuantities] = useState({});
 
     //functions for combo screen state control
     const chooseCombo = (combo) => {
@@ -32,7 +45,8 @@ function Combos() {
         setShowCombos(true); 
         setSelectedSide(null);
         setSelectedEntrees([]);
-        setNumSelectedEntrees(0);
+        setEntreeQuantities({});
+        setSideQuantities({});
     };
     const chooseEntree = () => {
         setShowEntrees(true);
@@ -48,13 +62,16 @@ function Combos() {
         setSelectedSide(selectedSide === side ? null : side);
     };
     const handleSelectEntrees = (entree, combo) => {
+        const totalQuantity = Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0);
         if (selectedEntrees.includes(entree)) {
             setSelectedEntrees(selectedEntrees.filter(e => e !== entree));
-            setNumSelectedEntrees(numSelectedEntrees - 1);
+            const updatedQuantities = {...entreeQuantities};
+            delete updatedQuantities[entree.id];
+            setEntreeQuantities(updatedQuantities);
         } 
-        else if (numSelectedEntrees < combo.maxEntrees) {
+        else if (totalQuantity < combo.maxEntrees) {
             setSelectedEntrees([...selectedEntrees, entree]);
-            setNumSelectedEntrees(numSelectedEntrees + 1);
+            setEntreeQuantities({ ...entreeQuantities, [entree.id]: 1 });
         }
         
     }
@@ -93,10 +110,21 @@ function Combos() {
                     <div className = "item-button-box">
                         {showEntrees ? (
                             entreeOptions.map(entree => (
-                                <button className = {`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key = {entree.id} onClick = {() => handleSelectEntrees(entree, currentCombo)}>
-                                    <img src= {entree.imageURL} alt={entree.name} />
-                                    <span>{entree.name}</span>
-                                </button>
+                                <div className={`entree-item ${selectedEntrees.includes(entree) ? "selected" : ""}`} key={entree.id}>
+                                    <button className = {`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key = {entree.id} onClick = {() => handleSelectEntrees(entree, currentCombo)}>
+                                        <img src= {entree.imageURL} alt={entree.name} />
+                                        <span>{entree.name}</span>
+                                    </button>
+                                    {selectedEntrees.includes(entree) && (
+                                        <QuantityButton
+                                            quantity={entreeQuantities[entree.id] || 1}
+                                            maxQuantity={currentCombo.maxEntrees - Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0) + (entreeQuantities[entree.id] || 0)}
+                                            updateQuantity={(quantity) => {
+                                                setEntreeQuantities({...entreeQuantities, [entree.id]: quantity});
+                                            }}
+                                        />
+                                    )}
+                                </div>
                             ))
                         ) : (
                             sideOptions.map(side => (
