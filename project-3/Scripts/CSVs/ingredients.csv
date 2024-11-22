@@ -1,0 +1,38 @@
+0,Beef,100,3
+1,Angus Steak,100,4
+2,Dark Meat Chicken,100,2
+3,Chicken Breast,100,2
+4,Shrimp,100,3
+5,Broccoli,100,0.3
+6,Cabbage,100,0.3
+7,Carrots,100,0.3
+8,Celery,100,0.3
+9,Green Beans,100,0.3
+10,Green Onions,100,0.3
+11,Kale,100,0.3
+12,Mushrooms,100,0.3
+13,Onions,100,0.1
+14,Peas,100,0.3
+15,Pineapple,100,0.4
+16,Red Bell Peppers,100,0.3
+17,Yellow Bell Peppers,100,0.3
+18,Zucchini,100,0.3
+19,Oil,100,0.1
+20,Sugar,100,0.1
+21,Soy Sauce,100,0.1
+22,Vinegar,100,0.1
+23,Orange Sauce,100,0.25
+24,Walnuts,100,0.25
+25,Peanuts,100,0.25
+26,Egg Roll,100,1
+27,Spring Roll,100,1
+28,Cream Cheese Rangoon,100,1
+29,Apple Pie Eggroll,100,1
+30,White Rice,100,0.25
+31,Noodles,100,0.25
+32,Eggs,100,0.25
+33,bowl,1000,0.03
+34,plate,1000,0.03
+35,plasticware,1000,0.03
+36,napkin,1000,0.01
+37,bag,1000,0.01
