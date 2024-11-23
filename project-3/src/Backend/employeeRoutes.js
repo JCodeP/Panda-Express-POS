@@ -42,6 +42,17 @@ const employeeRoutes = (pool) => {
             client.write(`data: ${JSON.stringify({ message: 'New employee added', employee: newEmployee })}\n\n`)
         );
     };
+
+    const broadcastDelete = (delName) => {
+        clients.forEach(client =>
+            client.write(`data: ${JSON.stringify({ message: 'employee deleted: ', deleteName: delName })}\n\n`)
+        );
+    }
+    const broadcastUpdate = (rowChanged) => {
+        clients.forEach(client =>
+            client.write(`data: ${JSON.stringify({ message: 'employee updated: ', nameUpdated: rowChanged})}\n\n`)
+        );
+    }
   
     router.post('/addData', async (req, res) => {
         console.log("recieved data:", req.body);
@@ -65,6 +76,59 @@ const employeeRoutes = (pool) => {
             });
         }
     });
+
+    // DELETE endpoint to remove an employee by ID
+    router.delete('/delete/:name', async (req, res) => {
+        const { name } = req.params;
+        console.log(req.params);
+  
+        if (!name) {
+            return res.status(400).send({ error: 'name is required' });
+        }
+  
+        const query = 'DELETE FROM employees WHERE name = $1 RETURNING *';
+        try {
+
+            const result = await pool.query(query, [name]);
+  
+            if (result.rowCount === 0) {
+                return res.status(404).send({ error: 'Employee not found' });
+            }
+  
+      // Notify all SSE clients about the deleted employee
+            
+            broadcastDelete(name);
+  
+            res.status(200).json({ success: true, data: result.rows[0] });
+        } catch (err) {
+            console.error('Error executing query', err.stack);
+            res.status(500).json({ error: 'Unable to delete employee' });
+        }
+    });
+    router.post('/update-row', async (req, res) => {
+        const { name, attributeName, newValue } = req.body;
+    
+        if (!name || !attributeName || newValue === undefined) {
+            return res.status(400).send({ error: 'Missing required fields' });
+        }
+    
+        try {
+            const query = `UPDATE employees SET ${attributeName} = $1 WHERE name = $2 RETURNING *`;
+            const result = await pool.query(query, [newValue, name]);
+    
+            if (result.rows.length > 0) {
+                const updatedRow = result.rows[0];
+                broadcastUpdate(updatedRow);
+                res.status(200).send(updatedRow);
+            } else {
+                res.status(404).send({ error: 'Row not found' });
+            }
+        } catch (error) {
+            console.error('Error updating row:', error);
+            res.status(500).send({ error: 'Internal server error' });
+        }
+    });
+  
 
 
     // Optionally, you can define other routes here, like GET, PUT, DELETE
