@@ -5,6 +5,7 @@ import pkg from 'pg';
 
 import employeeRoutes from './employeeRoutes.js';
 import itemRoutes from './itemRoutes.js';
+import menuRoutes from './menuRoutes.js';
 
 import { fetchWeather } from './APIs/Weather.js';
 import menuRoutes from './menuRoutes.js';
