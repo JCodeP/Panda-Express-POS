@@ -27,6 +27,10 @@ router.get('/get-menu-data', async (req, res) => {
     }
 });
 
+router.post('/add-food-item', async (req, res) =>{
+    console.log('add food item request sent');
+});
+
 // Export the function that takes 'connection' as argument
 export default (connection) => {
     return (req, res, next) => {

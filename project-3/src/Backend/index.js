@@ -5,7 +5,6 @@ import pkg from 'pg';
 
 import employeeRoutes from './employeeRoutes.js';
 import itemRoutes from './itemRoutes.js';
-import menuRoutes from './menuRoutes.js';
 
 import { fetchWeather } from './APIs/Weather.js';
 import menuRoutes from './menuRoutes.js';
@@ -33,7 +32,6 @@ const connection = new Pool({
 app.use('/api', employeeRoutes(connection));
 app.use('/api', menuRoutes(connection));
 app.use(itemRoutes(connection));
-app.use('/api',menuRoutes(connection));
 
 
 app.get('/api/data', async (req, res) => {
