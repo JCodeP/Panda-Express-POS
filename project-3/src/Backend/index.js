@@ -4,6 +4,7 @@ import cors from 'cors';
 import pkg from 'pg';
 import employeeRoutes from './employeeRoutes.js';
 import itemRoutes from './itemRoutes.js';
+import inventoryRoutes from './inventoryRoutes.js';
 
 import { fetchWeather } from './APIs/Weather.js';
 
@@ -28,6 +29,7 @@ const connection = new Pool({
 });
 app.use('/api', employeeRoutes(connection));
 app.use(itemRoutes(connection));
+app.use('/api', inventoryRoutes(connection));
 
 app.get('/api/data', async (req, res) => {
   try {
