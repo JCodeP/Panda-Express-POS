@@ -1,18 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './ManageMenu.css';
 
 function ManageMenu() {
-    const foodItems = [
-        { name: 'Egg Roll', price: '$10' },
-        { name: 'Small Drink', price: '$12' },
-        { name: 'Medium Drink', price: '$8' },     
-    ];
+    console.log('ManageMenu component rendered'); 
+    const [foodItems, setFoodItems] = useState([]);
+    const [menuItems, setMenuItems] = useState([]);
 
-    const menuItems = [
-        {name: 'Bowl', price: '$7.50'},
-        {name: 'Plate', price: '$10.50'},
-        {name: 'Bigger Plate', price: '$11.50'},
-    ];
+    // Fetch food data
+    useEffect(() => {
+        const fetchFoodData = async () => {
+            console.log('requesting foodData');
+            try {
+                const response = await fetch('http://localhost:5001/api/get-food-data');
+                const data = await response.json();
+                console.log('Fetched food data:', data); 
+                setFoodItems(data);
+            } catch (error) {
+                console.error('Error fetching food data:', error);
+            }
+        };
+    
+        fetchFoodData();
+    }, []);
+    
+    // Fetch menu data
+    useEffect(() => {
+        const fetchMenuData = async () => {
+            console.log('requesting menuData');
+            try {
+                const response = await fetch('http://localhost:5001/api/get-menu-data');
+                const data = await response.json();
+                console.log('Fetched menu data:', data); 
+                setMenuItems(data);
+            } catch (error) {
+                console.error('Error fetching menu data:', error);
+            }
+        };
+    
+        fetchMenuData();
+    }, []);
 
     return (
         <div className="create-order-page">
@@ -25,17 +51,17 @@ function ManageMenu() {
                         <thead>
                             <tr>
                                 <th>Item</th>
-                                <th>Price</th>
+                                <th>Premium</th>
                             </tr>
                         </thead>
                         <tbody>
                             {foodItems.map((item, index) => (
                                 <tr key={index}>
-                                    <td>{item.name}</td>
-                                    <td>{item.price}</td>
-                                </tr>
-                            ))}
-                        </tbody>
+                                    <td>{item.item_name}</td>
+            <                       td>{item.is_prem !== undefined ? item.is_prem.toString() : 'N/A'}</td>
+                        </tr>
+                        ))}
+                    </tbody>
                     </table>
                     <div className="button-group">
                         <button>Add Item</button>
@@ -57,8 +83,8 @@ function ManageMenu() {
                         <tbody>
                             {menuItems.map((item, index) => (
                                 <tr key={index}>
-                                    <td>{item.name}</td>
-                                    <td>{item.price}</td>
+                                    <td>{item.item_name}</td>
+                                    <td>{item.price || 'N/A'}</td>
                                 </tr>
                             ))}
                         </tbody>
