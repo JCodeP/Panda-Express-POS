@@ -18,9 +18,10 @@
 
 .chart-container {
     position: relative;
-    height: 30vh; /* Reduced height for the chart */
-    width: 100%;
+    height: 50vh; /* Increased height to handle larger datasets */
+    width: 100%; /* Ensure it spans the full width */
 }
+
 
 .input-boxes {
     display: flex;
@@ -55,3 +56,22 @@
     text-align: center;
     box-sizing: border-box;
 }
+
+.submit-button {
+    padding: 1vh 3vw; /* Adjust padding for the button */
+    font-size: 1.8vw; /* Match size to other elements */
+    font-weight: bold;
+    color: white;
+    background-color: #333; /* Dark background */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button-container {
+    display: flex; /* Flexbox for alignment */
+    justify-content: center; /* Center horizontally */
+    margin-top: 2vh; /* Add spacing above the button */
+}
+
