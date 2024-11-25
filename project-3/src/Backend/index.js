@@ -2,8 +2,10 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import pkg from 'pg';
+
 import employeeRoutes from './employeeRoutes.js';
 import itemRoutes from './itemRoutes.js';
+import menuRoutes from './menuRoutes.js';
 
 import { fetchWeather } from './APIs/Weather.js';
 
@@ -26,8 +28,11 @@ const connection = new Pool({
   port: process.env.PSQL_PORT,
   ssl: {rejectUnauthorized: false}
 });
+
 app.use('/api', employeeRoutes(connection));
+app.use('/api', menuRoutes(connection));
 app.use(itemRoutes(connection));
+
 
 app.get('/api/data', async (req, res) => {
   try {
