@@ -6,7 +6,7 @@ import { useOrder } from "./CashierOrderContext";
 
 import "./CashierHome.css";
 
-function CashierComboScreen() {
+function CashierComboScreen({ priceModifier }) {
     const { order, setOrder } = useOrder();
     const { entrees, comboOptions, sides } = useMenu();
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -66,8 +66,10 @@ function CashierComboScreen() {
 
     // Sums price of items in order
     const getTotalPrice = useMemo(() => {
-        return order.reduce((total, item) => total + item.price, 0).toFixed(2);
-    }, [order]);
+        const total = order.reduce((total, item) => total + item.price, 0);
+
+        return (total * (priceModifier || 1)).toFixed(2);
+    }, [order, priceModifier]);
 
     // Navigates to submit screen
     const submitScreen = () => {
@@ -75,6 +77,12 @@ function CashierComboScreen() {
     }
 
     const goBack = () => {
+
+        if (combo && (combo.side || combo.entrees.length > 0)) {
+            navigate("/cashiers/home", { state: { order } });
+            return;
+        }
+
         if (combo && !combo.side) {
             alert("Please select a side.");
             return;
@@ -94,27 +102,55 @@ function CashierComboScreen() {
 
     const addSideToCombo = (side) => {
         if (combo) {
-            const updatedCombo = {
-                ...combo,
-                side,
-            };
-            const newOrder = [...order];
-            newOrder[comboIndex] = updatedCombo;
-            setOrder(newOrder);
+            if (combo.name === "A La Carte") {
+                // Clear previous selection and replace with the new side
+                const updatedCombo = {
+                    ...combo,
+                    side,
+                    entrees: [], // Ensure no entrees are present
+                };
+                const newOrder = [...order];
+                newOrder[comboIndex] = updatedCombo;
+                setOrder(newOrder);
+            } else {
+                // For other combos, add the side as usual
+                const updatedCombo = {
+                    ...combo,
+                    side,
+                };
+                const newOrder = [...order];
+                newOrder[comboIndex] = updatedCombo;
+                setOrder(newOrder);
+            }
         }
     };
 
     const addEntreeToCombo = (entree) => {
-        if (combo && combo.entrees.length < maxEntrees) {
-            const updatedCombo = {
-                ...combo,
-                entrees: [...combo.entrees, entree],
-            };
-            const newOrder = [...order];
-            newOrder[comboIndex] = updatedCombo;
-            setOrder(newOrder);
-        } else {
-            alert(`Cannot add more than ${maxEntrees} entrees.`);
+        if (combo) {
+            if (combo.name === "A La Carte") {
+                // Clear previous selection and replace with the new entree
+                const updatedCombo = {
+                    ...combo,
+                    entrees: [entree], // Ensure only this entree is present
+                    side: null, // Ensure no sides are present
+                };
+                const newOrder = [...order];
+                newOrder[comboIndex] = updatedCombo;
+                setOrder(newOrder);
+            } else {
+                // For other combos, add the entree as usual
+                if (combo.entrees.length < maxEntrees) {
+                    const updatedCombo = {
+                        ...combo,
+                        entrees: [...combo.entrees, entree],
+                    };
+                    const newOrder = [...order];
+                    newOrder[comboIndex] = updatedCombo;
+                    setOrder(newOrder);
+                } else {
+                    alert(`Cannot add more than ${maxEntrees} entrees.`);
+                }
+            }
         }
     };
 
@@ -136,10 +172,20 @@ function CashierComboScreen() {
         navigate("/cashiers/home", { state: { order } });
     }
 
+    const getDiscountMessage = (priceModifier) => {
+        if (priceModifier === 0.9) {
+            return "Current Order - 10% discount active";
+        } else if (priceModifier === 0.95) {
+            return "Current Order - 5% discount active";
+        } else {
+            return "Current Order";
+        }
+    };
+
     return (
         <div className="cashier-home">
             <div className="order-list-container">
-                <h2>Current Order - Click to Select</h2>
+                <h2>{getDiscountMessage(priceModifier)}</h2>
                 <ul className="order-list">
                     {order.map((item, index) => (
                         <li

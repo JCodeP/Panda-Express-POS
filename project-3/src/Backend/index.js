@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import pkg from 'pg';
+import employeeRoutes from './employeeRoutes.js';
+import itemRoutes from './itemRoutes.js';
 
 import { fetchWeather } from './APIs/Weather.js';
 
@@ -17,7 +19,15 @@ app.use(cors());
 
 const connection = new Pool({
   connectionString: process.env.DATABASE_URL,
+  user: process.env.PSQL_USER,
+  host: process.env.PSQL_HOST,
+  database: process.env.PSQL_DATABASE,
+  password: process.env.PSQL_PASSWORD,
+  port: process.env.PSQL_PORT,
+  ssl: {rejectUnauthorized: false}
 });
+app.use('/api', employeeRoutes(connection));
+app.use(itemRoutes(connection));
 
 app.get('/api/data', async (req, res) => {
   try {
@@ -29,12 +39,14 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
+
+
 app.get('/api/weather', async (req, res) => {
   try {
-    const weather = await fetchWeather();
+    const weather = await fetchWeather(process.env.weatherApiKey); // This now calls OpenWeather API
     res.json(weather); // Send full weather data to the client
   } catch (err) {
-    console.error('Error fetching weather:', err.message);
+    console.error('Error fetching weather from OpenWeather API:', err.message);
     res.status(500).json({ error: 'Failed to fetch weather', details: err.message });
   }
 });
