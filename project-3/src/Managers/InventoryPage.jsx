@@ -12,75 +12,7 @@ import {
 import './InventoryPageStyle.css';
 
 // Register required Chart.js components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const data = [
-  { name: 'Item 1', current: 40, max: 100 },
-  { name: 'Item 2', current: 60, max: 100 },
-  { name: 'Item 3', current: 30, max: 100 },
-  { name: 'Item 4', current: 80, max: 100 },
-  
-];
-
-const chartData = {
-  labels: data.map((item) => item.name), // Set the labels (Item names)
-  datasets: [
-    {
-      label: 'Current Quantity',
-      data: data.map((item) => item.current), // Current value for each item
-      backgroundColor: '#82ca9d', // Color for current quantity
-      stack: 'stack1',
-    },
-    {
-      label: 'Max Quantity',
-      data: data.map((item) => item.max - item.current), // Difference between max and current (the rest of the bar)
-      backgroundColor: '#ddd', // Color for remaining portion
-      stack: 'stack1',
-    },
-  ],
-};
-
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-      labels: {
-        font: {
-            size: '17em',
-
-            },
-        },
-    },
-    tooltip: {
-      callbacks: {
-        label: (context) => {
-          const current = context.raw;
-          const max = data[context.dataIndex].max;
-          return `${context.dataset.label}: ${current} / ${max}`;
-        },
-      },
-    },
-  },
-  scales: {
-    x: {
-      stacked: true, // Stack the bars
-      ticks: {
-        font: {
-            size: '15em',
-        },
-      },
-    },
-    y: {
-      stacked: true, // Stack the bars
-      ticks: {
-        font: {
-          size: '20em', // Increase the font size of the Y-axis labels (numbers on the left)
-        },
-      },
-    },
-  },
-};
 
 
 
@@ -88,6 +20,95 @@ const options = {
 
 
 function InventoryPage() {
+  ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+  const data = [
+    { name: 'Item 1', current: 40, max: 100 },
+    { name: 'Item 2', current: 60, max: 100 },
+    { name: 'Item 3', current: 30, max: 100 },
+    { name: 'Item 4', current: 80, max: 100 },
+  
+  ];
+
+  const [inventoryData, setData] = useState([]);
+
+  const chartData = {
+    labels: data.map((item) => item.name), // Set the labels (Item names)
+    datasets: [
+      {
+        label: 'Current Quantity',
+        data: data.map((item) => item.current), // Current value for each item
+        backgroundColor: '#82ca9d', // Color for current quantity
+        stack: 'stack1',
+      },
+      {
+        label: 'Max Quantity',
+        data: data.map((item) => item.max - item.current), // Difference between max and current (the rest of the bar)
+        backgroundColor: '#ddd', // Color for remaining portion
+        stack: 'stack1',
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          font: {
+              size: '17em',
+
+              },
+          },
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            const current = context.raw;
+            const max = data[context.dataIndex].max;
+            return `${context.dataset.label}: ${current} / ${max}`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        stacked: true, // Stack the bars
+        ticks: {
+          font: {
+              size: '15em',
+          },
+        },
+      },
+      y: {
+        stacked: true, // Stack the bars
+        ticks: {
+          font: {
+            size: '20em', // Increase the font size of the Y-axis labels (numbers on the left)
+          },
+        },
+      },
+    },
+  };
+  useEffect(() => {
+    // Listen for SSE updates when the component mounts
+    const eventSource = new EventSource('http://localhost:5001/api/events'); // URL to the SSE endpoint on the backend
+
+    eventSource.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log('Received SSE message:', message);
+
+      // If the message contains the full employee list (on initial connection)
+      if (Array.isArray(message)) {
+        setData(message);  // Set the initial list of employees
+      }
+    };
+
+    return () => {
+      eventSource.close(); // Clean up when component is unmounted
+    };
+  }, []);
     const [activePopup, setActivePopup] = useState(null);
     
     

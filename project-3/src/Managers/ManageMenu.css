@@ -15,6 +15,7 @@
     padding: 3vh 2vw;
     border-radius: 1vh;
     box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+    color: #1a1a1a;
 }
 
 .food-table {
@@ -46,11 +47,11 @@
     cursor: pointer;
     border: none;
     border-radius: 0.8vh;
-    background-color: #007bff;
+    background-color: #000000;
     color: white;
     transition: background-color 0.3s;
 }
 
 .button-group button:hover {
-    background-color: #0056b3;
+    background-color: #000000;
 }
