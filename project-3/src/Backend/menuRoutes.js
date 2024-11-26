@@ -70,6 +70,44 @@ router.post('/add-entree', async (req, res) => {
     }
 });
 
+router.delete('/delete-entree', async (req, res) => {
+    const query = 'DELETE FROM entree WHERE item_name = $1 RETURNING *;';
+    const {item_name} = req.body;
+
+    if(!item_name) {
+        return res.status(400).json({message: 'item_name is required'});
+    }
+
+    const value = [item_name];
+
+    try {
+        const result = await req.app.get('db').query(query, value);
+        res.status(200).json(result.rows[0]); // Return the newly added row
+    } catch (err) {
+        console.error('Database query error:', err);
+        res.status(500).json({ message: 'Error deleting entree', error: err.message });
+    }
+});
+
+router.delete('/delete-side', async (req, res) => {
+    const query = 'DELETE FROM side WHERE item_name = $1 RETURNING *;';
+    const {item_name} = req.body;
+
+    if(!item_name) {
+        return res.status(400).json({message: 'item_name is required'});
+    }
+
+    const value = [item_name];
+
+    try {
+        const result = await req.app.get('db').query(query, value);
+        res.status(200).json(result.rows[0]); // Return the newly added row
+    } catch (err) {
+        console.error('Database query error:', err);
+        res.status(500).json({ message: 'Error deleting entree', error: err.message });
+    }
+});
+
 
 // Export the function that takes 'connection' as argument
 export default (connection) => {
