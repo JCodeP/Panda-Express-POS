@@ -15,6 +15,7 @@
     padding: 3vh 2vw;
     border-radius: 1vh;
     box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+    color: #1a1a1a;
 }
 
 .food-table {
