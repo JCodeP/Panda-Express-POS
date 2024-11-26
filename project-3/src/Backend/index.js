@@ -9,7 +9,6 @@ import inventoryRoutes from './inventoryRoutes.js';
 import menuRoutes from './menuRoutes.js';
 
 import { fetchWeather } from './APIs/Weather.js';
-import menuRoutes from './menuRoutes.js';
 
 const { Pool } = pkg;
 
