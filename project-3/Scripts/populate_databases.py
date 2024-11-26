@@ -50,10 +50,6 @@ try:
     with open(side_path, "r") as side:
         cursor.copy_expert(f"COPY side FROM STDIN WITH CSV", side)
         
-    menu_path = "CSVs/Menu.csv"
-    with open(menu_path, "r") as menu:
-        cursor.copy_expert(f"COPY menu FROM STDIN WITH CSV", menu)
-        
     appetizer_path = "CSVs/Appetizer.csv"
     with open(appetizer_path, "r") as appetizer:
         cursor.copy_expert(f"COPY appetizer FROM STDIN WITH CSV", appetizer)
