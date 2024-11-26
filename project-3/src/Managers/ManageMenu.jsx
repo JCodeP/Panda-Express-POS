@@ -5,6 +5,10 @@ function ManageMenu() {
     console.log('ManageMenu component rendered'); 
     const [foodItems, setFoodItems] = useState([]);
     const [menuItems, setMenuItems] = useState([]);
+    const [isPopupOpen, setIsPopupOpen] = useState(false); // Controls popup visibility
+    const [newItemName, setNewItemName] = useState(''); // Stores the input value
+    const [errorMessage, setErrorMessage] = useState(''); // Error message for submission
+    const [itemType, setItemType] = useState('entree'); // Tracks whether it's side or entree
 
     // Fetch food data
     useEffect(() => {
@@ -40,6 +44,40 @@ function ManageMenu() {
         fetchMenuData();
     }, []);
 
+    // Function to handle adding a new food item (side or entree)
+    const handleAddFoodItem = async () => {
+        if (!newItemName) {
+            setErrorMessage('Item name cannot be empty');
+            return;
+        }
+
+        const endpoint = itemType === 'entree' ? 'http://localhost:5001/api/add-entree' : 'http://localhost:5001/api/add-side'; // Decide endpoint based on itemType
+
+        try {
+            console.log("Tried to fetch", endpoint);
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item_name: newItemName }),
+            });
+
+            if (response.ok) {
+                const addedItem = await response.json();
+                console.log('Added item:', addedItem);
+                setFoodItems([...foodItems, addedItem]); // Update foodItems with new item
+                setIsPopupOpen(false); // Close popup
+                setNewItemName(''); // Reset input
+                setErrorMessage(''); // Clear error
+            } else {
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || 'Failed to add item');
+            }
+        } catch (error) {
+            console.error('Error adding food item:', error);
+            setErrorMessage('An unexpected error occurred');
+        }
+    };
+
     return (
         <div className="create-order-page">
             <h1>Manage Menu</h1>
@@ -58,13 +96,13 @@ function ManageMenu() {
                             {foodItems.map((item, index) => (
                                 <tr key={index}>
                                     <td>{item.item_name}</td>
-            <                       td>{item.is_prem !== undefined ? item.is_prem.toString() : 'N/A'}</td>
-                        </tr>
-                        ))}
-                    </tbody>
+                                    <td>{item.is_prem !== undefined ? item.is_prem.toString() : 'N/A'}</td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </table>
                     <div className="button-group">
-                        <button>Add Item</button>
+                        <button onClick={() => setIsPopupOpen(true)}>Add Item</button>
                         <button>Change Premium</button>
                         <button>Delete Item</button>
                     </div>
@@ -96,6 +134,38 @@ function ManageMenu() {
                     </div>
                 </div>
             </div>
+
+            {/* Popup */}
+            {isPopupOpen && (
+                <div className="popup">
+                    <div className="popup-content">
+                        <h3>Add New Food Item</h3>
+                        <input
+                            type="text"
+                            value={newItemName}
+                            onChange={(e) => setNewItemName(e.target.value)}
+                            placeholder="Enter item name"
+                        />
+                        
+                        <div>
+                            <label>Select Type: </label>
+                            <select
+                                value={itemType}
+                                onChange={(e) => setItemType(e.target.value)}
+                            >
+                                <option value="entree">Entree</option>
+                                <option value="side">Side</option>
+                            </select>
+                        </div>
+
+                        <div className="popup-buttons">
+                            <button onClick={handleAddFoodItem}>Submit</button>
+                            <button onClick={() => setIsPopupOpen(false)}>Cancel</button>
+                        </div>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
