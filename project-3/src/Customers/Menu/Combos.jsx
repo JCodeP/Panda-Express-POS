@@ -3,6 +3,9 @@ import "../Customer.css";
 import {useNavigate} from "react-router-dom";
 import { useMenu } from "../../MenuContext";
 
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
+
 function QuantityButton ({quantity, updateQuantity, maxQuantity, entree, removeEntree}) {
     const increaseQuantity = () => {if (quantity < maxQuantity) updateQuantity(quantity + 1);};
     const decreaseQuantity = () => {

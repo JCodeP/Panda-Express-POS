@@ -1,8 +1,11 @@
 import React, {useState} from "react";
 import "../Customer.css";
 import {useNavigate} from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
 function Orders() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const [order, setOrder] = useState([
@@ -30,7 +33,9 @@ function Orders() {
 
     return(
         <div className = "order-box">
-            <div className = "box-title">Order</div>
+            <div className = "box-title">
+                {t('order')}
+            </div>
             <div className = "separator" />
             <ul className = "order-list">
                 {order.map((item, index) => (
