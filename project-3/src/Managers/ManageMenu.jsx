@@ -2,82 +2,110 @@ import React, { useState, useEffect } from 'react';
 import './ManageMenu.css';
 
 function ManageMenu() {
-    console.log('ManageMenu component rendered'); 
     const [foodItems, setFoodItems] = useState([]);
     const [menuItems, setMenuItems] = useState([]);
-    const [isPopupOpen, setIsPopupOpen] = useState(false); // Controls popup visibility
-    const [newItemName, setNewItemName] = useState(''); // Stores the input value
-    const [errorMessage, setErrorMessage] = useState(''); // Error message for submission
-    const [itemType, setItemType] = useState('entree'); // Tracks whether it's side or entree
+    const [isPopupOpen, setIsPopupOpen] = useState(false); // For adding items
+    const [newItemName, setNewItemName] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [itemType, setItemType] = useState('entree');
+    const [deletePopupOpen, setDeletePopupOpen] = useState(false); // For delete confirmation
+    const [itemToDelete, setItemToDelete] = useState(null); // Store item for deletion
 
-    // Fetch food data
     useEffect(() => {
         const fetchFoodData = async () => {
-            console.log('requesting foodData');
             try {
                 const response = await fetch('http://localhost:5001/api/get-food-data');
                 const data = await response.json();
-                console.log('Fetched food data:', data); 
                 setFoodItems(data);
             } catch (error) {
                 console.error('Error fetching food data:', error);
             }
         };
-    
-        fetchFoodData();
-    }, []);
-    
-    // Fetch menu data
-    useEffect(() => {
+
         const fetchMenuData = async () => {
-            console.log('requesting menuData');
             try {
                 const response = await fetch('http://localhost:5001/api/get-menu-data');
                 const data = await response.json();
-                console.log('Fetched menu data:', data); 
                 setMenuItems(data);
             } catch (error) {
                 console.error('Error fetching menu data:', error);
             }
         };
-    
+
+        fetchFoodData();
         fetchMenuData();
     }, []);
 
-    // Function to handle adding a new food item (side or entree)
+    // Function to handle deletion
+    const handleDeleteItem = async () => {
+        if (!itemToDelete) {
+            setErrorMessage('No item selected for deletion');
+            return;
+        }
+    
+        try {
+            const response = await fetch('http://localhost:5001/api/delete-item', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item_name: itemToDelete }),
+            });
+    
+            if (response.ok) {
+                const deletedItem = await response.json();
+                console.log('Deleted item:', deletedItem);
+    
+                // Remove deleted item from foodItems state
+                setFoodItems(foodItems.filter((item) => item.item_name !== itemToDelete));
+                setDeletePopupOpen(false); // Close popup
+                setItemToDelete(null);
+            } else {
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || 'Failed to delete item');
+            }
+        } catch (error) {
+            console.error('Error deleting item:', error);
+            setErrorMessage('An unexpected error occurred');
+        }
+    };
+
     const handleAddFoodItem = async () => {
-        if (!newItemName) {
+        if (!newItemName.trim()) {
             setErrorMessage('Item name cannot be empty');
             return;
         }
-
-        const endpoint = itemType === 'entree' ? 'http://localhost:5001/api/add-entree' : 'http://localhost:5001/api/add-side'; // Decide endpoint based on itemType
-
+    
         try {
-            console.log("Tried to fetch", endpoint);
+            // Determine the correct endpoint based on itemType (entree or side)
+            const endpoint = itemType === 'entree' ? 'http://localhost:5001/api/add-entree' : 'http://localhost:5001/api/add-side';
+    
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ item_name: newItemName }),
             });
-
+    
             if (response.ok) {
                 const addedItem = await response.json();
                 console.log('Added item:', addedItem);
-                setFoodItems([...foodItems, addedItem]); // Update foodItems with new item
-                setIsPopupOpen(false); // Close popup
-                setNewItemName(''); // Reset input
-                setErrorMessage(''); // Clear error
+    
+                // Update the foodItems state with the newly added item
+                setFoodItems([...foodItems, addedItem]);
+    
+                // Close the popup and reset the input
+                setIsPopupOpen(false);
+                setNewItemName('');
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to add item');
             }
         } catch (error) {
-            console.error('Error adding food item:', error);
+            console.error('Error adding item:', error);
             setErrorMessage('An unexpected error occurred');
         }
     };
-
+    
+    
+    
     return (
         <div className="create-order-page">
             <h1>Manage Menu</h1>
@@ -90,6 +118,7 @@ function ManageMenu() {
                             <tr>
                                 <th>Item</th>
                                 <th>Premium</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -97,14 +126,34 @@ function ManageMenu() {
                                 <tr key={index}>
                                     <td>{item.item_name}</td>
                                     <td>{item.is_prem !== undefined ? item.is_prem.toString() : 'N/A'}</td>
+                                    <td>
+                                        {/* Delete Item Button */}
+                                        <button
+                                            onClick={() => {
+                                                setDeletePopupOpen(true); // Open delete popup
+                                                setItemToDelete(item.item_name); // Store the specific item name
+                                            }}
+                                        >
+                                            Delete Item
+                                        </button>
+
+                                        {/* Change Premium Button */}
+                                        <button
+                                            onClick={() => {
+                                                console.log(`Change premium for ${item.item_name}`);
+                                            }}
+                                        >
+                                            Change Premium
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+
+                    {/* Add Item Button - Global Control */}
                     <div className="button-group">
                         <button onClick={() => setIsPopupOpen(true)}>Add Item</button>
-                        <button>Change Premium</button>
-                        <button>Delete Item</button>
                     </div>
                 </div>
 
@@ -135,7 +184,7 @@ function ManageMenu() {
                 </div>
             </div>
 
-            {/* Popup */}
+            {/* Popup for Adding Items */}
             {isPopupOpen && (
                 <div className="popup">
                     <div className="popup-content">
@@ -146,21 +195,38 @@ function ManageMenu() {
                             onChange={(e) => setNewItemName(e.target.value)}
                             placeholder="Enter item name"
                         />
-                        
                         <div>
                             <label>Select Type: </label>
-                            <select
-                                value={itemType}
-                                onChange={(e) => setItemType(e.target.value)}
-                            >
+                            <select value={itemType} onChange={(e) => setItemType(e.target.value)}>
                                 <option value="entree">Entree</option>
                                 <option value="side">Side</option>
                             </select>
                         </div>
-
                         <div className="popup-buttons">
-                            <button onClick={handleAddFoodItem}>Submit</button>
+                            <button onClick={() => handleAddFoodItem()}>Submit</button>
                             <button onClick={() => setIsPopupOpen(false)}>Cancel</button>
+                        </div>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    </div>
+                </div>
+            )}
+
+            {/* Popup for Delete Confirmation */}
+            {deletePopupOpen && (
+                <div className="popup">
+                    <div className="popup-content">
+                        <h3>Confirm Delete</h3>
+                        <p>Are you sure you want to delete this item?</p>
+                        <div className="popup-buttons">
+                            <button onClick={handleDeleteItem}>Yes, Delete</button>
+                            <button
+                                onClick={() => {
+                                    setDeletePopupOpen(false);
+                                    setItemToDelete(null);
+                                }}
+                            >
+                                Cancel
+                            </button>
                         </div>
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
                     </div>
