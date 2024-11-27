@@ -135,77 +135,95 @@ function ManageMenu() {
         <div className="create-order-page">
             <h1>Manage Menu</h1>
             <div className="table-container-wrapper">
-                {/* First Table */}
-                <div className="table-container">
-                    <h2>Food Items</h2>
-                    <table className="food-table">
-                        <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Premium</th>
-                                <th>Actions</th>
+            {/* First Table */}
+            <div className="table-container">
+                <h2>Food Items</h2>
+                <table className="food-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Premium</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foodItems.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.item_name}</td>
+                                <td>{item.is_prem !== undefined ? item.is_prem.toString() : 'N/A'}</td>
+                                <td>
+                                    {/* Delete Item Button */}
+                                    <button
+                                        onClick={() => {
+                                            setDeletePopupOpen(true); // Open delete popup
+                                            setItemToDelete(item.item_name); // Store the specific item name
+                                        }}
+                                    >
+                                        Delete Item
+                                    </button>
+
+                                    {/* Change Premium Button */}
+                                    <button
+                                        onClick={() => handleChangePremium(item.item_name)}
+                                    >
+                                        Change Premium
+                                    </button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {foodItems.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.item_name}</td>
-                                    <td>{item.is_prem !== undefined ? item.is_prem.toString() : 'N/A'}</td>
-                                    <td>
-                                        {/* Delete Item Button */}
-                                        <button
-                                            onClick={() => {
-                                                setDeletePopupOpen(true); // Open delete popup
-                                                setItemToDelete(item.item_name); // Store the specific item name
-                                            }}
-                                        >
-                                            Delete Item
-                                        </button>
+                        ))}
+                    </tbody>
+                </table>
 
-                                        {/* Change Premium Button */}
-                                        <button
-                                            onClick={() => handleChangePremium(item.item_name)}
-                                        >
-                                            Change Premium
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
-                    {/* Add Item Button - Global Control */}
-                    <div className="button-group">
-                        <button onClick={() => setIsPopupOpen(true)}>Add Item</button>
-                    </div>
-                </div>
-
-                {/* Second Table */}
-                <div className="table-container">
-                    <h2>Menu Items</h2>
-                    <table className="food-table">
-                        <thead>
-                            <tr>
-                                <th>Item</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {menuItems.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.item_name}</td>
-                                    <td>{item.price || 'N/A'}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <div className="button-group">
-                        <button>Add Item</button>
-                        <button>Change Price</button>
-                        <button>Delete Item</button>
-                    </div>
+                {/* Add Item Button - Global Control */}
+                <div className="button-group">
+                    <button onClick={() => setIsPopupOpen(true)}>Add Item</button>
                 </div>
             </div>
+
+            {/* Second Table (Modified) */}
+            <div className="table-container">
+                <h2>Menu Items</h2>
+                <table className="food-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Price</th>
+                            <th>Actions</th> {/* Added Actions column */}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {menuItems.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.item_name}</td>
+                                <td>{item.price || 'N/A'}</td>
+                                <td>
+                                    {/* Delete Item Button */}
+                                    <button
+                                        onClick={() => {
+                                            setDeletePopupOpen(true); // Open delete popup
+                                            setItemToDelete(item.item_name); // Store the specific item name
+                                        }}
+                                    >
+                                        Delete Item
+                                    </button>
+
+                                    {/* Change Price Button */}
+                                    <button>
+                                        Change Price
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+                {/* Add Item Button - Same as in the left table */}
+                <div className="button-group">
+                    <button>Add Item</button>
+                </div>
+            </div>
+        </div>
+
 
             {/* Popup for Adding Items */}
             {isPopupOpen && (
