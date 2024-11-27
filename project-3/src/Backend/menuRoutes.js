@@ -70,6 +70,37 @@ router.post('/add-entree', async (req, res) => {
     }
 });
 
+router.delete('/delete-item', async (req, res) => {
+    const { item_name } = req.body;
+
+    if (!item_name) {
+        return res.status(400).json({ message: 'Item_name is required' });
+    }
+
+    try {
+        const db = req.app.get('db');
+
+        // Check and delete from `entree`
+        let result = await db.query('DELETE FROM entree WHERE item_name = $1 RETURNING *;', [item_name]);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item deleted from entree', deletedItem: result.rows[0] });
+        }
+
+        // Check and delete from `side`
+        result = await db.query('DELETE FROM side WHERE item_name = $1 RETURNING *;', [item_name]);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item deleted from side', deletedItem: result.rows[0] });
+        }
+
+        // Item not found in either table
+        res.status(404).json({ message: 'Item not found in either table' });
+    } catch (err) {
+        console.error('Error deleting item:', err);
+        res.status(500).json({ message: 'Error deleting item', error: err.message });
+    }
+});
+
+
 
 // Export the function that takes 'connection' as argument
 export default (connection) => {
