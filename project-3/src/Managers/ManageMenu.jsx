@@ -103,9 +103,34 @@ function ManageMenu() {
             setErrorMessage('An unexpected error occurred');
         }
     };
-    
-    
-    
+
+    // Function to handle changing premium status
+    const handleChangePremium = async (itemName) => {
+        try {
+            const response = await fetch('http://localhost:5001/api/change-premium', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item_name: itemName }),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Changed premium status:', result);
+                
+                // Update the foodItems state to reflect the change
+                setFoodItems(foodItems.map((item) =>
+                    item.item_name === itemName ? { ...item, is_prem: !item.is_prem } : item
+                ));
+            } else {
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || 'Failed to change premium status');
+            }
+        } catch (error) {
+            console.error('Error changing premium status:', error);
+            setErrorMessage('An unexpected error occurred');
+        }
+    };
+
     return (
         <div className="create-order-page">
             <h1>Manage Menu</h1>
@@ -139,9 +164,7 @@ function ManageMenu() {
 
                                         {/* Change Premium Button */}
                                         <button
-                                            onClick={() => {
-                                                console.log(`Change premium for ${item.item_name}`);
-                                            }}
+                                            onClick={() => handleChangePremium(item.item_name)}
                                         >
                                             Change Premium
                                         </button>

@@ -100,6 +100,33 @@ router.delete('/delete-item', async (req, res) => {
     }
 });
 
+router.post('/change-premium', async(req, res) => {
+    const {item_name} = req.body;
+    try {
+        const db = req.app.get('db');
+
+        // Check from `entree`
+        let result = await db.query('UPDATE entree SET is_prem = NOT is_prem WHERE item_name = $1 RETURNING *;', [item_name]);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item changed from entree', deletedItem: result.rows[0] });
+        }
+
+        // Check from `side`
+        result = await db.query('UPDATE side SET is_prem = NOT is_prem WHERE item_name = $1 RETURNING *;', [item_name]);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item changed from side', deletedItem: result.rows[0] });
+        }
+
+        // Item not found in either table
+        res.status(404).json({ message: 'Item not found in either table' });
+
+    } catch(err){
+        console.error('Error deleting item:', err);
+        res.status(500).json({ message: 'Error deleting item', error: err.message });
+    }
+
+});
+
 
 
 // Export the function that takes 'connection' as argument
