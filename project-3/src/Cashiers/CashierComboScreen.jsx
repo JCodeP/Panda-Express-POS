@@ -6,6 +6,11 @@ import { useOrder } from "./CashierOrderContext";
 
 import "./CashierHome.css";
 
+/**
+ * @author Kade Lieder
+ * 
+ * Combo screen wherein cashier can select entrees and sides for a combo
+ */
 function CashierComboScreen({ priceModifier }) {
     const { order, setOrder } = useOrder();
     const { entrees, comboOptions, sides } = useMenu();
@@ -19,7 +24,7 @@ function CashierComboScreen({ priceModifier }) {
     const combo = order[comboIndex];
     const maxEntrees = comboOptions.find(option => option.id === comboId)?.maxEntrees || 0;
 
-
+    // Adds item to order; used in duplicateSelectedItem()
     const addItemToOrder = (item) => {
         setOrder((prevOrder) => [...prevOrder, item]);
 
@@ -28,6 +33,7 @@ function CashierComboScreen({ priceModifier }) {
         }
     };
 
+    // Deletes combo when (x) button clicked, navigates back to home
     const deleteItem = (index) => {
         setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
 
@@ -38,15 +44,6 @@ function CashierComboScreen({ priceModifier }) {
         if (index === comboIndex) {
             navigate("/cashiers/home", { state: { order } });
         }
-    };
-
-    const deleteSelectedItem = () => {
-        if (selectedIndex === null) {
-            return;
-        }
-
-        setOrder((prevOrder) => prevOrder.filter((_, index) => index !== selectedIndex));
-        setSelectedIndex(null);
     };
 
     // Duplicates highlighted item in order
@@ -60,6 +57,7 @@ function CashierComboScreen({ priceModifier }) {
         setSelectedIndex(null);
     }
 
+    // Clears order
     const clearOrder = () => {
         setOrder([]);
     };
@@ -76,6 +74,7 @@ function CashierComboScreen({ priceModifier }) {
         navigate("/cashiers/submit", { state: { order } });
     }
 
+    // Navigates back to home screen, checks for valid combo
     const goBack = () => {
 
         if (combo && (combo.side || combo.entrees.length > 0)) {
@@ -100,6 +99,7 @@ function CashierComboScreen({ priceModifier }) {
         combo.entrees = [];
     }
 
+    // Adds 1 side to a combo object
     const addSideToCombo = (side) => {
         if (combo) {
             if (combo.name === "A La Carte") {
@@ -125,6 +125,7 @@ function CashierComboScreen({ priceModifier }) {
         }
     };
 
+    // Adds 1 entree to a combo object
     const addEntreeToCombo = (entree) => {
         if (combo) {
             if (combo.name === "A La Carte") {
@@ -154,6 +155,7 @@ function CashierComboScreen({ priceModifier }) {
         }
     };
 
+    // Clear entrees and sides from combo
     const resetChoices = () => {
         if (combo) {
             const resetCombo = {
@@ -167,16 +169,18 @@ function CashierComboScreen({ priceModifier }) {
         }
     };
 
+    // Removes combo from order and back-navigates
     const removeFromOrder = () => {
         setOrder((prevOrder) => prevOrder.filter((item) => item.id !== comboId));
         navigate("/cashiers/home", { state: { order } });
     }
 
+    // Gets header based on weather discount
     const getDiscountMessage = (priceModifier) => {
         if (priceModifier === 0.9) {
-            return "Current Order - 10% discount active";
+            return "Current Order - 10% discount";
         } else if (priceModifier === 0.95) {
-            return "Current Order - 5% discount active";
+            return "Current Order - 5% discount";
         } else {
             return "Current Order";
         }

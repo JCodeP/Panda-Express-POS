@@ -16,6 +16,7 @@ function CashierNavigator() {
     useEffect(() => {
         console.log("CashierNavigator mounted");
 
+        // Makes API call to weather api and calculates the price modifier
         const fetchAndCalculate = async () => {
             try {
                 const response = await fetch("http://localhost:5001/api/weather");
@@ -40,6 +41,7 @@ function CashierNavigator() {
         fetchAndCalculate();
     }, []);
 
+    // Calculates discount based on weather data
     const calculatePriceModifier = (weather) => {
         const weatherSummary = weather.main.toLowerCase();
         const weatherDescription = weather.description.toLowerCase();
