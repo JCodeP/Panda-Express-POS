@@ -130,6 +130,7 @@ function ManageMenu() {
                 // Close the popup and reset the input
                 setIsPopupOpen(false);
                 setNewItemName('');
+                setNewItemPrice('');
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to add item');
@@ -165,6 +166,7 @@ function ManageMenu() {
                 // Close the popup and reset the input
                 setIsMenuPopupOpen(false);
                 setNewItemName('');
+                setNewItemPrice('');
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to add item');

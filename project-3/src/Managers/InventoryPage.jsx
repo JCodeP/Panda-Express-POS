@@ -22,78 +22,11 @@ import './InventoryPageStyle.css';
 function InventoryPage() {
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-  const data = [
-    { name: 'Item 1', current: 40, max: 100 },
-    { name: 'Item 2', current: 60, max: 100 },
-    { name: 'Item 3', current: 30, max: 100 },
-    { name: 'Item 4', current: 80, max: 100 },
-  
-  ];
 
   const [inventoryData, setData] = useState([]);
-
-  const chartData = {
-    labels: data.map((item) => item.name), // Set the labels (Item names)
-    datasets: [
-      {
-        label: 'Current Quantity',
-        data: data.map((item) => item.current), // Current value for each item
-        backgroundColor: '#82ca9d', // Color for current quantity
-        stack: 'stack1',
-      },
-      {
-        label: 'Max Quantity',
-        data: data.map((item) => item.max - item.current), // Difference between max and current (the rest of the bar)
-        backgroundColor: '#ddd', // Color for remaining portion
-        stack: 'stack1',
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-          font: {
-              size: '17em',
-
-              },
-          },
-      },
-      tooltip: {
-        callbacks: {
-          label: (context) => {
-            const current = context.raw;
-            const max = data[context.dataIndex].max;
-            return `${context.dataset.label}: ${current} / ${max}`;
-          },
-        },
-      },
-    },
-    scales: {
-      x: {
-        stacked: true, // Stack the bars
-        ticks: {
-          font: {
-              size: '15em',
-          },
-        },
-      },
-      y: {
-        stacked: true, // Stack the bars
-        ticks: {
-          font: {
-            size: '20em', // Increase the font size of the Y-axis labels (numbers on the left)
-          },
-        },
-      },
-    },
-  };
   useEffect(() => {
     // Listen for SSE updates when the component mounts
-    const eventSource = new EventSource('http://localhost:5001/api/events'); // URL to the SSE endpoint on the backend
+    const eventSource = new EventSource('http://localhost:5001/api/events/inventory'); // URL to the SSE endpoint on the backend
 
     eventSource.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -109,6 +42,83 @@ function InventoryPage() {
       eventSource.close(); // Clean up when component is unmounted
     };
   }, []);
+
+  const labels = inventoryData && inventoryData.length > 0
+    ? [...new Set(inventoryData.map(row => row.ingredient_name))]
+    : [];
+  console.log(labels);
+  
+  const minimumQuantities = inventoryData && inventoryData.length > 0
+  ? inventoryData.map(row => row.quantity_needed)
+  : []; // Minimum quantities
+  console.log(minimumQuantities);
+  const currentQuantities = inventoryData && inventoryData.length > 0
+  ? inventoryData.map(row => row.quantity)
+  : []; // Current quantities
+  
+
+  // Data for the chart: only one dataset for minimum quantities
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Quantity Needed",
+        data: minimumQuantities,
+        backgroundColor: "rgba(75, 192, 192, 0.3)", // Light color for minimum quantity
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
+        
+      },
+      {
+        label: "Current Quantity",
+        data: currentQuantities,
+        backgroundColor: "rgba(255, 99, 132, 0.8)", // Darker color for current quantity
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 1,
+        
+      },
+    ],
+  };
+
+  // Chart options
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false, // Allow chart to stretch based on container size
+    scales: {
+      x: {
+        ticks: {
+          maxRotation: 90,  // Rotate labels to 90 degrees (or less if necessary)
+          minRotation: 45,  // Ensure they rotate but don't overlap
+          font: {
+            size: 12,  // Smaller font size to fit labels
+          },
+         
+        },
+        grid: {
+          offset: true,
+        },
+        categoryPercentage: 1, // Tighten up the spacing between items
+        stacked: true,
+      },
+      y: {
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+      },
+    },
+    barPercentage: 1,
+    datasets: {
+      barThickness: 0.5, // Controls the thickness of the individual bars (you can adjust this value)
+    },
+  };
+
     const [activePopup, setActivePopup] = useState(null);
     
     
@@ -123,7 +133,7 @@ function InventoryPage() {
 
     const [selectedOption, setSelectedOption] = useState('');
 
-    const nameOptions = [...new Set(data.map((row) => row.name))];
+    
 
     const handleDropdownChange = (event) => {
       setSelectedOption(event.target.value);
@@ -138,7 +148,7 @@ function InventoryPage() {
         <div className="inventory-page-container">
             <h1 className="inventory-header"> Amount of Inventory Needed</h1>
             <div className="inventory-graph">
-                <Bar data={chartData} options={options} />
+                <Bar data={data} options={options} />
             </div>
             <div className="inventory-buttons">
                 <button onClick={() => openPopup('add')}> Add to Order</button>
@@ -155,7 +165,7 @@ function InventoryPage() {
                           Item:
                           <select value={selectedOption} onChange={handleDropdownChange}>
                               <option value="">Select...</option> {/* Placeholder option */}
-                              {nameOptions.map((name, index) => (
+                              {labels.map((name, index) => (
                                   <option key={index} value={name}>
                                       {name}
                                   </option>
@@ -164,7 +174,7 @@ function InventoryPage() {
                       </label>
 
                       <label>
-                          Weekly Hours:
+                          Quantity:
                           <input
                             type="text"
                             value={quantity}
