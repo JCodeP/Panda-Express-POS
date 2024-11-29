@@ -8,7 +8,7 @@ const router = express.Router();
 const inventoryRoutes = (pool) => {
 
     let clients = [];
-    router.get('/events', async (req, res) => {
+    router.get('/events/inventory', async (req, res) => {
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
