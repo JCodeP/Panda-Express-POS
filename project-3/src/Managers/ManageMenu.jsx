@@ -6,10 +6,13 @@ function ManageMenu() {
     const [menuItems, setMenuItems] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false); // For adding items
     const [newItemName, setNewItemName] = useState('');
+    const [newItemPrice, setNewItemPrice] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [itemType, setItemType] = useState('entree');
     const [deletePopupOpen, setDeletePopupOpen] = useState(false); // For delete confirmation
     const [itemToDelete, setItemToDelete] = useState(null); // Store item for deletion
+    const [isMenuPopupOpen, setIsMenuPopupOpen] = useState(false);
+    const [isMenuDeletePopupOpen, setMenuDeletePopupOpen] = useState(false);
 
     useEffect(() => {
         const fetchFoodData = async () => {
@@ -68,6 +71,37 @@ function ManageMenu() {
         }
     };
 
+    const handleMenuDeleteItem = async () => {
+        if (!itemToDelete) {
+            setErrorMessage('No item selected for deletion');
+            return;
+        }
+    
+        try {
+            const response = await fetch('http://localhost:5001/api/delete-item', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item_name: itemToDelete }),
+            });
+    
+            if (response.ok) {
+                const deletedItem = await response.json();
+                console.log('Deleted item:', deletedItem);
+    
+                // Remove deleted item from menuItems state
+                setMenuItems(menuItems.filter((item) => item.item_name !== itemToDelete));
+                setMenuDeletePopupOpen(false); // Close popup
+                setItemToDelete(null);
+            } else {
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || 'Failed to delete item');
+            }
+        } catch (error) {
+            console.error('Error deleting item:', error);
+            setErrorMessage('An unexpected error occurred');
+        }
+    };
+
     const handleAddFoodItem = async () => {
         if (!newItemName.trim()) {
             setErrorMessage('Item name cannot be empty');
@@ -103,6 +137,42 @@ function ManageMenu() {
             setErrorMessage('An unexpected error occurred');
         }
     };
+
+    const handleAddMenuItem = async() => {
+        if (!newItemName.trim() || !newItemPrice.trim()) {
+            setErrorMessage('Item name or price cannot be empty');
+            return;
+        }
+
+        try{
+            const endpoint = itemType === 'appetizer' ? 'http://localhost:5001/api/add-appetizer' : 'http://localhost:5001/api/add-drink';
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item_name: newItemName, price: newItemPrice }),
+            });
+    
+            if (response.ok) {
+                const addedItem = await response.json();
+                console.log('Added item:', addedItem);
+    
+                // Update the foodItems state with the newly added item
+                setMenuItems([...menuItems, addedItem]);
+    
+                // Close the popup and reset the input
+                setIsMenuPopupOpen(false);
+                setNewItemName('');
+            } else {
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || 'Failed to add item');
+            }
+
+        } catch(err){
+            console.error('Error adding item:', error);
+            setErrorMessage('An unexpected error occurred');
+        }
+    }
 
     // Function to handle changing premium status
     const handleChangePremium = async (itemName) => {
@@ -200,7 +270,7 @@ function ManageMenu() {
                                     {/* Delete Item Button */}
                                     <button
                                         onClick={() => {
-                                            setDeletePopupOpen(true); // Open delete popup
+                                            setMenuDeletePopupOpen(true); // Open delete popup
                                             setItemToDelete(item.item_name); // Store the specific item name
                                         }}
                                     >
@@ -219,7 +289,12 @@ function ManageMenu() {
 
                 {/* Add Item Button - Same as in the left table */}
                 <div className="button-group">
-                    <button>Add Item</button>
+                    <button
+                        onClick={()=>{
+                            setIsMenuPopupOpen(true)
+                        }}>
+                        Add Item
+                    </button>
                 </div>
             </div>
         </div>
@@ -252,6 +327,39 @@ function ManageMenu() {
                 </div>
             )}
 
+            {/* Popup for Menu Items */}
+            {isMenuPopupOpen && (
+                <div className="popup">
+                    <div className="popup-content">
+                        <h3>Add New Menu Item</h3>
+                        <input
+                            type="text"
+                            value={newItemName}
+                            onChange={(e) => setNewItemName(e.target.value)}
+                            placeholder="Enter item name"
+                        />
+                        <input
+                            type="text"
+                            value={newItemPrice}
+                            onChange={(e) => setNewItemPrice(e.target.value)}
+                            placeholder="Enter item price"
+                        />
+                        <div>
+                            <label>Select Type: </label>
+                            <select value={itemType} onChange={(e) => setItemType(e.target.value)}>
+                                <option value="appetizer">Appetizer</option>
+                                <option value="drink">Drink</option>
+                            </select>
+                        </div>
+                        <div className="popup-buttons">
+                            <button onClick={() => handleAddMenuItem()}>Submit</button>
+                            <button onClick={() => setIsMenuPopupOpen(false)}>Cancel</button>
+                        </div>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    </div>
+                </div>
+            )}
+
             {/* Popup for Delete Confirmation */}
             {deletePopupOpen && (
                 <div className="popup">
@@ -263,6 +371,28 @@ function ManageMenu() {
                             <button
                                 onClick={() => {
                                     setDeletePopupOpen(false);
+                                    setItemToDelete(null);
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    </div>
+                </div>
+            )}
+
+            {/* Popup for Delete Confirmation */}
+            {isMenuDeletePopupOpen && (
+                <div className="popup">
+                    <div className="popup-content">
+                        <h3>Confirm Delete</h3>
+                        <p>Are you sure you want to delete this item?</p>
+                        <div className="popup-buttons">
+                            <button onClick={handleMenuDeleteItem}>Yes, Delete</button>
+                            <button
+                                onClick={() => {
+                                    setMenuDeletePopupOpen(false);
                                     setItemToDelete(null);
                                 }}
                             >
