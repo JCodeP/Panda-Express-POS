@@ -13,6 +13,8 @@ function ManageMenu() {
     const [itemToDelete, setItemToDelete] = useState(null); // Store item for deletion
     const [isMenuPopupOpen, setIsMenuPopupOpen] = useState(false);
     const [isMenuDeletePopupOpen, setMenuDeletePopupOpen] = useState(false);
+    const [isChangePricePopupOpen, setChangePricePopupOpen] = useState(false);
+    const [itemToChange, setItemToChange] = useState('');
 
     useEffect(() => {
         const fetchFoodData = async () => {
@@ -201,6 +203,40 @@ function ManageMenu() {
         }
     };
 
+    const handleChangePrice = async () => {
+        try {
+            const response = await fetch('http://localhost:5001/api/change-price', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item_name: itemToChange, price: newItemPrice }),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Changed price:', result);
+                
+                // Update the menuItems state to reflect the change
+                setMenuItems((prevMenuItems) =>
+                    prevMenuItems.map((item) =>
+                        item.item_name === itemToChange
+                            ? { ...item, price: newItemPrice }
+                            : item
+                    )
+                );
+
+                setChangePricePopupOpen(false);
+                setItemToChange('');
+                setNewItemPrice('');
+            } else {
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || 'Failed to change price');
+            }
+        } catch (error) {
+            console.error('Error changing price:', error);
+            setErrorMessage('An unexpected error occurred');
+        }
+    };
+
     return (
         <div className="create-order-page">
             <h1>Manage Menu</h1>
@@ -278,7 +314,11 @@ function ManageMenu() {
                                     </button>
 
                                     {/* Change Price Button */}
-                                    <button>
+                                    <button
+                                        onClick={()=>{
+                                            setChangePricePopupOpen(true);
+                                            setItemToChange(item.item_name);
+                                        }}>
                                         Change Price
                                     </button>
                                 </td>
@@ -393,6 +433,33 @@ function ManageMenu() {
                             <button
                                 onClick={() => {
                                     setMenuDeletePopupOpen(false);
+                                    setItemToDelete(null);
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    </div>
+                </div>
+            )}
+
+            {/* Popup for Changing Price */}
+            {isChangePricePopupOpen && (
+                <div className="popup">
+                    <div className="popup-content">
+                        <h3>Change Price</h3>
+                        <input
+                            type="text"
+                            value={newItemPrice}
+                            onChange={(e) => setNewItemPrice(e.target.value)}
+                            placeholder="Enter item price"
+                        />
+                        <div className="popup-buttons">
+                            <button onClick={handleChangePrice}>Submit</button>
+                            <button
+                                onClick={() => {
+                                    setChangePricePopupOpen(false);
                                     setItemToDelete(null);
                                 }}
                             >

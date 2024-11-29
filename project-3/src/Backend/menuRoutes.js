@@ -182,10 +182,33 @@ router.post('/change-premium', async(req, res) => {
         res.status(404).json({ message: 'Item not found in either table' });
 
     } catch(err){
-        console.error('Error deleting item:', err);
-        res.status(500).json({ message: 'Error deleting item', error: err.message });
+        console.error('Error changing premium:', err);
+        res.status(500).json({ message: 'Error changing premium', error: err.message });
     }
 
+});
+
+router.post('/change-price', async(req, res) => {
+    const{item_name, price} = req.body;
+    const values = [item_name, price];
+    try{
+        const db = req.app.get('db');
+        let result = await db.query('UPDATE drink SET price = $2 WHERE item_name = $1 RETURNING *;', values);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item changed from drink', deletedItem: result.rows[0] });
+        }
+
+        result = await db.query('UPDATE appetizer SET price = $2 WHERE item_name = $1 RETURNING *;', values);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item changed from appetizer', deletedItem: result.rows[0] });
+        }
+
+        res.status(404).json({ message: 'Item not found in either table' });
+
+    } catch(err){
+        console.error('Error changing price:', err);
+        res.status(500).json({ message: 'Error changing price', error: err.message });
+    }
 });
 
 
