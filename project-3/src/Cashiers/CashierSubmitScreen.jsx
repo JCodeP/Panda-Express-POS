@@ -6,18 +6,25 @@ import { useOrder } from "./CashierOrderContext";
 
 import "./CashierHome.css";
 
+/**
+ * @author Kade Lieder
+ * 
+ * Payment screen wherein the cashier can view the current order and select a payment method 
+ */
 function CashierSubmitScreen({ priceModifier }) {
     const location = useLocation();
     const navigate = useNavigate();
     const { order, setOrder } = useOrder();
     const [selectedIndex, setSelectedIndex] = useState(null);
 
+    // Calculates the total price of the order
     const getTotalPrice = useMemo(() => {
         const total = order.reduce((total, item) => total + item.price, 0);
 
         return (total * (priceModifier || 1)).toFixed(2);
     }, [order, priceModifier]);
 
+    // Deletes item when (x) button clicked
     const deleteItem = (index) => {
         setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
         if (index === selectedIndex) {
@@ -25,6 +32,7 @@ function CashierSubmitScreen({ priceModifier }) {
         }
     };
 
+    // Adds an item to the order; used by duplicateSelectedItem()
     const addItemToOrder = (item) => {
         if (item.category === "Combos") {
             addComboToOrder(item);
@@ -33,6 +41,7 @@ function CashierSubmitScreen({ priceModifier }) {
         }
     };
 
+    // Duplicates an item highlighted
     const duplicateSelectedItem = () => {
         if (selectedIndex === null) {
             return;
@@ -53,10 +62,12 @@ function CashierSubmitScreen({ priceModifier }) {
         setSelectedIndex(null);
     }
 
+    // Clears the order
     const clearOrder = () => {
         setOrder([]);
     };
 
+    // Exits the payment screen to adjust order
     const goBack = () => {
         navigate("/cashiers/home", { state: order });
     }

@@ -4,16 +4,17 @@ import {useNavigate} from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 
-function Orders() {
+function Orders( {order, setOrder} ) {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const [order, setOrder] = useState([
+    /*const [order, setOrder] = useState([
         //Temp values
         { name: 'Combo Meal', price: 9.99 },
         { name: 'Appetizer', price: 4.50 },
-        { name: 'Drink', price: 1.99 }
-    ]);
+        { name: 'Drink', price: 1.99 },
+        { name: 'Drink', price: 2.99 }
+    ]);*/
 
     //Deletes item from list
     const deleteItem = (index) => {
@@ -52,7 +53,7 @@ function Orders() {
                             X
                         </button>
                         <span className="item-name">{item.name}</span>
-                        <span className="item-price">${item.price.toFixed(2)}</span>
+                        {item.price > 0 && <span className="item-price">${item.price.toFixed(2)}</span>}
                     </li>
                 ))}
             </ul>

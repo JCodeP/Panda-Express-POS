@@ -6,6 +6,7 @@ import HistoryGraphs from './HistoryGraphs';
 import InventoryPage from './InventoryPage';
 import CreateOrderPage from './CreateOrderPage';
 import ManageMenu from './ManageMenu'
+import {OrderProvider} from './OrderContext';
 
 function ManagerHome() {
     return (
@@ -15,8 +16,14 @@ function ManagerHome() {
                 <Route path="/" element={<ManagerNavBar/>}/>
                 <Route path="employeepage" element={<EmployeePage />} />
                 <Route path="historygraphs" element={<HistoryGraphs />} />
-                <Route path="inventorypage" element={<InventoryPage />} />
-                <Route path="createorderpage" element={<CreateOrderPage />} />
+                <Route path="inventorypage" element={
+                    <OrderProvider>
+                        <InventoryPage/>
+                    </OrderProvider>} />
+                <Route path="createorderpage" element={
+                    <OrderProvider>
+                        <CreateOrderPage />
+                    </OrderProvider>} />
                 <Route path="managemenu" element={<ManageMenu/>}/>
             </Routes>
             
