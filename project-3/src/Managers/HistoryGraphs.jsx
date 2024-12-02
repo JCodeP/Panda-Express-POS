@@ -7,16 +7,24 @@ import './HistoryGraphs.css';
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 function HistoryGraphs() {
-    // State to store fetched data
+    // State to store chart data
     const [chartData, setChartData] = useState(null);
 
-    // Fetch data from the backend when the component mounts
+    // State to store start and end date-time
+    const [startDateTime, setStartDateTime] = useState('2024-01-01T00:00');
+    const [endDateTime, setEndDateTime] = useState('2024-12-31T23:59');
+
+    // Fetch initial data when component mounts
     useEffect(() => {
         fetch('http://localhost:5001/get-sales-data', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify({
+                startDateTime: '2024-01-01T00:00', // No filtering by default
+                endDateTime: '2024-12-31T23:59',
+            }),
         })
             .then((response) => {
                 if (!response.ok) {
@@ -26,7 +34,7 @@ function HistoryGraphs() {
             })
             .then((data) => {
                 const formattedData = {
-                    labels: data.map((item) => item.food_name),  // Ensure you're using the correct key
+                    labels: data.map((item) => item.food_name),
                     datasets: [
                         {
                             label: 'Amount Sold',
@@ -44,6 +52,45 @@ function HistoryGraphs() {
             });
     }, []);
 
+    // Handle submit button to fetch filtered data
+    const handleSubmit = () => {
+        fetch('http://localhost:5001/get-sales-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                startDateTime,
+                endDateTime,
+            }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                const formattedData = {
+                    labels: data.map((item) => item.food_name),
+                    datasets: [
+                        {
+                            label: 'Amount Sold',
+                            data: data.map((item) => item.amount_sold),
+                            backgroundColor: 'black',
+                            borderColor: 'black',
+                            borderWidth: 1,
+                        },
+                    ],
+                };
+                setChartData(formattedData);
+            })
+            .catch((error) => {
+                console.error('Error fetching filtered data:', error);
+            });
+    };
+
+    // Chart options
     const options = {
         responsive: true,
         plugins: {
@@ -83,6 +130,9 @@ function HistoryGraphs() {
                     },
                 },
                 ticks: {
+                    autoSkip: false, // Ensure all labels are displayed
+                    maxRotation: 45, // Rotate labels to fit better
+                    minRotation: 0,  // Minimum rotation angle
                     font: {
                         size: Math.max(10, 1.4 * (window.innerWidth / 100)),
                         weight: 'bold',
@@ -92,15 +142,16 @@ function HistoryGraphs() {
             },
         },
     };
+    
 
     return (
         <div className="history-graphs-container">
             <h1 className="history-graphs-title">Items Sold in Time Period</h1>
-            
+
             {/* Display the bar chart */}
             {chartData ? <Bar data={chartData} options={options} /> : <p>Loading...</p>}
 
-            {/* Buttons (non-functional for now) */}
+            {/* Input boxes and submit button */}
             <div className="input-boxes">
                 <div className="input-box-container">
                     <label htmlFor="datetime1" className="input-label">Select Start Date and Time</label>
@@ -108,7 +159,8 @@ function HistoryGraphs() {
                         id="datetime1"
                         type="datetime-local"
                         className="input-box"
-                        placeholder="Enter Date and Time 1"
+                        value={startDateTime}
+                        onChange={(e) => setStartDateTime(e.target.value)}
                     />
                 </div>
                 <div className="input-box-container">
@@ -117,9 +169,14 @@ function HistoryGraphs() {
                         id="datetime2"
                         type="datetime-local"
                         className="input-box"
-                        placeholder="Enter Date and Time 2"
+                        value={endDateTime}
+                        onChange={(e) => setEndDateTime(e.target.value)}
                     />
                 </div>
+            </div>
+
+            <div className="submit-button-container">
+                <button onClick={handleSubmit} className="submit-button">Submit</button>
             </div>
         </div>
     );

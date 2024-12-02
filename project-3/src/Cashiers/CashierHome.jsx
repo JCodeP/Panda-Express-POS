@@ -4,8 +4,6 @@ import { Routes, useNavigate } from 'react-router-dom';
 import { useMenu } from "../MenuContext";
 import { useOrder } from "./CashierOrderContext";
 
-import CashierComboScreen from "./CashierComboScreen";
-
 import "./CashierHome.css";
 
 /**
@@ -29,21 +27,12 @@ function CashierHome({ priceModifier }) {
         }
     };
 
+    // Deletes item when (x) button clicked
     const deleteItem = (index) => {
         setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
         if (index === selectedIndex) {
             setSelectedIndex(null);
         }
-    };
-
-    // Deletes highlighted item from order
-    const deleteSelectedItem = () => {
-        if (selectedIndex === null) {
-            return;
-        }
-
-        setOrder((prevOrder) => prevOrder.filter((_, index) => index !== selectedIndex));
-        setSelectedIndex(null);
     };
 
     // Duplicates highlighted item in order
@@ -67,6 +56,7 @@ function CashierHome({ priceModifier }) {
         setSelectedIndex(null);
     }
 
+    // Clears order list
     const clearOrder = () => {
         setOrder([]);
     };
@@ -92,6 +82,7 @@ function CashierHome({ priceModifier }) {
         navigate("/cashiers/submit", { state: { order } });
     }
 
+    // Adds combo (bowl, plate, etc) and switches to combo screen
     const addComboToOrder = (combo) => {
         const comboWithEntrees = { ...combo, side: null, entrees: [] };
         setOrder((prevOrder) => [...prevOrder, comboWithEntrees])
@@ -99,13 +90,14 @@ function CashierHome({ priceModifier }) {
         navigate("/cashiers/combos", { state: { order, comboId: combo.id } });
     };
 
+    // Returns header at top of order list
     const getDiscountMessage = (priceModifier) => {
         if (priceModifier === 0.9) {
-            return "Current Order - 10% discount active";
+            return "Current Order - 10% discount";
         } else if (priceModifier === 0.95) {
-            return "Current Order - 5% discount active";
+            return "Current Order - 5% discount";
         } else {
-            return "Current Order";
+            return "Current Order - No discount";
         }
     };
 

@@ -53,7 +53,6 @@ function Combos({addItems}) {
         setSelectedSide(null);
         setSelectedEntrees([]);
         setEntreeQuantities({});
-        setSideQuantities({});
     };
     const chooseEntree = () => {
         setShowEntrees(true);
@@ -89,6 +88,21 @@ function Combos({addItems}) {
         delete updatedQuantities[id];
         setEntreeQuantities(updatedQuantities);
     };
+
+    const placeOrder = () => {
+        const newOrderItems = [{name: currentCombo.name, price: currentCombo.price }];
+        if (selectedSide) {
+            newOrderItems.push({name: selectedSide.name, price: 0}); 
+        }
+        selectedEntrees.forEach((entree) => {const quantity = entreeQuantities[entree.id] || 1;
+            for (let i = 0; i < quantity; i++) {
+                newOrderItems.push({name: entree.name, price: 0}); 
+            }
+        });
+        addItems(newOrderItems);
+        cancelCombo();
+    };
+    
 
     return(
         <>
@@ -148,6 +162,11 @@ function Combos({addItems}) {
                                 </button>
                             ))
                         )}
+                    </div>
+                    <div className="place-order-container">
+                        <button className="item-nav-button" onClick={placeOrder}>
+                            Place Order
+                        </button>
                     </div>
                 </div>
             )}

@@ -1,12 +1,12 @@
-1,Beijing Beef,FALSE
-2,Broccoli Beef,FALSE
-3,Black Pepper Angus Steak,TRUE
-4,Black Pepper Chicken,FALSE
-5,Grilled Teriyaki Chicken,FALSE
-6,Honey Sesame Chicken Breast,FALSE
-7,Kung Pao Chicken,FALSE
-8,Mushroom Chicken,FALSE
-9,Orange Chicken,FALSE
-10,Sweet Fire Chicken Breast,FALSE
-11,String Bean Chicken Breast,FALSE
-12,Honey Walnut Shrimp,TRUE
+1,Beijing Beef,FALSE,"""https://i.imgur.com/nGs4uXa.png"""
+2,Broccoli Beef,FALSE,"""https://i.imgur.com/4ZwloQc.png"""
+3,Black Pepper Angus Steak,TRUE,"""https://i.imgur.com/x1dPPWf.png"""
+4,Black Pepper Chicken,FALSE,"""https://i.imgur.com/K1iPAOl.png"""
+5,Grilled Teriyaki Chicken,FALSE,"""https://i.imgur.com/zEPSr9C.png"""
+6,Honey Sesame Chicken Breast,FALSE,"""https://i.imgur.com/p8OLsll.png"""
+7,Kung Pao Chicken,FALSE,"""https://i.imgur.com/lcBELCI.png"""
+8,Mushroom Chicken,FALSE,"""https://i.imgur.com/kHSVkTe.png"""
+9,Orange Chicken,FALSE,"""https://i.imgur.com/6iVwEfs.png"""
+10,Sweet Fire Chicken Breast,FALSE,"""https://i.imgur.com/qQPCCeW.jpeg"""
+11,String Bean Chicken Breast,FALSE,"""https://i.imgur.com/YxcPkcd.jpeg"""
+12,Honey Walnut Shrimp,TRUE,"""https://i.imgur.com/9zZIa3I.png"""

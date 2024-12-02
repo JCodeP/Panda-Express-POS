@@ -35,6 +35,7 @@
     background-color: white;
     flex-shrink: 0;
     margin-left: 10%;
+    color: #1a1a1a;
 
     
 }
@@ -44,6 +45,7 @@
     position: sticky; /* Make header sticky */
     top: 0; /* Stick to the top */
     z-index: 1;
+    color: #1a1a1a;
     
 }
   
@@ -62,7 +64,7 @@
     display: flex; /* Flex layout for rows */
 }
   
-tbody tr:hover {
+.table-row-two:hover {
     background-color: #f1f1f1; /* Highlight row on hover */
 }
 
