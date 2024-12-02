@@ -378,6 +378,7 @@
 }
 
 .payment-types button {
+    color: #007bff;
     width: 80px;
     height: 60px;
     background-color: white;
