@@ -59,7 +59,7 @@
     color: #1a1a1a;
 }
   
-tbody tr:hover {
+.table-row:hover {
     background-color: #f1f1f1; /* Highlight row on hover */
 }
 
@@ -116,6 +116,7 @@ tbody tr:hover {
 .popupHeader {
     display: flex;
     color: #1a1a1a;
+    
    
 
 }

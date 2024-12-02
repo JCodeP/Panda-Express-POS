@@ -17,18 +17,7 @@ function EmployeePage() {
     };
 
 
-    const sampleData = [
-        { id: 1, name: 'Alice', age: 25, occupation: 'Engineer' },
-        { id: 2, name: 'Bob', age: 30, occupation: 'Designer' },
-        { id: 3, name: 'Charlie', age: 35, occupation: 'Teacher' },
-        { id: 4, name: 'David', age: 40, occupation: 'Manager' },
-        { id: 5, name: 'Eve', age: 22, occupation: 'Intern' },
-        { id: 6, name: 'Frank', age: 28, occupation: 'Developer' },
-        { id: 7, name: 'Grace', age: 32, occupation: 'Analyst' },
-        { id: 8, name: 'Hannah', age: 29, occupation: 'Marketing' },
-        { id: 9, name: 'Ivy', age: 31, occupation: 'Sales' },
-        { id: 10, name: 'Jack', age: 26, occupation: 'Support' },
-    ];
+    
     
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
