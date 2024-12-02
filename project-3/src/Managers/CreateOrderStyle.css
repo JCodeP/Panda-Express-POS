@@ -64,7 +64,7 @@
     display: flex; /* Flex layout for rows */
 }
   
-tbody tr:hover {
+.table-row-two:hover {
     background-color: #f1f1f1; /* Highlight row on hover */
 }
 

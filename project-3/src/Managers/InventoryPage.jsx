@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
+import { OrderContext } from './OrderContext';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -24,8 +25,12 @@ function InventoryPage() {
 
 
   const [inventoryData, setData] = useState([]);
+  const {orderData} = useContext(OrderContext);
+  const {addRow} = useContext(OrderContext);
+  const {deleteRow} = useContext(OrderContext);
   useEffect(() => {
     // Listen for SSE updates when the component mounts
+
     const eventSource = new EventSource('http://localhost:5001/api/events/inventory'); // URL to the SSE endpoint on the backend
 
     eventSource.onmessage = (event) => {
@@ -41,6 +46,7 @@ function InventoryPage() {
     return () => {
       eventSource.close(); // Clean up when component is unmounted
     };
+
   }, []);
 
   const labels = inventoryData && inventoryData.length > 0
@@ -144,6 +150,38 @@ function InventoryPage() {
     const handleQuantityChange = (event) => {
       setQuantity(event.target.value);
     };
+
+    function getUnitCost(name) {
+      const row = inventoryData.find(ingredient => ingredient.ingredient_name === name);
+
+
+      return row ? row.unit_cost : null;
+    }
+
+    const getTotalCost = () => {
+      return orderData.reduce((sum, row) => sum  + row.cost, 0);
+    };
+
+    
+
+    const handleSubmit = () => {
+      const cost = getUnitCost(selectedOption) * quantity;
+      addRow({name: selectedOption, quantity, cost});
+      setQuantity('');
+      setSelectedOption('');
+      
+
+
+
+      closePopup();
+
+    };
+
+    const handleOrderSubmit = () => {
+      closePopup();
+    };
+
+
     return (
         <div className="inventory-page-container">
             <h1 className="inventory-header"> Amount of Inventory Needed</h1>
@@ -151,13 +189,13 @@ function InventoryPage() {
                 <Bar data={data} options={options} />
             </div>
             <div className="inventory-buttons">
-                <button onClick={() => openPopup('add')}> Add to Order</button>
+                <button className="inventoryButton"onClick={() => openPopup('add')}> Add to Order</button>
                 {activePopup == 'add'  && (
                   <div className="popUp">
                   <div className="popupContent">
-                      <div className="popupHeader">
+                      <div className="inventoryPopupHeader">
                           <h2>Select an item and quantity</h2>
-                          <button className="x" onClick={closePopup}>&times;</button>
+                          <button className="inventoryX" onClick={closePopup}>&times;</button>
 
 
                       </div>
@@ -182,6 +220,8 @@ function InventoryPage() {
                           />
                       </label>
 
+                      <button className="addSubmit" onClick={handleSubmit}>Submit</button>
+
 
                   </div>
 
@@ -191,7 +231,64 @@ function InventoryPage() {
                 
                 
               )}
-                <button> View Order</button>
+                <button className="inventoryButton"onClick={() => openPopup('view')}> View Order</button>
+                {activePopup == 'view' && (
+                  
+                  <div className="popUp"> 
+                    <div className="viewPopupContent">
+                      <div className="viewPopupHeader">
+                          
+                          <button className="viewX" onClick={closePopup}>&times;</button>
+                      </div>
+                      <div className="orderTableContainer">
+                        <div className="orderTable-header">
+                        <div className="orderTable-cell">Item</div>
+                        <div className="orderTable-cell">Quantity</div>
+                        <div className="orderTable-cell">Cost</div>
+                        <div className="orderTable-cell">Edit Quantity</div>
+                        <div className="orderTable-cell">Delete</div>
+                        
+                        </div>
+                        <div className="orderTable-body">
+                          {orderData.length === 0 ? (
+                            <div className="orderTable-row">
+                            <div className="orderTable-cell" colSpan="3">No data available</div>
+                            </div>
+                          ) : (
+                            orderData.map((row) => (
+                              <div className="orderTable-row" key={row.name}>
+                              <div className="orderTable-cell">{row.name}</div>
+                              <div className="orderTable-cell">{row.quantity}</div>
+                              <div className="orderTable-cell">{row.cost}</div>
+                              <div className="orderTable-cell">
+                                  <button className="editButton">Edit</button>
+                                </div>
+                              <div className="orderTable-cell">
+                                  <button className="deleteButtonInv" onClick={() => deleteRow(row.name)}>Delete</button>
+                                </div>  
+                  
+                              
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                      <button className="orderSubmit" onClick={handleOrderSubmit}>Submit: {getTotalCost()}$</button>
+
+                      
+
+
+                    </div>
+
+                  
+                  
+                  
+                  
+                  
+                  </div>
+                  
+  
+                )}
             </div>
 
         </div>
