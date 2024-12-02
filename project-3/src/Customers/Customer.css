@@ -1,6 +1,6 @@
 .ellipse {
-    width: 30vw;
-    height: 25vh;
+    width: 50vw;
+    height: 45vh;
     background-color: white;
     border-radius: 50%;
     /* border: 1vh; */
@@ -130,7 +130,7 @@
 
 .combo-box {
     width: 50vw;
-    height: 80vh;
+    height: 85vh;
     background-color: white;
     border-radius: 30px;
 
@@ -178,7 +178,7 @@
 
 .item-box {
     width: 50vw;
-    height: 80vh;
+    height: 85vh;
     background-color: white;
     border-radius: 30px;
 
@@ -328,4 +328,85 @@
 .quantity-button .quantity-counter {
     font-size: 16px;
     padding: 0 10px;
+}
+
+.payment-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 20px;
+}
+
+.payment-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    gap: 15px;
+    height: 60vh;
+}
+
+.payment-info h1 {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #333333;
+    margin: 0;
+}
+
+.payment-info p {
+    font-size: 1.5em;
+    font-weight: 500;
+    color: #444444;
+    margin: 10px 0;
+}
+
+.payment-types {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.payment-types button {
+    width: 80px;
+    height: 60px;
+    background-color: white;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.payment-types button.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.complete-payment-button {
+    width: 200px;
+    height: 70px;
+    background-color: forestgreen;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.complete-payment-button:hover {
+    background-color: darkgreen;
 }
