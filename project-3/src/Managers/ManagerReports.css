@@ -1,0 +1,80 @@
+.manager-reports {
+    font-family: Arial, sans-serif;
+    margin: 2vh;
+    padding: 2vh;
+    border: 0.1vw solid #ccc;
+    border-radius: 0.5vw;
+    max-width: 60vw;
+    background-color: #f9f9f9;
+    color: black; /* Ensures all text is black */
+  }
+  
+  .manager-reports h1 {
+    font-size: 3vh;
+    margin-bottom: 2vh;
+    text-align: center;
+    color: black; /* Explicitly setting text to black */
+  }
+  
+  .report-form {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    margin-bottom: 2vh;
+  }
+  
+  .report-form label {
+    font-weight: bold;
+    color: black; /* Explicitly setting text to black */
+  }
+  
+  .report-form input {
+    padding: 0.5vh;
+    border: 0.1vw solid #ccc;
+    border-radius: 0.5vw;
+    color: black;
+  }
+  
+  .report-form button {
+    padding: 1vh 2vw;
+    background-color: #00ff0d;
+    color: black; /* Ensures button text is black */
+    border: none;
+    border-radius: 0.5vw;
+    cursor: pointer;
+  }
+  
+  .report-form button:hover {
+    background-color: #0b8600;
+  }
+  
+  .report-summary {
+    background-color: #fff;
+    padding: 2vh;
+    border: 0.1vw solid #ddd;
+    border-radius: 0.5vw;
+    color: black; /* Ensures all text in the report summary is black */
+  }
+  
+  .report-summary h2 {
+    font-size: 2.5vh;
+    margin-bottom: 1vh;
+    text-align: center;
+    color: black; /* Explicitly setting text to black */
+  }
+  
+  .report-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1vh;
+  }
+  
+  .report-item span:first-child {
+    font-weight: bold;
+    color: black; /* Ensures labels are black */
+  }
+  
+  .report-item span:last-child {
+    color: black; /* Ensures data values are black */
+  }
+  
