@@ -131,6 +131,9 @@ function Combos({addItems}) {
                         <button className = "item-nav-button" onClick = {chooseEntree}>
                             Entrees
                         </button>
+                        <button className="item-nav-button" onClick={placeOrder}>
+                            Place Order
+                        </button>
                         <button className = "item-nav-button" onClick = {cancelCombo}>
                             Cancel
                         </button>
@@ -162,11 +165,6 @@ function Combos({addItems}) {
                                 </button>
                             ))
                         )}
-                    </div>
-                    <div className="place-order-container">
-                        <button className="item-nav-button" onClick={placeOrder}>
-                            Place Order
-                        </button>
                     </div>
                 </div>
             )}

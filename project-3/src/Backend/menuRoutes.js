@@ -70,6 +70,56 @@ router.post('/add-entree', async (req, res) => {
     }
 });
 
+router.post('/add-drink', async (req, res) => {
+    const query = `
+        INSERT INTO drink (drink_id, item_name, price)
+        SELECT COALESCE(MAX(drink_id), 0) + 1, $1, $2
+        FROM drink
+        RETURNING *;
+    `;
+
+    const { item_name, price } = req.body; // Destructure item_name from the request body
+
+    if (!item_name || !price) {
+        return res.status(400).json({ message: 'Please fill out all required fields' }); // Handle missing item_name
+    }
+
+    const value = [item_name, price];
+
+    try {
+        const result = await req.app.get('db').query(query, value);
+        res.status(200).json(result.rows[0]); // Return the newly added row
+    } catch (err) {
+        console.error('Database query error:', err);
+        res.status(500).json({ message: 'Error adding drink', error: err.message });
+    }
+});
+
+router.post('/add-appetizer', async (req, res) => {
+    const query = `
+        INSERT INTO appetizer (appetizer_id, item_name, price)
+        SELECT COALESCE(MAX(appetizer_id), 0) + 1, $1, $2
+        FROM appetizer
+        RETURNING *;
+    `;
+
+    const { item_name, price } = req.body; // Destructure item_name from the request body
+
+    if (!item_name || !price) {
+        return res.status(400).json({ message: 'Please fill out all required fields' }); // Handle missing item_name
+    }
+
+    const value = [item_name, price];
+
+    try {
+        const result = await req.app.get('db').query(query, value);
+        res.status(200).json(result.rows[0]); // Return the newly added row
+    } catch (err) {
+        console.error('Database query error:', err);
+        res.status(500).json({ message: 'Error adding appetizer', error: err.message });
+    }
+});
+
 router.delete('/delete-item', async (req, res) => {
     const { item_name } = req.body;
 
@@ -92,11 +142,72 @@ router.delete('/delete-item', async (req, res) => {
             return res.status(200).json({ message: 'Item deleted from side', deletedItem: result.rows[0] });
         }
 
+        result = await db.query('DELETE FROM drink WHERE item_name = $1 RETURNING *;', [item_name]);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item deleted from drink', deletedItem: result.rows[0] });
+        }
+
+        result = await db.query('DELETE FROM appetizer WHERE item_name = $1 RETURNING *;', [item_name]);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item deleted from appetizer', deletedItem: result.rows[0] });
+        }
+
+
         // Item not found in either table
         res.status(404).json({ message: 'Item not found in either table' });
     } catch (err) {
         console.error('Error deleting item:', err);
         res.status(500).json({ message: 'Error deleting item', error: err.message });
+    }
+});
+
+router.post('/change-premium', async(req, res) => {
+    const {item_name} = req.body;
+    try {
+        const db = req.app.get('db');
+
+        // Check from `entree`
+        let result = await db.query('UPDATE entree SET is_prem = NOT is_prem WHERE item_name = $1 RETURNING *;', [item_name]);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item changed from entree', deletedItem: result.rows[0] });
+        }
+
+        // Check from `side`
+        result = await db.query('UPDATE side SET is_prem = NOT is_prem WHERE item_name = $1 RETURNING *;', [item_name]);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item changed from side', deletedItem: result.rows[0] });
+        }
+
+        // Item not found in either table
+        res.status(404).json({ message: 'Item not found in either table' });
+
+    } catch(err){
+        console.error('Error changing premium:', err);
+        res.status(500).json({ message: 'Error changing premium', error: err.message });
+    }
+
+});
+
+router.post('/change-price', async(req, res) => {
+    const{item_name, price} = req.body;
+    const values = [item_name, price];
+    try{
+        const db = req.app.get('db');
+        let result = await db.query('UPDATE drink SET price = $2 WHERE item_name = $1 RETURNING *;', values);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item changed from drink', deletedItem: result.rows[0] });
+        }
+
+        result = await db.query('UPDATE appetizer SET price = $2 WHERE item_name = $1 RETURNING *;', values);
+        if (result.rowCount > 0) {
+            return res.status(200).json({ message: 'Item changed from appetizer', deletedItem: result.rows[0] });
+        }
+
+        res.status(404).json({ message: 'Item not found in either table' });
+
+    } catch(err){
+        console.error('Error changing price:', err);
+        res.status(500).json({ message: 'Error changing price', error: err.message });
     }
 });
 
