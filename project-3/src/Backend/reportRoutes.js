@@ -3,9 +3,11 @@ import express from 'express';
 // Create the router
 const router = express.Router();
 
+
 router.get('/get-total-sales', async(req,res) => {
-    const query = 'SELECT SUM(payment_amount) FROM orders WHERE DATE(curr_time) = $1';
-    const {date} = req.body;
+    
+    const query = 'SELECT SUM(payment_amount) AS total_sales FROM orders WHERE DATE(curr_time) = $1';
+    const {date} = req.query;
     try{
         const result = await req.app.get('db').query(query, [date]);
         const totalSales = result.rows[0]?.total_sales || 0; // Safely extract the sum or default to 0

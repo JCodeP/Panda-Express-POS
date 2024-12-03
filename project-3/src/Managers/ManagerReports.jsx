@@ -24,30 +24,28 @@ function ManagerReports() {
     setError(null);   // Clear any previous errors
 
     try {
-      const response = await fetch('http://localhost:5001/api/get-total-sales', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ date }),
+      // Modify the fetch to use GET method
+      const response = await fetch(`http://localhost:5001/api/get-total-sales?date=${encodeURIComponent(date)}`, {
+        method: 'GET',  // Change to GET request
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       const data = await response.json();
+
       setReportData((prev) => ({
         ...prev,
-        totalSales: `$${data.totalSales}`, // Update only the totalSales field
+        totalSales: `$${parseFloat(data.totalSales.toFixed(2))}`, // Update only the totalSales field
       }));
+      console.log('Made it to the end');
     } catch (err) {
       console.error('Error fetching report data:', err);
       setError('Failed to fetch the report. Please try again later.');
     } finally {
       setLoading(false); // Reset loading state
     }
-  };
+};
 
   return (
     <div className="manager-reports">
