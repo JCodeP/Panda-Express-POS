@@ -26,9 +26,26 @@ export const OrderProvider = ({ children }) => {
         const updatedOrder = orderData.filter(row => row.name !== name);
         setOrderData(updatedOrder);
     };
+
+    const editRow = (index, colName, value) => {
+      setOrderData((prevData) => 
+        prevData.map((row, i) => 
+          i === index ? {...row, [colName]: value} : row
+        )
+    
+      );
+    };
+
+    const updateRowCost = (index, updatedCost) => {
+      setOrderData((prevData) => 
+        prevData.map((row, i) =>
+          i === index ? {...row, cost: updatedCost} : row
+        )
+      );
+    };
   
     return (
-      <OrderContext.Provider value={{ orderData, addRow, deleteRow }}>
+      <OrderContext.Provider value={{ orderData, addRow, deleteRow, editRow, updateRowCost }}>
         {children}
       </OrderContext.Provider>
     );
