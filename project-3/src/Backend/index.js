@@ -8,6 +8,7 @@ import itemRoutes from './itemRoutes.js';
 import inventoryRoutes from './inventoryRoutes.js';
 import menuRoutes from './menuRoutes.js';
 import orderRoutes from './orderRoutes.js'; 
+import reportRoutes from './reportRoutes.js';
 
 import { fetchWeather } from './APIs/Weather.js';
 
@@ -36,6 +37,7 @@ app.use('/api', menuRoutes(connection));
 app.use(itemRoutes(connection));
 app.use('/api', inventoryRoutes(connection));
 app.use('/api', orderRoutes(connection));
+app.use('/api', reportRoutes(connection));
 
 
 
