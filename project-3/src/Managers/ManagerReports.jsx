@@ -7,7 +7,7 @@ function ManagerReports() {
   const [reportData, setReportData] = useState({
     totalSales: '$0',
     creditSales: '$0', // Placeholder for future extension
-    cardSales: '$0',   // Placeholder for future extension
+    cashSales: '$0',   // Placeholder for future extension
     giftCardSales: '$0', // Placeholder for future extension
     totalOrders: 0,    // Placeholder for future extension
   });
@@ -37,8 +37,11 @@ function ManagerReports() {
       setReportData((prev) => ({
         ...prev,
         totalSales: `$${parseFloat(data.totalSales.toFixed(2))}`, // Update only the totalSales field
+        creditSales: `$${parseFloat(data.creditSales.toFixed(2))}`,
+        cashSales: `$${parseFloat(data.cashSales.toFixed(2))}`,
+        giftCardSales: `$${parseFloat(data.giftCardSales.toFixed(2))}`,
+        totalOrders: `${data.totalOrders}`
       }));
-      console.log('Made it to the end');
     } catch (err) {
       console.error('Error fetching report data:', err);
       setError('Failed to fetch the report. Please try again later.');
@@ -74,7 +77,7 @@ function ManagerReports() {
           <span>Sales Paid with Credit:</span> <span>{reportData.creditSales}</span>
         </div>
         <div className="report-item">
-          <span>Sales Paid with Card:</span> <span>{reportData.cardSales}</span>
+          <span>Sales Paid with Cash:</span> <span>{reportData.cashSales}</span>
         </div>
         <div className="report-item">
           <span>Sales Paid with Gift Card:</span> <span>{reportData.giftCardSales}</span>
