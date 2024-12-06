@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "../Customer.css";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMenu } from "../../MenuContext";
 
-function QuantityButton ({quantity, updateQuantity, maxQuantity, entree, removeEntree}) {
-    const increaseQuantity = () => {if (quantity < maxQuantity) updateQuantity(quantity + 1);};
+function QuantityButton({ quantity, updateQuantity, maxQuantity, entree, removeEntree }) {
+    const increaseQuantity = () => { if (quantity < maxQuantity) updateQuantity(quantity + 1); };
     const decreaseQuantity = () => {
         if (quantity > 1) {
             updateQuantity(quantity - 1);
@@ -22,7 +22,7 @@ function QuantityButton ({quantity, updateQuantity, maxQuantity, entree, removeE
     );
 }
 
-function Combos({addItems}) {
+function Combos({ addItems }) {
     //setting menu variables
     const { comboOptions } = useMenu()
     const { entrees } = useMenu();
@@ -49,7 +49,7 @@ function Combos({addItems}) {
     const cancelCombo = () => {
         setCurrentCombo(null);
         setShowEntrees(false);
-        setShowCombos(true); 
+        setShowCombos(true);
         setSelectedSide(null);
         setSelectedEntrees([]);
         setEntreeQuantities({});
@@ -58,10 +58,10 @@ function Combos({addItems}) {
         setShowEntrees(true);
     };
     const chooseSide = () => {
-        setShowEntrees(false); 
+        setShowEntrees(false);
     };
 
-    
+
 
     //functions for handling selections of combo items
     const handleSelectSide = (side) => {
@@ -71,15 +71,15 @@ function Combos({addItems}) {
         const totalQuantity = Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0);
         if (selectedEntrees.includes(entree)) {
             setSelectedEntrees(selectedEntrees.filter(e => e !== entree));
-            const updatedQuantities = {...entreeQuantities};
+            const updatedQuantities = { ...entreeQuantities };
             delete updatedQuantities[entree.id];
             setEntreeQuantities(updatedQuantities);
-        } 
+        }
         else if (totalQuantity < combo.maxEntrees) {
             setSelectedEntrees([...selectedEntrees, entree]);
             setEntreeQuantities({ ...entreeQuantities, [entree.id]: 1 });
         }
-        
+
     }
 
     const removeEntree = (id) => {
@@ -90,60 +90,76 @@ function Combos({addItems}) {
     };
 
     const placeOrder = () => {
-        const newOrderItems = [{name: currentCombo.name, price: currentCombo.price }];
+        const newOrderItems = [{ name: currentCombo.name, price: currentCombo.price }];
         if (selectedSide) {
-            newOrderItems.push({name: selectedSide.name, price: 0}); 
+            newOrderItems.push({ name: selectedSide.name, price: 0 });
         }
-        selectedEntrees.forEach((entree) => {const quantity = entreeQuantities[entree.id] || 1;
+        selectedEntrees.forEach((entree) => {
+            const quantity = entreeQuantities[entree.id] || 1;
             for (let i = 0; i < quantity; i++) {
-                newOrderItems.push({name: entree.name, price: 0}); 
+                newOrderItems.push({ name: entree.name, price: 0 });
             }
         });
         addItems(newOrderItems);
         cancelCombo();
     };
-    
 
-    return(
+    const getComboAltText = (combo) => {
+        if (combo.name === "A La Carte") {
+            return "A La Carte, 1 entree or side";
+        }
+        if (combo.name === "Bowl") {
+            return "Bowl, 1 entree and 1 side";
+        }
+        if (combo.name === "Plate") {
+            return "Plate, 2 entrees and 1 side";
+        }
+        if (combo.name === "Bigger Plate") {
+            return "Bigger Plate, 3 entrees and 1 sides";
+        }
+        return "";
+    }
+
+    return (
         <>
-            
+
             {showCombos ? (
-                <div className = "combo-box">
-                    <div className = "box-title">Combos</div>
-                    <div className = "separator"/>
-                    <div className = "combo-button-box">
+                <div className="combo-box">
+                    <div className="box-title">Combos</div>
+                    <div className="separator" />
+                    <div className="combo-button-box">
                         {comboOptions.map(combo => (
-                        <button className = "combo-button" key = {combo.id} onClick = {() => chooseCombo(combo)}>
-                            <img src= {combo.imageURL} alt={combo.name} />
-                            {/* <div className="separator" /> */}
-                            <span>{combo.name}</span>
-                        </button>
+                            <button className="combo-button" key={combo.id} onClick={() => chooseCombo(combo)}>
+                                <img src={combo.imageURL} alt={getComboAltText(combo)} />
+                                {/* <div className="separator" /> */}
+                                <span>{combo.name}</span>
+                            </button>
                         ))}
                     </div>
                 </div>
-                
+
             ) : (
-                <div className = "item-box">
-                    <div className = "item-nav">
-                        <button className = "item-nav-button" onClick = {chooseSide}>
+                <div className="item-box">
+                    <div className="item-nav">
+                        <button className="item-nav-button" onClick={chooseSide}>
                             Sides
                         </button>
-                        <button className = "item-nav-button" onClick = {chooseEntree}>
+                        <button className="item-nav-button" onClick={chooseEntree}>
                             Entrees
                         </button>
                         <button className="item-nav-button" onClick={placeOrder}>
                             Place Order
                         </button>
-                        <button className = "item-nav-button" onClick = {cancelCombo}>
+                        <button className="item-nav-button" onClick={cancelCombo}>
                             Cancel
                         </button>
                     </div>
-                    <div className = "item-button-box">
+                    <div className="item-button-box">
                         {showEntrees ? (
                             entreeOptions.map(entree => (
                                 <div className={`entree-item ${selectedEntrees.includes(entree) ? "selected" : ""}`} key={entree.id}>
-                                    <button className = {`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key = {entree.id} onClick = {() => handleSelectEntrees(entree, currentCombo)}>
-                                        <img src= {entree.imageURL} alt={entree.name} />
+                                    <button className={`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key={entree.id} onClick={() => handleSelectEntrees(entree, currentCombo)}>
+                                        <img src={entree.imageURL} alt={entree.name} />
                                         <span>{entree.name}</span>
                                     </button>
                                     {selectedEntrees.includes(entree) && (
@@ -151,7 +167,7 @@ function Combos({addItems}) {
                                             entree={entree}
                                             quantity={entreeQuantities[entree.id] || 1}
                                             maxQuantity={currentCombo.maxEntrees - Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0) + (entreeQuantities[entree.id] || 0)}
-                                            updateQuantity={(quantity) => {setEntreeQuantities({...entreeQuantities, [entree.id]: quantity});}}
+                                            updateQuantity={(quantity) => { setEntreeQuantities({ ...entreeQuantities, [entree.id]: quantity }); }}
                                             removeEntree={removeEntree}
                                         />
                                     )}
@@ -159,8 +175,8 @@ function Combos({addItems}) {
                             ))
                         ) : (
                             sideOptions.map(side => (
-                                <button className = {`side-button ${selectedSide === side ? "selected" : ""}`} key = {side.id} onClick = {() => handleSelectSide(side)}>
-                                    <img src={side.imageURL} alt= "side.name" />
+                                <button className={`side-button ${selectedSide === side ? "selected" : ""}`} key={side.id} onClick={() => handleSelectSide(side)}>
+                                    <img src={side.imageURL} alt="side.name" />
                                     <span>{side.name}</span>
                                 </button>
                             ))
@@ -168,10 +184,10 @@ function Combos({addItems}) {
                     </div>
                 </div>
             )}
-        
+
         </>
-        
-        
+
+
     );
 }
 
