@@ -8,6 +8,8 @@ import itemRoutes from './itemRoutes.js';
 import inventoryRoutes from './inventoryRoutes.js';
 import menuRoutes from './menuRoutes.js';
 
+import translateRouter from './translateRoutes.js';
+
 import { fetchWeather } from './APIs/Weather.js';
 
 const { Pool } = pkg;
@@ -34,7 +36,7 @@ app.use('/api', employeeRoutes(connection));
 app.use('/api', menuRoutes(connection));
 app.use(itemRoutes(connection));
 app.use('/api', inventoryRoutes(connection));
-
+app.use("/api/translate", translateRouter);
 
 app.get('/api/data', async (req, res) => {
   try {
@@ -77,31 +79,3 @@ process.on("SIGINT", async () => {
   }
 });
 
-app.use(bodyParser.json());
-app.post("/translate", async (req, res) => {
-    const { text, target } = req.body;
-
-    try {
-        const response = await axios.post(
-            `https://translation.googleapis.com/language/translate/v2`,
-            {
-                q: text,
-                target: target,
-            },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                params: {
-                    key: process.env.translateApiKey,
-                },
-            }
-        );
-
-        const translatedText = response.data.data.translations[0].translatedText;
-        res.json({ translatedText });
-    } catch (error) {
-        console.error("Translation error:", error);
-        res.status(500).send("Error translating text.");
-    }
-});

@@ -21,7 +21,7 @@ function Welcome() {
     return(
         <>
             <div className = "ellipse" onClick = {redirect}>
-                {t('begin')}
+                {t("Touch Here To Begin")}
             
             </div>
             <div>

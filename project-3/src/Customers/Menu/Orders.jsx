@@ -3,9 +3,18 @@ import "../Customer.css";
 import {useNavigate} from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
+// import { tran } from "../../Backend/APIs/Translate.js"
+
+// function tran(word, t) {
+    
+//     return (
+//         <>{t(word)}</>
+//     );
+// }
 
 function Orders( {order, setOrder} ) {
     const { t } = useTranslation();
+    
     const navigate = useNavigate();
 
     /*const [order, setOrder] = useState([
@@ -35,7 +44,7 @@ function Orders( {order, setOrder} ) {
     return(
         <div className = "order-box">
             <div className = "box-title">
-                {t('order')}
+                {tran("Orders", t)}
             </div>
             <div className = "separator" />
             <ul className = "order-list">
