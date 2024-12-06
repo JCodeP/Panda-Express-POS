@@ -71,6 +71,16 @@ function CashierComboScreen({ priceModifier }) {
 
     // Navigates to submit screen
     const submitScreen = () => {
+        if (combo && !combo.side) {
+            alert("Please select a side.");
+            return;
+        }
+
+        if (combo && combo.entrees.length !== maxEntrees) {
+            alert(`Please select exactly ${maxEntrees} entree(s).`);
+            return;
+        }
+
         navigate("/cashiers/submit", { state: { order } });
     }
 
@@ -95,9 +105,9 @@ function CashierComboScreen({ priceModifier }) {
         navigate("/cashiers/home", { state: { order } });
     }
 
-    if (combo && !combo.entrees) {
-        combo.entrees = [];
-    }
+    // if (combo && !combo.entrees) {
+    //     combo.entrees = [];
+    // }
 
     // Adds 1 side to a combo object
     const addSideToCombo = (side) => {
@@ -222,7 +232,7 @@ function CashierComboScreen({ priceModifier }) {
                     ))}
                 </ul>
                 <div className="adjust-buttons">
-                    <button onClick={duplicateSelectedItem}>Duplicate</button>
+                    <button className="duplicate-button-disabled">Duplicate</button>
                     <button className="cancel-button" onClick={clearOrder}>Cancel</button>
                 </div>
                 <div className="pay-button">

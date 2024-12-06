@@ -38,6 +38,7 @@ function CashierHome({ priceModifier }) {
     // Duplicates highlighted item in order
     const duplicateSelectedItem = () => {
         if (selectedIndex === null) {
+            alert("You must first click an item in the order list to duplicate it.");
             return;
         }
 
@@ -79,6 +80,11 @@ function CashierHome({ priceModifier }) {
 
     // Navigates to submit screen
     const submitScreen = () => {
+        if (order.length === 0) {
+            alert("You cannot submit an empty order.");
+            return;
+        }
+
         navigate("/cashiers/submit", { state: { order } });
     }
 

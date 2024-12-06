@@ -48,6 +48,14 @@ function ManagerNavBar() {
                         </div>
                     </Link>
                 </div>
+                <div className="box">
+                    <Link to="/managers/managereports" className="box-link">
+                        <div className="box-content"> {/* New div for content */}
+                            <img src="https://placehold.co/150x100" alt="placeholder" />
+                            <h2>Manager Reports</h2>
+                        </div>
+                    </Link>
+                </div>
             </div>
             
             

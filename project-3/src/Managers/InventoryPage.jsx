@@ -28,6 +28,8 @@ function InventoryPage() {
   const { orderData } = useContext(OrderContext);
   const { addRow } = useContext(OrderContext);
   const { deleteRow } = useContext(OrderContext);
+  const { editRow } = useContext(OrderContext);
+  const { updateRowCost } = useContext(OrderContext);
   useEffect(() => {
     // Listen for SSE updates when the component mounts
 
@@ -181,6 +183,22 @@ function InventoryPage() {
     closePopup();
   };
 
+  const [editId, setEditId] = useState(null);
+
+
+  const handleEditClick = (index) => {
+    setEditId(index);
+  }
+
+  const handleSaveClick = (name, index, quantity) => {
+    setEditId(null);
+    updateRowCost(index, getUnitCost(name) * quantity);
+  }
+
+  
+
+  
+
 
   return (
     <div className="inventory-page-container">
@@ -255,13 +273,31 @@ function InventoryPage() {
                       <div className="orderTable-cell" colSpan="3">No data available</div>
                     </div>
                   ) : (
-                    orderData.map((row) => (
-                      <div className="orderTable-row" key={row.name}>
+                    orderData.map((row, index) => (
+                      <div className="orderTable-row" key={`${row.name}-${index}`}>
                         <div className="orderTable-cell">{row.name}</div>
-                        <div className="orderTable-cell">{row.quantity}</div>
+                        <div className="orderTable-cell">
+                          {editId === index ? (
+                            <input
+                              type="text"
+                              value={row.quantity}
+                              onChange={(e) => 
+                                editRow(index, "quantity", e.target.value)
+                              }
+                            />
+                          ) : (
+                            row.quantity
+                          )} 
+                        </div>
                         <div className="orderTable-cell">{row.cost}</div>
                         <div className="orderTable-cell">
-                          <button className="editButton">Edit</button>
+                          {editId === index ? (
+                            <button className="editButton" onClick={() => handleSaveClick(row.name, index, row.quantity)}>Save</button>
+
+                          ) : (
+                            <button className="editButton" onClick={() => handleEditClick(index)}>Edit</button>
+
+                          )}
                         </div>
                         <div className="orderTable-cell">
                           <button className="deleteButtonInv" onClick={() => deleteRow(row.name)}>Delete</button>

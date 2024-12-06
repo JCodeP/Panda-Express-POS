@@ -3,6 +3,7 @@ import "./CustomerHome.css";
 import {Routes, Route, Outlet, Navigate} from "react-router-dom";
 import Welcome from "./Welcome.jsx";
 import Menu from "./Menu/Menu.jsx";
+import Payment from "./Payment.jsx";
 import OrderComplete from "./OrderComplete.jsx";
 
 function CustomerHome() {
@@ -10,9 +11,9 @@ function CustomerHome() {
         <>
             <Routes>
                 <Route index element={<Navigate to="welcome" replace />} />
-
                 <Route path = "welcome" element = {<Welcome />} />
                 <Route path = "menu" element = {<Menu />} />
+                <Route path = "payment" element = {<Payment />} />
                 <Route path = "orderComplete" element = {<OrderComplete />} />
             </Routes>
 
