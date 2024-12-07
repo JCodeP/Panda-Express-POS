@@ -35,12 +35,12 @@
     font-weight: bold;
     color: black;
     line-height: normal;
-    margin-bottom: 1vh;
+    margin-bottom: 0.5vh;
 }
 
 .separator {
     width: 80%;
-    height: 1px;
+    height: .1vh;
     background-color: black;
     color: black;
     margin: 10px 0;
@@ -49,7 +49,7 @@
 .order-box {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 18vw;
     height: 95vh;
@@ -131,7 +131,7 @@
     background-color: white;
     border-radius: 30px;
 
-    justify-content: center; /* Centers horizontally */
+    justify-content: flex-start; /* Centers horizontally */
     align-items: center; /* Centers vertically */
 
     display: flex;
@@ -161,7 +161,7 @@
 }
 
 .addon-button {
-    width: 11vw;
+    width: 10.7vw;
     height: 9vw;
     background-color: white;
     border-radius: 20px;
@@ -172,7 +172,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 0.2vw;
+    margin: 0.1vw;
     color: black;
     font-size: 18px;
 }
@@ -188,11 +188,12 @@
     background-color: white;
     border-radius: 30px;
 
-    justify-content: center; /* Centers horizontally */
+    justify-content: flex-start; /* Centers horizontally */
     align-items: center; /* Centers vertically */
 
     display: flex;
     flex-direction: column;
+    
 
     flex: 0 1 auto;
     margin: 0 20px;
@@ -225,7 +226,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 1vw;
+    margin: .5vw;
     color: black;
     font-size: 18px;
 }
