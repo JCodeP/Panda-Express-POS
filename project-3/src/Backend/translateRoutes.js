@@ -1,6 +1,6 @@
 import express from 'express'
 import enTranslation from './Locales/en/translation.json' assert { type: "json" };
-import bodyParser from body-parser;
+import bodyParser from "body-parser";
 
 
 
@@ -25,18 +25,12 @@ translateRouter.get("/en/:word", (req, res) => {
 
 translateRouter.put("/en/:word", (req, res) => {
     const word = req.params.word; // Get the word from the URL parameters
-    const newTranslation = req.body.translation; // Get the new translation from the request body
 
-    if (!newTranslation) {
-        return res.status(400).json({ error: "Translation is required" }); // Handle missing translation
-    }
-
-    enTranslation[word] = newTranslation; // Update or create the translation for the word
+    enTranslation[word] = word;
 
     res.json({
         message: `Translation for '${word}' has been updated.`,
         word,
-        translation: newTranslation,
     });
 })
 
