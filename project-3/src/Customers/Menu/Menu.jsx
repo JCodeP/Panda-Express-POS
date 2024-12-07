@@ -8,7 +8,7 @@ import Tran from "../Translation.jsx"
 
 function Menu({language, changeLanguage}) {
 
-    const [preferences, setPreferences] = useState([
+    const zodiacPreferences = [
         { sign: "Aries",        entree: "Orange Chicken",               side: "Chow Mein",          appetizer: "Egg Roll"               },
         { sign: "Taurus",       entree: "Beijing Beef",                 side: "Fried Rice",         appetizer: "Cream Cheese Rangoon"   },
         { sign: "Gemini",       entree: "Honey Sesame Chicken Breast",  side: "White Rice",         appetizer: "Egg Roll"               },
@@ -22,7 +22,16 @@ function Menu({language, changeLanguage}) {
         { sign: "Aquarius",     entree: "Black Pepper Chicken",         side: "Chow Mein",          appetizer: "Spring Roll"            },
         { sign: "Pisces",       entree: "Honey Walnut Shrimp",          side: "Fried Rice",         appetizer: "Cream Cheese Rangoon"   }
 
-    ]);
+    ];
+
+    const [selectedSign, setSelectedSign] = useState(null);
+
+    const handleSelect = (event) => {
+        const selected = zodiacPreferences.find(item => item.sign === event.target.value);
+        setSelectedSign(selected);
+    };
+
+    const closePopup = () => setSelectedSign(null);
     
     const [order, setOrder] = useState([]); 
 
@@ -38,6 +47,27 @@ function Menu({language, changeLanguage}) {
                 <button className="translate-button" onClick={() => changeLanguage()}>
                     <Tran word="Change Language" lang={language} />
                 </button>
+                <div>
+                    <select className="zodiac-button" onChange={handleSelect} defaultValue="">
+                        <option value="" disabled><Tran word="Choose Zodiac" lang={language} /></option>
+                        {zodiacPreferences.map((item) => (
+                            <option key={item.sign} value={item.sign}><Tran word={item.sign} lang={language} /></option>
+                        ))}
+                    </select>
+                    {selectedSign && (
+                        <div className="zodiac-popup">
+                            <h2><Tran word={selectedSign.sign} lang={language} /></h2>
+                            <p><strong><Tran word="Entree:" lang={language} /></strong> <Tran word={selectedSign.entree} lang={language} /></p>
+                            <p><strong><Tran word="Side:" lang={language} /></strong> <Tran word={selectedSign.side} lang={language} /></p>
+                            <p><strong><Tran word="Appetizer:" lang={language} /></strong> <Tran word={selectedSign.appetizer} lang={language} /></p>
+                            <button className="zodiac-close" onClick={closePopup}>X</button>
+                        </div>
+                    )}
+                    {selectedSign && (
+                        <div className="zodiac-close-popup" onClick={closePopup}></div>
+                    )}
+                </div>
+                
             </>
             <Addon addItems={addItems} language={language} changeLanguage={changeLanguage} />
         </div>
