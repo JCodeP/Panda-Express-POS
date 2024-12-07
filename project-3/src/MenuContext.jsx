@@ -21,17 +21,17 @@ export const MenuProvider = ({ children }) => {
     ]);
 
     const [appetizers, setAppetizers] = useState([
-        { id: 5, name: "Egg Roll", price: 1.99, category: "Appetizers", imageURL: "placeholder" },
-        { id: 6, name: "Spring Roll", price: 1.99, category: "Appetizers", imageURL: "placeholder" },
-        { id: 7, name: "Cream Cheese Rangoon", price: 1.99, category: "Appetizers", imageURL: "placeholder" },
-        { id: 8, name: "Apple Pie Egg Roll", price: 1.99, category: "Appetizers", imageURL: "placeholder" },
+        { id: 5, name: "Egg Roll", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
+        { id: 6, name: "Spring Roll", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
+        { id: 7, name: "Cream Cheese Rangoon", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
+        { id: 8, name: "Apple Pie Egg Roll", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
     ]);
 
     const [drinks, setDrinks] = useState([
-        { id: 9, name: "Small Drink", price: 1.99, category: "Drinks", imageURL: "placeholder" },
-        { id: 10, name: "Medium Drink", price: 2.29, category: "Drinks", imageURL: "placeholder" },
-        { id: 11, name: "Large Drink", price: 2.59, category: "Drinks", imageURL: "placeholder" },
-        { id: 12, name: "Water Bottle", price: 1.99, category: "Drinks", imageURL: "placeholder" },
+        { id: 9, name: "Small Drink", price: 1.99, category: "Drinks", imageURL: "https://placehold.co/75x75" },
+        { id: 10, name: "Medium Drink", price: 2.29, category: "Drinks", imageURL: "https://placehold.co/75x75" },
+        { id: 11, name: "Large Drink", price: 2.59, category: "Drinks", imageURL: "https://placehold.co/75x75" },
+        { id: 12, name: "Water Bottle", price: 1.99, category: "Drinks", imageURL: "https://placehold.co/75x75" },
     ]);
 
     const [comboOptions, setComboOptions] = useState([
@@ -73,7 +73,7 @@ export const MenuProvider = ({ children }) => {
     };
 
     return (
-        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem, entrees, sides, comboOptions }}>
+        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem, entrees, sides, comboOptions, appetizers, drinks }}>
             {children}
         </MenuContext.Provider>
     );
