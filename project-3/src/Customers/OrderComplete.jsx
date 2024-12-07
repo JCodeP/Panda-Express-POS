@@ -1,8 +1,9 @@
 import React from "react";
 import "./Customer.css";
 import {useLocation, useNavigate} from "react-router-dom";
+import Tran from "./Translation.jsx"
 
-function OrderComplete() {
+function OrderComplete({language, changeLanguage}) {
     const {state} = useLocation();
     const {paymentType, totalCost, order} = state || {};
     const navigate = useNavigate();
@@ -12,12 +13,18 @@ function OrderComplete() {
     };
 
     return(
-        <div className = "ellipse" onClick = {redirect}>
-            Order Complete! <br></br>
-            Order Number: {order?.order_id} <br/>
-            Payment Type: {paymentType} <br/>
-            Total Amount: ${totalCost.toFixed(2)} 
-        </div>
+        <>
+            <div className = "ellipse" onClick = {redirect}>
+                <Tran word="Order Complete!" lang={language} /> <br></br>
+                <Tran word="Order Number:" lang={language} /> {order?.order_id} <br/>
+                <Tran word="Payment Type:" lang={language} /> <Tran word={paymentType} lang={language} /> <br/>
+                <Tran word="Total Amount:" lang={language} /> ${totalCost.toFixed(2)} 
+            </div>
+            <button className="translate-button" onClick={() => changeLanguage()}>
+                <Tran word="Change Language" lang={language} />
+            </button>
+        </>
+        
     );
 }
 
