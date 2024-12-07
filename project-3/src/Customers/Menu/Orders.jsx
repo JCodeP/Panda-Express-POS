@@ -1,17 +1,11 @@
 import React, {useState} from "react";
 import "../Customer.css";
 import {useNavigate} from "react-router-dom";
+import Tran from "../Translation.jsx"
 
-function Orders( {order, setOrder} ) {
+function Orders( {order, setOrder, language, changeLanguage} ) {
+    
     const navigate = useNavigate();
-
-    /*const [order, setOrder] = useState([
-        //Temp values
-        { name: 'Combo Meal', price: 9.99 },
-        { name: 'Appetizer', price: 4.50 },
-        { name: 'Drink', price: 1.99 },
-        { name: 'Drink', price: 2.99 }
-    ]);*/
 
     //Deletes item from list
     const deleteItem = (index) => {
@@ -35,7 +29,9 @@ function Orders( {order, setOrder} ) {
 
     return(
         <div className = "order-box">
-            <div className = "box-title">Order</div>
+            <div className = "box-title">
+                <Tran word="Orders" lang={language} />
+            </div>
             <div className = "separator" />
             <ul className = "order-list">
                 {order.map((item, index) => (
@@ -51,17 +47,17 @@ function Orders( {order, setOrder} ) {
                         >
                             X
                         </button>
-                        <span className="item-name">{item.name}</span>
+                        <span className="item-name"><Tran word={item.name} lang={language} /></span>
                         {item.price > 0 && <span className="item-price">${item.price.toFixed(2)}</span>}
                     </li>
                 ))}
             </ul>
             <div className = "separator" />
             <button className = "complete-order-button" onClick = {redirectComplete}>
-                Pay
+                <Tran word="Pay" lang={language} />
             </button>
             <button className = "cancel-order-button" onClick = {redirectCancel}>
-                Cancel
+                <Tran word="Cancel" lang={language} />
             </button>
         </div>
     );

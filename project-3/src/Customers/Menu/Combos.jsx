@@ -3,6 +3,8 @@ import "../Customer.css";
 import { useNavigate } from "react-router-dom";
 import { useMenu } from "../../MenuContext";
 
+import Tran from "../Translation.jsx"
+
 function QuantityButton({ quantity, updateQuantity, maxQuantity, entree, removeEntree }) {
     const increaseQuantity = () => { if (quantity < maxQuantity) updateQuantity(quantity + 1); };
     const decreaseQuantity = () => {
@@ -22,7 +24,7 @@ function QuantityButton({ quantity, updateQuantity, maxQuantity, entree, removeE
     );
 }
 
-function Combos({ addItems }) {
+function Combos({addItems, language, changeLanguage}) {
     //setting menu variables
     const { comboOptions } = useMenu()
     const { entrees } = useMenu();
@@ -125,42 +127,42 @@ function Combos({ addItems }) {
 
             {showCombos ? (
                 <div className="combo-box">
-                    <div className="box-title">Combos</div>
+                    <div className="box-title"><Tran word="Combos" lang={language} /></div>
                     <div className="separator" />
                     <div className="combo-button-box">
                         {comboOptions.map(combo => (
                             <button className="combo-button" key={combo.id} onClick={() => chooseCombo(combo)}>
                                 <img src={combo.imageURL} alt={getComboAltText(combo)} />
                                 {/* <div className="separator" /> */}
-                                <span>{combo.name}</span>
+                                <span><Tran word={combo.name} lang={language} /></span>
                             </button>
                         ))}
                     </div>
                 </div>
 
             ) : (
-                <div className="item-box">
-                    <div className="item-nav">
-                        <button className="item-nav-button" onClick={chooseSide}>
-                            Sides
+                <div className = "item-box">
+                    <div className = "item-nav">
+                        <button className = "item-nav-button" onClick = {chooseSide}>
+                            <Tran word="Sides" lang={language} />
                         </button>
-                        <button className="item-nav-button" onClick={chooseEntree}>
-                            Entrees
+                        <button className = "item-nav-button" onClick = {chooseEntree}>
+                            <Tran word="Entrees" lang={language} />
                         </button>
                         <button className="item-nav-button" onClick={placeOrder}>
-                            Place Order
+                            <Tran word="Place Order" lang={language} />
                         </button>
-                        <button className="item-nav-button" onClick={cancelCombo}>
-                            Cancel
+                        <button className = "item-nav-button" onClick = {cancelCombo}>
+                            <Tran word="Cancel" lang={language} />
                         </button>
                     </div>
                     <div className="item-button-box">
                         {showEntrees ? (
                             entreeOptions.map(entree => (
                                 <div className={`entree-item ${selectedEntrees.includes(entree) ? "selected" : ""}`} key={entree.id}>
-                                    <button className={`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key={entree.id} onClick={() => handleSelectEntrees(entree, currentCombo)}>
-                                        <img src={entree.imageURL} alt={entree.name} />
-                                        <span>{entree.name}</span>
+                                    <button className = {`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key = {entree.id} onClick = {() => handleSelectEntrees(entree, currentCombo)}>
+                                        <img src= {entree.imageURL} alt={entree.name} />
+                                        <span><Tran word={entree.name} lang={language} /></span>
                                     </button>
                                     {selectedEntrees.includes(entree) && (
                                         <QuantityButton
@@ -175,9 +177,9 @@ function Combos({ addItems }) {
                             ))
                         ) : (
                             sideOptions.map(side => (
-                                <button className={`side-button ${selectedSide === side ? "selected" : ""}`} key={side.id} onClick={() => handleSelectSide(side)}>
-                                    <img src={side.imageURL} alt="side.name" />
-                                    <span>{side.name}</span>
+                                <button className = {`side-button ${selectedSide === side ? "selected" : ""}`} key = {side.id} onClick = {() => handleSelectSide(side)}>
+                                    <img src={side.imageURL} alt= "side.name" />
+                                    <span><Tran word={side.name} lang={language} /></span>
                                 </button>
                             ))
                         )}

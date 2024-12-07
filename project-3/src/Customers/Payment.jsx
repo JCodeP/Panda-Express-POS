@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Customer.css";
+import Tran from "./Translation.jsx"
 
-function Payment() {
+function Payment({language, changeLanguage}) {
     const { state } = useLocation();
     const { order, totalCost } = state || {};
     const [paymentType, setPaymentType] = useState("");
@@ -39,23 +40,26 @@ function Payment() {
     return (
         <div className="payment-section">
             <div className="payment-info">
-                <h1>Payment</h1>
-                <p>Total: ${totalCost?.toFixed(2) || "0.00"}</p>
+                <h1><Tran word="Payment" lang={language} /></h1>
+                <p><Tran word="Total" lang={language} />: ${totalCost?.toFixed(2) || "0.00"}</p>
                 <div className="payment-types">
                     <button className={paymentType === "card" ? "selected" : ""} onClick={() => setPaymentType("card")} disabled={loading}>
-                        Card
+                        <Tran word="Card" lang={language} />
                     </button>
                     <button className={paymentType === "cash" ? "selected" : ""} onClick={() => setPaymentType("cash")} disabled={loading}>
-                        Cash
+                        <Tran word="Cash" lang={language} />
                     </button>
                     <button className={paymentType === "gift card" ? "selected" : ""} onClick={() => setPaymentType("gift card")} disabled={loading}>
-                        Gift Card
+                        <Tran word="Gift Card" lang={language} />
                     </button>
                 </div>
                 <button className="complete-payment-button" onClick={handlePayment} disabled={loading}>
-                    {loading ? "Processing..." : "Complete Payment"}
+                    <Tran word={loading ? "Processing..." : "Complete Payment"} lang={language} />
                 </button>
             </div>
+            <button className="translate-button" onClick={() => changeLanguage()}>
+                <Tran word="Change Language" lang={language} />
+            </button>
         </div>
     );
 }

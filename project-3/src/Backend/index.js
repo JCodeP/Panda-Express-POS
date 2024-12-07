@@ -10,6 +10,8 @@ import menuRoutes from './menuRoutes.js';
 import orderRoutes from './orderRoutes.js'; 
 import reportRoutes from './reportRoutes.js';
 
+import translateRouter from './translateRoutes.js';
+
 import { fetchWeather } from './APIs/Weather.js';
 
 const { Pool } = pkg;
@@ -39,7 +41,7 @@ app.use('/api', inventoryRoutes(connection));
 app.use('/api', orderRoutes(connection));
 app.use('/api', reportRoutes(connection));
 
-
+app.use("/api/translate", translateRouter);
 
 app.get('/api/data', async (req, res) => {
   try {
@@ -81,3 +83,4 @@ process.on("SIGINT", async () => {
     process.exit(1);
   }
 });
+

@@ -17,7 +17,7 @@
 .container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items:start;
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
@@ -410,4 +410,32 @@
 
 .complete-payment-button:hover {
     background-color: darkgreen;
+}
+
+/* .translate-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+} */
+
+.translate-button {
+    position:fixed;
+    bottom: 20px;    /* Distance from the bottom of the screen */
+    left: 50%;       /* Move to the horizontal center */
+    transform: translateX(-50%); /* Center-align the component */
+    z-index: 1000;   /* Ensures it stays on top of other elements if needed */
+
+    background-color: white;
+    width: 18vw;
+    height: 4vw;
+    border-style: solid;
+    border-color: black;
+    font-size: 1.5em;
+    color: black;
+    align-items: center;
+    justify-content: center;
 }
