@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // For navigation
 import './ManagerReports.css';
 
 function ManagerReports() {
   // State to store form input and report data
+  const navigate = useNavigate();
   const [date, setDate] = useState('');
   const [reportData, setReportData] = useState({
     totalSales: '$0',
@@ -52,6 +54,10 @@ function ManagerReports() {
 
   return (
     <div className="manager-reports">
+      {/* Back Button */}
+      <button onClick={() => navigate('/managers')} className="back-button">
+                Back to Manager Home
+      </button>
       <h1>Manager Reports</h1>
       <div className="report-form">
         <label htmlFor="date-input">Select Date:</label>
