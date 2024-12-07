@@ -1,4 +1,4 @@
-1,Bowl,1,1,7.8,"""https://i.imgur.com/L4nkahG.png"""
-2,Plate,2,1,8.9,"""https://i.imgur.com/JkZ0zxo.png"""
-3,Bigger Plate,3,1,10,"""https://i.imgur.com/j42Ulmf.png"""
-4,A La Carte,1,1,,"""https://i.imgur.com/mMWZbJW.png"""
+1,Bowl,1,1,7.8,"""https://i.imgur.com/L4nkahG.png""","Bowl, 1 entree and 1 side"
+2,Plate,2,1,8.9,"""https://i.imgur.com/JkZ0zxo.png""","Plate, 2 entrees and 1 side"
+3,Bigger Plate,3,1,10,"""https://i.imgur.com/j42Ulmf.png""","Bigger Plate, 3 entrees and 1 side"
+4,A La Carte,1,1,,"""https://i.imgur.com/mMWZbJW.png""","A La Carte, 1 entree or 1 side"
