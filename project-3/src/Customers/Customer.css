@@ -335,7 +335,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: #f4f4f4;
+    background-color: #f4f4f400;
     padding: 20px;
     box-sizing: border-box;
     gap: 20px;
@@ -353,8 +353,9 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     gap: 15px;
-    height: 60vh;
+    height: 65vh;
 }
+
 
 .payment-info h1 {
     font-size: 1.8em;
@@ -376,6 +377,7 @@
     gap: 10px;
     margin: 15px 0;
 }
+
 
 .payment-types button {
     color: #007bff;
