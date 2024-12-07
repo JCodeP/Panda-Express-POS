@@ -1,18 +1,10 @@
 import React from "react";
 import "./Customer.css";
 import {useNavigate} from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import i18next from "i18next";
-
 import Tran from "./Translation.jsx"
 
-const lngs = {
-    en: { nativeName: 'English' },
-    es: { nativeName: 'Español' }
-}
 
-function Welcome() {
-    const { t } = useTranslation();
+function Welcome({language, changeLanguage}) {
 
     const navigate = useNavigate();
 
@@ -21,19 +13,17 @@ function Welcome() {
     }
 
     return(
-        <>
+        <div className="translate-container">
             <div className = "ellipse" onClick = {redirect}>
-                <Tran word="Touch Here To Begin" />
+                <Tran word="Touch Here To Begin" lang={language} />
             
             </div>
             <div>
-                {Object.keys(lngs).map((lng) => (
-                    <button type="submit" key={lng} onClick={() => i18next.changeLanguage(lng)} disabled={i18next.resolvedLanguage === lng}>
-                        {lngs[lng].nativeName}
+                    <button className="translate-button" onClick={() => changeLanguage()}>
+                        <Tran word="Change Language" lang={language} />
                     </button>
-                ))}
             </div>
-        </>
+        </div>
         
     );
 }
