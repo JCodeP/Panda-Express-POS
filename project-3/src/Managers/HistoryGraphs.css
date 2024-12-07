@@ -75,3 +75,20 @@
     margin-top: 2vh; /* Add spacing above the button */
 }
 
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 15px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
