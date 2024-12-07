@@ -1,0 +1,23 @@
+import express from 'express';
+
+// Create the router
+const router = express.Router();
+
+router.get('/get-entree-context', async(req, res) =>{
+    try{
+        const query = "SELECT * FROM entree";
+        const result = await req.app.get('db').query(query);
+        res.json(result.rows);
+    }catch(err){
+        console.error('Error fetching entrees: ', err);
+        res.status(500).json({ message: 'Error fetching entrees', error: err.message });
+    }
+});
+
+export default (connection) => {
+    return (req, res, next) => {
+        // Store connection on the app object
+        req.app.set('db', connection);
+        return router(req, res, next); // Pass request and response to the router
+    };
+};

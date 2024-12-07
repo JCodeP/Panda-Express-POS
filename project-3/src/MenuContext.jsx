@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const MenuContext = createContext();
 
@@ -50,7 +50,7 @@ export const MenuProvider = ({ children }) => {
         { id: 4, name: "Super Greens", imageURL: "https://i.imgur.com/QHWRw40.png" },
     ]);
 
-    const [entrees, setEntrees] = useState([
+    /*const [entrees, setEntrees] = useState([
         { id: 1, name: "Beijing Beef", imageURL: "https://i.imgur.com/nGs4uXa.png" },
         { id: 2, name: "Broccoli Beef", imageURL: "https://i.imgur.com/4ZwloQc.png" },
         { id: 3, name: "Black Pepper Angus Steak", imageURL: "https://i.imgur.com/x1dPPWf.png" },
@@ -63,8 +63,23 @@ export const MenuProvider = ({ children }) => {
         { id: 10, name: "Sweet Fire Chicken Breast", imageURL: "https://i.imgur.com/qQPCCeW.jpeg" },
         { id: 11, name: "String Bean Chicken Breast", imageURL: "https://i.imgur.com/YxcPkcd.jpeg" },
         { id: 12, name: "Honey Walnut Shrimp", imageURL: "https://i.imgur.com/9zZIa3I.png" },
-        // {id:13, name: "poop"}
-    ]);
+    ]);*/
+
+    const [entrees, setEntrees] = useState([]);
+
+    useEffect(()=>{
+        const fetchEntreeData = async () => {
+            console.log("Entered fetch Entree Data")
+            try {
+                const response = await fetch('http://localhost:5001/api/get-entree-context');
+                const data = await response.json();
+                setEntrees(data);
+            } catch (error) {
+                console.error('Error fetching food data:', error);
+            }
+        };
+        fetchEntreeData();
+    },[]);
 
     const addMenuItem = (newItem) => {
         setMenuItems((prevItems) => [...prevItems, newItem]);

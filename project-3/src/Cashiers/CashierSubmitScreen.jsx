@@ -100,7 +100,7 @@ function CashierSubmitScreen({ priceModifier }) {
                                 {item.entrees && item.entrees.length > 0 && (
                                     item.entrees.map((entree, i) => (
                                         <li key={i}>
-                                            {entree.name}
+                                            {entree.item_name}
                                         </li>
                                     ))
                                 )}
