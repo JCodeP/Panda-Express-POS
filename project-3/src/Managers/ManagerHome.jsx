@@ -22,10 +22,6 @@ function ManagerHome() {
                     <OrderProvider>
                         <InventoryPage/>
                     </OrderProvider>} />
-                <Route path="createorderpage" element={
-                    <OrderProvider>
-                        <CreateOrderPage />
-                    </OrderProvider>} />
                 <Route path="managemenu" element={<ManageMenu/>}/>
                 <Route path="managereports" element={<ManagerReports/>}/>
             </Routes>

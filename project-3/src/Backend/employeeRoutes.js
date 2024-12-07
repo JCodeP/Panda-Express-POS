@@ -56,12 +56,12 @@ const employeeRoutes = (pool) => {
   
     router.post('/addData', async (req, res) => {
         console.log("recieved data:", req.body);
-        const { id, nameInput, selectedOption, salaryInput, weeklyHoursInput } = req.body;
+        const { id, nameInput, selectedOption, salary, weeklyHoursInput } = req.body;
   
         // Insert data into PostgreSQL
         const query = 'INSERT INTO employees (employee_id, name, role, pay_rate, weekly_hours) VALUES ($1, $2, $3, $4, $5) RETURNING *';
         try {
-            const result = await pool.query(query, [id, nameInput, selectedOption, salaryInput, weeklyHoursInput ]);
+            const result = await pool.query(query, [id, nameInput, selectedOption, salary, weeklyHoursInput ]);
   
             broadcastNewEmployee(result.rows[0]);
             res.status(201).json({
