@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import "../Customer.css";
-import { useNavigate } from "react-router-dom";
 import { useMenu } from "../../MenuContext";
-
-import Tran from "../Translation.jsx"
+import Tran from "../Translation.jsx";
 
 function QuantityButton({ quantity, updateQuantity, maxQuantity, entree, removeEntree }) {
     const increaseQuantity = () => { if (quantity < maxQuantity) updateQuantity(quantity + 1); };

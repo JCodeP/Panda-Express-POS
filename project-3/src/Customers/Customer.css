@@ -30,9 +30,17 @@
     line-height: normal;
 }
 
+.addon-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: black;
+    line-height: normal;
+    margin-bottom: 0.5vh;
+}
+
 .separator {
     width: 80%;
-    height: 1px;
+    height: .1vh;
     background-color: black;
     color: black;
     margin: 10px 0;
@@ -41,7 +49,7 @@
 .order-box {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 18vw;
     height: 95vh;
@@ -122,10 +130,56 @@
     height: 95vh;
     background-color: white;
     border-radius: 30px;
-    /* border: 3px;
-    border-style: solid;
-    border-color: black; */
+
+    justify-content: flex-start; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+
+    display: flex;
+    flex-direction: column;
+
     flex: 0 1 auto;
+    margin: 0 20px;
+    text-align: center;
+    color: black;
+}
+
+.addon-button-box {
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    flex: 0 1 auto;
+    margin: 0 10px;
+    text-align: center;
+    color: black;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.addon-button {
+    width: 10.7vw;
+    height: 9vw;
+    background-color: white;
+    border-radius: 20px;
+    border-color:whitesmoke;
+    border-width: 2px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0.1vw;
+    color: black;
+    font-size: 18px;
+}
+
+.addon-button img {
+    width: 75px;
+    height: 75px;
 }
 
 .combo-box {
@@ -134,11 +188,12 @@
     background-color: white;
     border-radius: 30px;
 
-    justify-content: center; /* Centers horizontally */
+    justify-content: flex-start; /* Centers horizontally */
     align-items: center; /* Centers vertically */
 
     display: flex;
     flex-direction: column;
+    
 
     flex: 0 1 auto;
     margin: 0 20px;
@@ -171,7 +226,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 1vw;
+    margin: .5vw;
     color: black;
     font-size: 18px;
 }
@@ -424,7 +479,7 @@
 
 .translate-button {
     position:fixed;
-    bottom: 20px;    /* Distance from the bottom of the screen */
+    bottom: 10px;    /* Distance from the bottom of the screen */
     left: 50%;       /* Move to the horizontal center */
     transform: translateX(-50%); /* Center-align the component */
     z-index: 1000;   /* Ensures it stays on top of other elements if needed */
