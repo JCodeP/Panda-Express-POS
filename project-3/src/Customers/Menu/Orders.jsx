@@ -33,8 +33,12 @@ function Orders( {order, setOrder} ) {
         }
     };
 
+    const calculatePrice = (order) => {
+        return order.reduce((total, item) => total + (item.price || 0), 0);
+    };
+
     const redirectComplete = () => {
-        navigate("../ordercomplete");
+        navigate("../payment", {state:{order, totalCost: calculatePrice(order)}});
     }
 
     const redirectCancel = () => {

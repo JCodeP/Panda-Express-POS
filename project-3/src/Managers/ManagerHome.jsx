@@ -5,8 +5,10 @@ import EmployeePage from './EmployeePage';
 import HistoryGraphs from './HistoryGraphs';
 import InventoryPage from './InventoryPage';
 import CreateOrderPage from './CreateOrderPage';
-import ManageMenu from './ManageMenu'
+import ManageMenu from './ManageMenu';
+import ManagerReports from './ManagerReports'
 import {OrderProvider} from './OrderContext';
+
 
 function ManagerHome() {
     return (
@@ -25,6 +27,7 @@ function ManagerHome() {
                         <CreateOrderPage />
                     </OrderProvider>} />
                 <Route path="managemenu" element={<ManageMenu/>}/>
+                <Route path="managereports" element={<ManagerReports/>}/>
             </Routes>
             
             {/* Outlet renders the matching child route component */}

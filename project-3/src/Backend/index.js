@@ -7,6 +7,8 @@ import employeeRoutes from './employeeRoutes.js';
 import itemRoutes from './itemRoutes.js';
 import inventoryRoutes from './inventoryRoutes.js';
 import menuRoutes from './menuRoutes.js';
+import orderRoutes from './orderRoutes.js'; 
+import reportRoutes from './reportRoutes.js';
 
 import translateRouter from './translateRoutes.js';
 
@@ -36,6 +38,9 @@ app.use('/api', employeeRoutes(connection));
 app.use('/api', menuRoutes(connection));
 app.use(itemRoutes(connection));
 app.use('/api', inventoryRoutes(connection));
+app.use('/api', orderRoutes(connection));
+app.use('/api', reportRoutes(connection));
+
 app.use("/api/translate", translateRouter);
 
 app.get('/api/data', async (req, res) => {
