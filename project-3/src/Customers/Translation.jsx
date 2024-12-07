@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./Customer.css";
 
 function Tran({ word, lang }) {
-    const [translation, setTranslation] = useState(""); // State for the translation
-    const [error, setError] = useState(null); // State for errors
+    const [translation, setTranslation] = useState("");
+    const [error, setError] = useState(null);
 
     const fetchTranslation = async () => {
         try {
             let response = await fetch(`http://localhost:5001/api/translate/${lang}/${word}`);
             if (!response.ok) {
-                // If the GET request fails, try the PUT request
+                //if GET fails; PUT into json
                 response = await fetch(`http://localhost:5001/api/translate/${lang}/${word}`, { method: "PUT" });
                 if (!response.ok) {
                     throw new Error("Translation failed");
@@ -17,13 +17,13 @@ function Tran({ word, lang }) {
                 fetchTranslation();
             }
             const text = await response.text();
-            setTranslation(text); // Update the state with the translation
+            setTranslation(text);
         } catch (err) {
-            setError(err.message); // Handle errors
+            setError(err.message);
         }
     };
 
-    // Use useEffect to fetch data when the component mounts or `word` changes
+    //to ensure changes to word or language are adjusted
     useEffect(() => {
         fetchTranslation();
     }, [word, lang]);
