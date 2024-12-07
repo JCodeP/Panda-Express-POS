@@ -13,10 +13,11 @@ translateRouter.get("/en", (req, res) => {
 })
 
 translateRouter.get("/en/:word", (req, res) => {
+    console.log("attempting GET");
     const word = req.params.word;
     const translation = enTranslation[word];
     if (translation) {
-        res.json({ word, translation });
+        res.send(translation);
     }
     else {
         res.status(404).json({ error: "Translation not found" });
@@ -24,6 +25,7 @@ translateRouter.get("/en/:word", (req, res) => {
 })
 
 translateRouter.put("/en/:word", (req, res) => {
+    console.log("attempting PUT");
     const word = req.params.word; // Get the word from the URL parameters
 
     enTranslation[word] = word;

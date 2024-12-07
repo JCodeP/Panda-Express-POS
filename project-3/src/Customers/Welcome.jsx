@@ -4,6 +4,8 @@ import {useNavigate} from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 
+import Tran from "./Translation.jsx"
+
 const lngs = {
     en: { nativeName: 'English' },
     es: { nativeName: 'Español' }
@@ -21,7 +23,7 @@ function Welcome() {
     return(
         <>
             <div className = "ellipse" onClick = {redirect}>
-                {t("Touch Here To Begin")}
+                <Tran word="Touch Here To Begin" />
             
             </div>
             <div>
