@@ -7,25 +7,25 @@ function SiteNavBar() {
         <div className="card-container">
             <Link to="/managers" className="card-link">
                 <div className="card">
-                    <img src="https://i.imgur.com/oTHUHSF.png" alt="placeholder" />
+                    <img src="https://i.imgur.com/oTHUHSF.png" alt="Computer with codeblock inside" />
                     <h2>Managers</h2>
                 </div>
             </Link>
             <Link to="/cashiers" className="card-link">
                 <div className="card">
-                    <img src="https://i.imgur.com/UJ3eT5d.png" alt="placeholder" />
+                    <img src="https://i.imgur.com/UJ3eT5d.png" alt="Small cash register with debit card printing receipt" />
                     <h2>Cashiers</h2>
                 </div>
             </Link>
             <Link to="/customers" className="card-link">
                 <div className="card">
-                    <img src="https://i.imgur.com/wCAZXzG.png" />
+                    <img src="https://i.imgur.com/wCAZXzG.png" alt="Tablet on stand for placing orders" />
                     <h2>Customers</h2>
                 </div>
             </Link>
             <Link to="/menu" className="card-link">
                 <div className="card">
-                    <img src="https://i.imgur.com/LZ6CnVx.png" alt="placeholder" />
+                    <img src="https://i.imgur.com/LZ6CnVx.png" alt="Cartoon menu with a dish on the front" />
                     <h2>Menu Board</h2>
                 </div>
             </Link>
