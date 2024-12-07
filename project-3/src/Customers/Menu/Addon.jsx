@@ -22,6 +22,7 @@ function Addon({addItems, language, changeLanguage}) {
                     </button>
                 ))}
             </div>
+            
             <div className="separator" />
             <div className="addon-title"><Tran word="Drinks" lang={language} /></div>
             <div className="addon-button-box">

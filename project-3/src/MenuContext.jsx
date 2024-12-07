@@ -25,6 +25,7 @@ export const MenuProvider = ({ children }) => {
         { id: 6, name: "Spring Roll", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
         { id: 7, name: "Cream Cheese Rangoon", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
         { id: 8, name: "Apple Pie Egg Roll", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
+        // { id: 9, name: "Poop", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
     ]);
 
     const [drinks, setDrinks] = useState([
@@ -32,6 +33,7 @@ export const MenuProvider = ({ children }) => {
         { id: 10, name: "Medium Drink", price: 2.29, category: "Drinks", imageURL: "https://placehold.co/75x75" },
         { id: 11, name: "Large Drink", price: 2.59, category: "Drinks", imageURL: "https://placehold.co/75x75" },
         { id: 12, name: "Water Bottle", price: 1.99, category: "Drinks", imageURL: "https://placehold.co/75x75" },
+        // { id: 13, name: "Poop", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
     ]);
 
     const [comboOptions, setComboOptions] = useState([

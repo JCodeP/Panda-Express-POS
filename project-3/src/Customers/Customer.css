@@ -149,11 +149,15 @@
 
     display: flex;
     flex-wrap: wrap;
+    flex-direction: row;
 
     flex: 0 1 auto;
     margin: 0 10px;
     text-align: center;
     color: black;
+
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .addon-button {
