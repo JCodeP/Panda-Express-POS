@@ -20,6 +20,20 @@ export const MenuProvider = ({ children }) => {
         { id: 12, name: "Water Bottle", price: 1.99, category: "Drinks" },
     ]);
 
+    const [appetizerOptions, setAppetizerOptions] = useState([
+        { id: 5, name: "Egg Roll", price: 1.99, category: "Appetizers", imageURL: "placeholder" },
+        { id: 6, name: "Spring Roll", price: 1.99, category: "Appetizers", imageURL: "placeholder" },
+        { id: 7, name: "Cream Cheese Rangoon", price: 1.99, category: "Appetizers", imageURL: "placeholder" },
+        { id: 8, name: "Apple Pie Egg Roll", price: 1.99, category: "Appetizers", imageURL: "placeholder" },
+    ]);
+
+    const [drinkOptions, setDrinkOptions] = useState([
+        { id: 9, name: "Small Drink", price: 1.99, category: "Drinks", imageURL: "placeholder" },
+        { id: 10, name: "Medium Drink", price: 2.29, category: "Drinks", imageURL: "placeholder" },
+        { id: 11, name: "Large Drink", price: 2.59, category: "Drinks", imageURL: "placeholder" },
+        { id: 12, name: "Water Bottle", price: 1.99, category: "Drinks", imageURL: "placeholder" },
+    ]);
+
     const [comboOptions, setComboOptions] = useState([
         { id: 1, name: "Bowl", maxEntrees: 1, price: 7.80, imageURL: "https://i.imgur.com/L4nkahG.png" },
         { id: 2, name: "Plate", maxEntrees: 2, price: 8.90, imageURL: "https://i.imgur.com/JkZ0zxo.png" },
