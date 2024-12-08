@@ -14,7 +14,7 @@ function ManagerNavBar() {
                 <div className="box">
                     <Link to="/managers/employeepage" className="box-link">
                         <div className="box-content"> {/* New div for content */}
-                            <img src="https://placehold.co/150x100" alt="placeholder" />
+                            
                             <h2>Employee Management</h2>
                         </div>
                     </Link>
@@ -22,7 +22,7 @@ function ManagerNavBar() {
                 <div className="box">
                     <Link to="/managers/managemenu" className="box-link">
                         <div className="box-content"> {/* New div for content */}
-                            <img src="https://placehold.co/150x100" alt="placeholder" />
+                            
                             <h2>Manage Menu</h2>
                         </div>
                     </Link>
@@ -30,7 +30,7 @@ function ManagerNavBar() {
                 <div className="box">
                     <Link to="/managers/historygraphs" className="box-link">
                         <div className="box-content"> {/* New div for content */}
-                            <img src="https://placehold.co/150x100" alt="placeholder" />
+                            
                             <h2>Item Order History</h2>
                         </div>
                     </Link>
@@ -38,15 +38,15 @@ function ManagerNavBar() {
                 <div className="box">
                     <Link to="/managers/inventorypage" className="box-link">
                         <div className="box-content"> {/* New div for content */}
-                            <img src="https://placehold.co/150x100" alt="placeholder" />
-                            <h2>Inventory</h2>
+                            
+                            <h2>Create Inventory Order</h2>
                         </div>
                     </Link>
                 </div>
                 <div className="box">
                     <Link to="/managers/managereports" className="box-link">
                         <div className="box-content"> {/* New div for content */}
-                            <img src="https://placehold.co/150x100" alt="placeholder" />
+                            
                             <h2>Manager Reports</h2>
                         </div>
                     </Link>

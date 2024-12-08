@@ -1,7 +1,25 @@
 import express from 'express'
-import assert from 'assert';
-import enTranslation from './Locales/en/translation.json' assert { type: "json" };
-import esTranslation from './Locales/es/translation.json' assert { type: "json" };
+// import enTranslation from './Locales/en/translation.json' assert { type: "json" };
+// const enTranslation = await import('./Locales/en/translation.json');
+
+// import esTranslation from './Locales/es/translation.json' assert { type: "json" };
+// const esTranslation = await import('./Locales/es/translation.json');
+
+import fs from 'fs/promises';
+import path from 'path';
+
+
+const enFilePath = path.resolve('./src/Backend/Locales/en/translation.json');
+const esFilePath = path.resolve('./src/Backend/Locales/es/translation.json');
+
+
+const enTranslation = JSON.parse(await fs.readFile(enFilePath, 'utf8')); 
+const esTranslation = JSON.parse(await fs.readFile(esFilePath, 'utf8')); 
+console.log('Translations loaded:');
+
+
+
+
 import bodyParser from "body-parser";
 
 const translateRouter = express.Router();
