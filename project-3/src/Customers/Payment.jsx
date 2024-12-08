@@ -1,14 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Customer.css";
 import Tran from "./Translation.jsx"
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 function Payment({language, changeLanguage}) {
     const { state } = useLocation();
     const { order, totalCost } = state || {};
     const [paymentType, setPaymentType] = useState("");
     const [loading, setLoading] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [discount, setDiscount] = useState(totalCost);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isLoggedIn && totalCost) {
+            const discount = 0.1;
+            const finalTotalCost = totalCost * (1 - discount);
+            setDiscount(finalTotalCost);
+        }
+    }, [isLoggedIn, totalCost]);
+    
+      const handleLogin = () => {
+        setIsLoggedIn(true);
+        const discount = 0.1;
+        const finalTotalCost = totalCost * (1 - discount);
+        setDiscount(finalTotalCost);
+      };
+    
+      const handleError = () => {
+
+      };
 
     const handlePayment = async () => {
         if (!paymentType) {
@@ -39,9 +61,28 @@ function Payment({language, changeLanguage}) {
 
     return (
         <div className="payment-section">
+            {!isLoggedIn ? (
+                <div className="login-container">
+                    <div className="login-box">
+                        <p className="login-discount-text">
+                        Obtain a 10% discount by logging in to your account!
+                        </p>
+                        <div className="google-button">
+                            <GoogleOAuthProvider clientId="637748108628-lufiaorebtjjek5v1j3ubcndsq2mh0t2.apps.googleusercontent.com">
+                                <GoogleLogin onSuccess={handleLogin} onError={handleError} prompt="select_account"/>
+                            </GoogleOAuthProvider>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="logged-in-text">
+                    <p>Your login was successful! The 10%<br />
+                        discount was applied.</p>
+                </div>
+            )}
             <div className="payment-info">
                 <h1><Tran word="Payment" lang={language} /></h1>
-                <p><Tran word="Total" lang={language} />: ${totalCost?.toFixed(2) || "0.00"}</p>
+                <p><Tran word="Total" lang={language} />: ${discount?.toFixed(2) || "0.00"}</p>
                 <div className="payment-types">
                     <button className={paymentType === "card" ? "selected" : ""} onClick={() => setPaymentType("card")} disabled={loading}>
                         <Tran word="Card" lang={language} />
