@@ -363,7 +363,7 @@ function InventoryPage() {
                               type="text"
                               value={row.quantity}
                               onChange={(e) => 
-                                handleTableChange(index, "quantity", e.target.value)
+                                editRow(index, "quantity", e.target.value)
                               }
                             />
                           ) : (
@@ -381,7 +381,7 @@ function InventoryPage() {
                           )}
                         </div>
                         <div className="orderTable-cell">
-                          <button className="deleteButtonInv" onClick={() => deleteRow(row.name)}>Delete</button>
+                          <button className="deleteButtonInv" onClick={() => deleteRow(index)}>Delete</button>
                         </div>
 
 

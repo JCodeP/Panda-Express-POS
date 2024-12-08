@@ -22,8 +22,8 @@ export const OrderProvider = ({ children }) => {
       setOrderData((prevOrder) => [...prevOrder, newRow]);
     };
 
-    const deleteRow = (name) => {
-        const updatedOrder = orderData.filter(row => row.name !== name);
+    const deleteRow = (index) => {
+        const updatedOrder = orderData.filter((row, i) => i !== index);
         setOrderData(updatedOrder);
     };
 
