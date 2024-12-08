@@ -49,12 +49,12 @@ router.get('/get-appetizer-context', async(req, res) =>{
 
 router.get('/get-menu-context', async(req, res) =>{
     try{
-        const query = "SELECT * FROM appetizer";
+        const query = `SELECT * FROM menu;`
         const result = await req.app.get('db').query(query);
         res.json(result.rows);
     }catch(err){
-        console.error('Error fetching appetizers: ', err);
-        res.status(500).json({ message: 'Error fetching appetizers', error: err.message });
+        console.error('Error fetching menu: ', err);
+        res.status(500).json({ message: 'Error fetching menu', error: err.message });
     }
 });
 

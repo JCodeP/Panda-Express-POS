@@ -95,6 +95,19 @@ router.post('/add-drink', async (req, res) => {
     }
 });
 
+router.post('/add-menu-item', async(req, res) =>{
+    const query = `INSERT INTO MENU (id, item_name, price, category) SELECT COALESCE(MAX(id), 0) + 1, $1, $2, $3 FROM menu;`
+    const {item_name, price, category} = req.body;
+    const value = [item_name, price, category];
+    try{
+        const result = await req.app.get('db').query(query, value);
+        res.status(200).json(result.rows[0]);
+    } catch(err){
+        console.error('Database query error:', err);
+        res.status(500).json({ message: 'Error adding menu item', error: err.message });
+    }
+});
+
 router.post('/add-appetizer', async (req, res) => {
     const query = `
         INSERT INTO appetizer (app_id, item_name, price)
@@ -130,8 +143,10 @@ router.delete('/delete-item', async (req, res) => {
     try {
         const db = req.app.get('db');
 
+        let result = await db.query('DELETE FROM menu WHERE item_name = $1 RETURNING *;', [item_name]);
+
         // Check and delete from `entree`
-        let result = await db.query('DELETE FROM entree WHERE item_name = $1 RETURNING *;', [item_name]);
+        result = await db.query('DELETE FROM entree WHERE item_name = $1 RETURNING *;', [item_name]);
         if (result.rowCount > 0) {
             return res.status(200).json({ message: 'Item deleted from entree', deletedItem: result.rows[0] });
         }

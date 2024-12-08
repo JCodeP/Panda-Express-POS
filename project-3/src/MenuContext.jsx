@@ -20,32 +20,27 @@ export const MenuProvider = ({ children }) => {
         { id: 12, item_name: "Water Bottle", price: 1.99, category: "Drinks" },
     ]);
 
-    /*const [appetizers, setAppetizers] = useState([
-        { id: 5, name: "Egg Roll", price: 1.99, category: "Appetizers", imageURL: "https://i.imgur.com/Ah9KkZA.png" },
-        { id: 6, name: "Spring Roll", price: 1.99, category: "Appetizers", imageURL: "https://i.imgur.com/KMa6KVU.png" },
-        { id: 7, name: "Cream Cheese Rangoon", price: 1.99, category: "Appetizers", imageURL: "https://i.imgur.com/wZTyu3W.png" },
-        { id: 8, name: "Apple Pie Egg Roll", price: 1.99, category: "Appetizers", imageURL: "https://i.imgur.com/RyGK27Y.jpeg" },
-        // { id: 9, name: "Poop", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
-    ]);*/
-
-    /*const [drinks, setDrinks] = useState([
-        { id: 9, name: "Small Drink", price: 1.99, category: "Drinks", imageURL: "https://i.imgur.com/ufrbISK.jpeg" },
-        { id: 10, name: "Medium Drink", price: 2.29, category: "Drinks", imageURL: "https://i.imgur.com/ufrbISK.jpeg" },
-        { id: 11, name: "Large Drink", price: 2.59, category: "Drinks", imageURL: "https://i.imgur.com/ufrbISK.jpeg" },
-        { id: 12, name: "Water Bottle", price: 1.99, category: "Drinks", imageURL: "https://pngimg.com/uploads/water_bottle/water_bottle_PNG10169.png" },
-        // { id: 13, name: "Poop", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
-    ]);*/
-
     const [comboOptions, setComboOptions] = useState([
         { id: 1, name: "Bowl", maxEntrees: 1, price: 7.80, imageURL: "https://i.imgur.com/L4nkahG.png" },
         { id: 2, name: "Plate", maxEntrees: 2, price: 8.90, imageURL: "https://i.imgur.com/JkZ0zxo.png" },
         { id: 3, name: "Bigger Plate", maxEntrees: 3, price: 10.00, imageURL: "https://i.imgur.com/j42Ulmf.png" },
         { id: 4, name: "A La Carte", maxEntrees: 1, price: 4.00, imageURL: "https://i.imgur.com/mMWZbJW.png" }
     ]);
+    //const [menuItems, setMenuItems] = useState([]);
     const [appetizers, setAppetizers] = useState([]);
     const [drinks, setDrinks] = useState([]);
     const [sides, setSides] = useState([]);
     const [entrees, setEntrees] = useState([]);
+
+    /*const fetchMenuData = async (setMenuItems) => {
+        try {
+            const response = await fetch('http://localhost:5001/api/get-menu-context');
+            const data = await response.json();
+            setMenuItems(data);
+        } catch (error) {
+            console.error('Error fetching food data:', error);
+        }
+    };*/
 
     const fetchDrinkData = async (setDrinks) => {
         try {
@@ -94,6 +89,7 @@ export const MenuProvider = ({ children }) => {
         fetchSideData(setSides);
         fetchDrinkData(setDrinks);
         fetchAppetizerData(setAppetizers);
+        //fetchMenuData(setMenuItems);
     },[]);
 
     const addSide = (newItem) => {
@@ -141,8 +137,8 @@ export const MenuProvider = ({ children }) => {
         setMenuItems((prevItems) => [...prevItems, newItem]);
     };
 
-    const removeMenuItem = (id) => {
-        setMenuItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    const removeMenuItem = (item_name) => {
+        setMenuItems((prevItems) => prevItems.filter((item) => item.item_name !== item_name));
     };
 
     return (
