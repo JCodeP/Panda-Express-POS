@@ -390,7 +390,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: #f4f4f4;
+    background-color: #f4f4f400;
     padding: 20px;
     box-sizing: border-box;
     gap: 20px;
@@ -408,8 +408,9 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     gap: 15px;
-    height: 60vh;
+    height: 65vh;
 }
+
 
 .payment-info h1 {
     font-size: 1.8em;
@@ -431,6 +432,7 @@
     gap: 10px;
     margin: 15px 0;
 }
+
 
 .payment-types button {
     color: #007bff;
@@ -493,4 +495,52 @@
     color: black;
     align-items: center;
     justify-content: center;
+}
+
+.zodiac-button {
+    position:fixed;
+    bottom: 10px;    /* Distance from the bottom of the screen */
+    left: 30%;       /* Move to the horizontal center */
+    transform: translateX(-50%); /* Center-align the component */
+    z-index: 1000;   /* Ensures it stays on top of other elements if needed */
+
+    background-color: white;
+    width: 18vw;
+    height: 4vw;
+    border-style: solid;
+    border-color: black;
+    border-radius: 5px;
+    font-size: 1.5em;
+    color: black;
+    align-items: center;
+    justify-content: center;
+}
+
+.zodiac-popup {
+    position: fixed;
+     top: 50%; 
+     left: 50%;
+     transform: translate(-50%, -50%);
+               
+     background-color: white;
+     color: black;
+     padding: 20px;
+     border: 1px solid black;
+     border-radius: 10px;                
+     z-index: 1000;
+}
+
+.zodiac-close { 
+    margin-top: 10px;
+    padding: 5px 10px; 
+}
+
+.zodiac-close-popup {
+    position: "fixed";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    z-index: 999
 }

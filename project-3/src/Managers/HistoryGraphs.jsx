@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // For navigation
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import './HistoryGraphs.css';
@@ -7,6 +8,8 @@ import './HistoryGraphs.css';
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 function HistoryGraphs() {
+    const navigate = useNavigate(); // Hook for navigation
+
     // State to store chart data
     const [chartData, setChartData] = useState(null);
 
@@ -130,9 +133,9 @@ function HistoryGraphs() {
                     },
                 },
                 ticks: {
-                    autoSkip: false, // Ensure all labels are displayed
-                    maxRotation: 45, // Rotate labels to fit better
-                    minRotation: 0,  // Minimum rotation angle
+                    autoSkip: false,
+                    maxRotation: 45,
+                    minRotation: 0,
                     font: {
                         size: Math.max(10, 1.4 * (window.innerWidth / 100)),
                         weight: 'bold',
@@ -142,10 +145,14 @@ function HistoryGraphs() {
             },
         },
     };
-    
 
     return (
         <div className="history-graphs-container">
+            {/* Back Button */}
+            <button onClick={() => navigate('/managers')} className="back-button">
+                Back to Manager Home
+            </button>
+
             <h1 className="history-graphs-title">Items Sold in Time Period</h1>
 
             {/* Display the bar chart */}

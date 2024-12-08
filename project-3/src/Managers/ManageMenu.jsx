@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // For navigation
 import './ManageMenu.css';
 import {useMenu} from '../MenuContext'
 
 function ManageMenu() {
+    const navigate = useNavigate();
     const { addEntree, removeEntree, changeAppetizerPrice, entrees, removeSide, addSide, addDrink, removeDrink, addAppetizer, removeAppetizer, addMenuItem, removeMenuItem } = useMenu();
     const [foodItems, setFoodItems] = useState([]);
     const [menuItems, setMenuItems] = useState([]);
@@ -302,6 +304,11 @@ function ManageMenu() {
 
     return (
         <div className="create-order-page">
+            {/* Back Button */}
+                <button onClick={() => navigate('/managers')} className="back-button">
+                Back to Manager Home
+            </button>
+
             <h1>Manage Menu</h1>
             <div className="table-container-wrapper">
             {/* First Table */}

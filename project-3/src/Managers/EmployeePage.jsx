@@ -21,7 +21,6 @@ function EmployeePage() {
     
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     const wsURL = 'ws://localhost:5001';
     
@@ -57,6 +56,10 @@ function EmployeePage() {
     const nameOptions = [...new Set(data.map((row) => row.name))];
 
     function initialize() {
+        setPositionError('');
+        setError('');
+        setNameError('');
+        setHoursError('');
         setNameInput('');
         setSelectedOption('');
         setSalaryInput('');
@@ -76,27 +79,82 @@ function EmployeePage() {
 
     const [employeeOption, setEmployeeOption] = useState('');
 
+    const [error, setError] = useState(null);
+
+    const [hoursError, setHoursError] = useState(null);
+
+    const [nameError, setNameError] = useState(null);
+
+    const [positionError, setPositionError] = useState(null);
+
+    const [nameSelectError, setNameSelectError] = useState(null);
+
+    
     // Handler for text input changes
     const handleNameChange = (e) => {
         setNameInput(e.target.value);
+        setNameError("");
         
     };
 
     const handleSalaryChange = (e) => {
+
         setSalaryInput(e.target.value);
+        if (/^(?!0(\.0+)?$)0\d+/.test(e.target.value)) {
+            setError("Please do not enter leading zeroes before decimal place");
+            console.log("yesyes");
+            return;
+        } 
+        if (/^$/.test(e.target.value) || /^\d*\.?\d{0,2}$/.test(e.target.value)) { // Allows only numbers
+            setError(""); // Clear error if valid
+            console.log("yesno");
+            return;
+            
+        }
+        if (/^\d*\.\d{3,}(?=\d*[^0]$)/.test(e.target.value)) {
+            setError("Cannot enter more than 2 decimal places");
+            return;
+            
+        }
+        else if (/[^0-9.]|(\..*\..*)/.test(e.target.value)) {
+            setError("Please enter a valid number.");
+        }
     };
 
     const handleHoursChange = (e) => {
         setWeeklyHoursInput(e.target.value);
+        if (/^(?!0(\.0+)?$)0\d+/.test(e.target.value)) {
+            setHoursError("Please do not enter leading zeroes");
+            return;
+        } 
+        if (/(\.\d+|\d+\.)/.test(e.target.value)) {
+            setHoursError("Please enter whole numbers no decimals");
+            return;
+        }
+        if (/[^0-9]/.test(e.target.value)) {
+            setHoursError("Please enter a valid number.");
+            return;
+            
+        }
+        if (/^$/.test(e.target.value) || /[0-9]/.test(e.target.value)) {
+            setHoursError('');
+        }
+
     };
 
     // Handler for dropdown selection changes
     const handleDropdownChange = (e) => {
         setSelectedOption(e.target.value);
+        if (e.target.value !== "") {
+            setPositionError("");
+        }
     };
 
     const handleEmployeeChange = (e) => {
         setEmployeeOption(e.target.value);
+        if (nameSelectError !== "") {
+            setNameSelectError("");
+        }
     };
 
     const getNextId = () => {
@@ -107,26 +165,74 @@ function EmployeePage() {
 
     const handleSubmit = () => {
         const id = getNextId();
-        const addedData = {id, nameInput, selectedOption, salaryInput, weeklyHoursInput};
+        let salary = salaryInput;
+        const [left, right] = salaryInput.split('.');
+        console.log(isNaN(salary));
+        if (salary.endsWith('.')) {
+            setError("Number can't end with dot");
+            return; 
+        }
+        if (!right) {
+            salary = `${left}.00`;
+            
+        }
+        else if (right.length === 1) {
+            salary = `${left}.${right}0`;
+            
+        }
+        
 
-        fetch('http://localhost:5001/api/addData', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(addedData),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('Employee added:', data);
-                setNameInput('');
-                setSelectedOption('');
-                setSalaryInput('');
-                setWeeklyHoursInput('');
-            })
-            .catch((error) => console.error('Error adding employee:', error));
+        const addedData = {id, nameInput, selectedOption, salary, weeklyHoursInput};
+        let salaryEmpty;
+        let hoursEmpty;
+        let nameEmpty;
+        let positionEmpty;
 
 
+        if (salaryInput.trim() === "") {
+            setError("Please fill out box.");
+            salaryEmpty = true;
+        }
+        if (weeklyHoursInput.trim() === "") {
+            setHoursError("Please fill out box");
+            hoursEmpty = true;
+        }
+        if (nameInput.trim() === "") {
+            setNameError("Please fill out box");
+            nameEmpty = true;
+        }
+        if (selectedOption.trim() === "") {
+            setPositionError("Please select a role");
+            positionEmpty = true;
+        }
+        if (salaryEmpty || hoursEmpty || nameEmpty || positionEmpty) {
+            return;
+        }
+        if (error || hoursError || positionError || nameError) {
+            return;
+        } else {
+            fetch('http://localhost:5001/api/addData', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(addedData),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('Employee added:', data);
+                    setNameInput('');
+                    setSelectedOption('');
+                    setSalaryInput('');
+                    setWeeklyHoursInput('');
+                })
+                .catch((error) => console.error('Error adding employee:', error));
+    
+    
+    
+            closePopup();
 
-        closePopup();
+        }
+
+        
 
     };
 
@@ -145,6 +251,41 @@ function EmployeePage() {
           .catch((error) => console.error('Error deleting employee:', error));
     };
     const handleUpdate = (name, attributeName, newValue) => {
+        let salaryEmpty;
+        let positionEmpty;
+        let hoursEmpty;
+        if (employeeOption.trim() === "") {
+            positionEmpty = true;
+            setNameSelectError("Please select a name");
+        }
+        if (attributeName === 'pay_rate') {
+            let salary = salaryInput;
+            const [left, right] = salaryInput.split('.');
+            console.log(isNaN(salary));
+            if (!right) {
+                salary = `${left}.00`;
+            
+            }
+            else if (right.length === 1) {
+                salary = `${left}.${right}0`;
+            }
+            if (error) {
+                return;
+            } else if (salaryInput.trim() === "") {
+                salaryEmpty = true;
+                setError("Please fill out box");
+            }
+        } else if (attributeName === 'weekly_hours') {
+            if (hoursError) {
+                return;
+            } else if (weeklyHoursInput.trim() === "") {
+                hoursEmpty = true;
+                setHoursError("Please fill out box");
+            }
+        }
+        if (salaryEmpty || positionEmpty || hoursEmpty) {
+            return;
+        }
         fetch('http://localhost:5001/api/update-row', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -216,6 +357,7 @@ function EmployeePage() {
                                     onChange={handleNameChange}
                                 />
                             </label>
+                            {nameError && <p style={{ color: "red" }}>{nameError}</p>}
                             <label>
                                 Position:
                                 <select value={selectedOption} onChange={handleDropdownChange}>
@@ -227,6 +369,7 @@ function EmployeePage() {
                                     
                                 </select>
                             </label>
+                            {positionError && <p style={{ color: "red" }}>{positionError}</p>}
                             <label>
                                 Salary:
                                 <input
@@ -235,6 +378,7 @@ function EmployeePage() {
                                     onChange={handleSalaryChange}
                                 />
                             </label>
+                            {error && <p style={{ color: "red" }}>{error}</p>}
                             <label>
                                 Weekly Hours:
                                 <input
@@ -243,6 +387,7 @@ function EmployeePage() {
                                     onChange={handleHoursChange}
                                 />
                             </label>
+                            {hoursError && <p style={{ color: "red" }}>{hoursError}</p>}
                             <button className="employeeSubmit" onClick={handleSubmit}>Submit</button>
                             
 
@@ -273,6 +418,7 @@ function EmployeePage() {
                                     ))}
                                 </select>
                             </label>
+                            {nameSelectError && <p style={{ color: "red" }}>{nameSelectError}</p>}
                             <label>
                                 Salary:
                                 <input
@@ -281,6 +427,7 @@ function EmployeePage() {
                                     onChange={handleSalaryChange}
                                 />
                             </label>
+                            {error && <p style={{ color: "red" }}>{error}</p>}
                             <button className="employeeSubmit" onClick={() => handleUpdate(employeeOption, 'pay_rate', salaryInput)}>Submit</button>
                             
                         </div>
@@ -305,6 +452,7 @@ function EmployeePage() {
                                     ))}
                                 </select>
                             </label>
+                            {nameSelectError && <p style={{ color: "red" }}>{nameSelectError}</p>}
                             <label>
                                 Weekly Hours:
                                 <input
@@ -313,6 +461,7 @@ function EmployeePage() {
                                     onChange={handleHoursChange}
                                 />
                             </label>
+                            {hoursError && <p style={{ color: "red" }}>{hoursError}</p>}
                             <button className="employeeSubmit" onClick={() => handleUpdate(employeeOption, 'weekly_hours', weeklyHoursInput)}>Submit</button>
                             
                         </div>
