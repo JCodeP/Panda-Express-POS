@@ -59,6 +59,7 @@ function EmployeePage() {
 
     function initialize() {
         setPositionError('');
+        setNameSelectError('');
         setError('');
         setNameError('');
         setHoursError('');
