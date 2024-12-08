@@ -181,7 +181,7 @@ function ManageMenu() {
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ item_name: newItemName, price: newItemPrice, category: newCategory }),
+                body: JSON.stringify({ item_name: newItemName, price: newItemPrice, image: newImage, alt_text: newAltText }),
             });
     
             if (response.ok) {
@@ -467,6 +467,18 @@ function ManageMenu() {
                             value={newItemPrice}
                             onChange={(e) => setNewItemPrice(e.target.value)}
                             placeholder="Enter item price"
+                        />
+                        <input
+                            type="text"
+                            value={newImage}
+                            onChange={(e) => setImage(e.target.value)}
+                            placeholder="Enter image link"
+                        />
+                        <input
+                            type="text"
+                            value={newAltText}
+                            onChange={(e) => setAltText(e.target.value)}
+                            placeholder="Enter alt text"
                         />
                         <div>
                             <label>Select Type: </label>
