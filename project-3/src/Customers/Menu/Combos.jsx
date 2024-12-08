@@ -90,7 +90,7 @@ function Combos({addItems, language, changeLanguage}) {
     };
 
     const placeOrder = () => {
-        const newOrderItems = [{ name: currentCombo.name, price: currentCombo.price }];
+        const newOrderItems = [{ name: currentCombo.item_name, price: currentCombo.price }];
         if (selectedSide) {
             newOrderItems.push({ name: selectedSide.item_name, price: 0 });
         }
@@ -105,16 +105,16 @@ function Combos({addItems, language, changeLanguage}) {
     };
 
     const getComboAltText = (combo) => {
-        if (combo.name === "A La Carte") {
+        if (combo.item_name === "A La Carte") {
             return "A La Carte, 1 entree or side";
         }
-        if (combo.name === "Bowl") {
+        if (combo.item_name === "Bowl") {
             return "Bowl, 1 entree and 1 side";
         }
-        if (combo.name === "Plate") {
+        if (combo.item_name === "Plate") {
             return "Plate, 2 entrees and 1 side";
         }
-        if (combo.name === "Bigger Plate") {
+        if (combo.item_name === "Bigger Plate") {
             return "Bigger Plate, 3 entrees and 1 sides";
         }
         return "";
@@ -132,7 +132,7 @@ function Combos({addItems, language, changeLanguage}) {
                             <button className="combo-button" key={combo.id} onClick={() => chooseCombo(combo)}>
                                 <img src={combo.imageURL} alt={getComboAltText(combo)} />
                                 {/* <div className="separator" /> */}
-                                <span><Tran word={combo.name} lang={language} /></span>
+                                <span><Tran word={combo.item_name} lang={language} /></span>
                             </button>
                         ))}
                     </div>

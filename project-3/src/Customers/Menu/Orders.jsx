@@ -47,7 +47,7 @@ function Orders( {order, setOrder, language, changeLanguage} ) {
                         >
                             X
                         </button>
-                        <span className="item-name"><Tran word={item.name} lang={language} /></span>
+                        <span className="item-name"><Tran word={item.item_name || item.name} lang={language} /></span>
                         {item.price > 0 && <span className="item-price">${item.price.toFixed(2)}</span>}
                     </li>
                 ))}
