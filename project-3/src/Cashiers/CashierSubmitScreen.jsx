@@ -90,7 +90,7 @@ function CashierSubmitScreen({ priceModifier }) {
                                     deleteItem(index);
                                 }}
                             >X</button>
-                            {item.name} - ${item.price.toFixed(2)}
+                            {item.item_name} - ${item.price.toFixed(2)}
                             <ul>
                                 {item.side && (
                                     <li>

@@ -118,7 +118,7 @@ function CashierComboScreen({ priceModifier }) {
     // Adds 1 side to a combo object
     const addSideToCombo = (side) => {
         if (combo) {
-            if (combo.name === "A La Carte") {
+            if (combo.item_name === "A La Carte") {
                 // Clear previous selection and replace with the new side
                 const updatedCombo = {
                     ...combo,
@@ -144,7 +144,7 @@ function CashierComboScreen({ priceModifier }) {
     // Adds 1 entree to a combo object
     const addEntreeToCombo = (entree) => {
         if (combo) {
-            if (combo.name === "A La Carte") {
+            if (combo.item_name === "A La Carte") {
                 // Clear previous selection and replace with the new entree
                 const updatedCombo = {
                     ...combo,
@@ -220,11 +220,11 @@ function CashierComboScreen({ priceModifier }) {
                                     deleteItem(index);
                                 }}
                             >X</button>
-                            {item.name} - ${item.price.toFixed(2)}
+                            {item.item_name} - ${item.price.toFixed(2)}
                             <ul>
                                 {item.side && (
                                     <li>
-                                        {item.side.name}
+                                        {item.side.item_name}
                                     </li>
                                 )}
                                 {item.entrees && item.entrees.length > 0 && (

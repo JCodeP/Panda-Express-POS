@@ -125,7 +125,7 @@ function CashierHome({ priceModifier }) {
                                     deleteItem(index);
                                 }}
                             >X</button>
-                            {item.name} - ${item.price.toFixed(2)}
+                            {item.item_name} - ${item.price.toFixed(2)}
                             <ul>
                                 {item.side && (
                                     <li>
@@ -156,7 +156,7 @@ function CashierHome({ priceModifier }) {
                     <div key={category} className="button-container">
                         {items.map((item) => (
                             <button key={item.id} onClick={() => addItemToOrder(item)}>
-                                {item.name}
+                                {item.item_name}
                             </button>
                         ))}
                     </div>

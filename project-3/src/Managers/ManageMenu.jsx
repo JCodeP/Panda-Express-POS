@@ -3,7 +3,7 @@ import './ManageMenu.css';
 import {useMenu} from '../MenuContext'
 
 function ManageMenu() {
-    const { addEntree, removeEntree, entrees, removeSide, addSide } = useMenu();
+    const { addEntree, removeEntree, entrees, removeSide, addSide, addDrink, removeDrink, addAppetizer, removeAppetizer } = useMenu();
     const [foodItems, setFoodItems] = useState([]);
     const [menuItems, setMenuItems] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false); // For adding items
@@ -98,6 +98,8 @@ function ManageMenu() {
                 setMenuItems(menuItems.filter((item) => item.item_name !== itemToDelete));
                 setMenuDeletePopupOpen(false); // Close popup
                 setItemToDelete(null);
+                removeDrink(itemToDelete);
+                removeAppetizer(itemToDelete);
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to delete item');
@@ -158,7 +160,7 @@ function ManageMenu() {
         }
 
         try{
-            const endpoint = itemType === 'appetizer' ? 'http://localhost:5001/api/add-appetizer' : 'http://localhost:5001/api/add-drink';
+            const endpoint = itemType === 'drink' ? 'http://localhost:5001/api/add-drink' : 'http://localhost:5001/api/add-appetizer';
 
             const response = await fetch(endpoint, {
                 method: 'POST',
@@ -177,6 +179,13 @@ function ManageMenu() {
                 setIsMenuPopupOpen(false);
                 setNewItemName('');
                 setNewItemPrice('');
+                console.log(itemType);
+                if (itemType === 'drink'){
+                    addDrink(addedItem);
+                }
+                else{
+                    addAppetizer(addedItem);
+                }
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to add item');

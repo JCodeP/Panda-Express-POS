@@ -97,8 +97,8 @@ router.post('/add-drink', async (req, res) => {
 
 router.post('/add-appetizer', async (req, res) => {
     const query = `
-        INSERT INTO appetizer (appetizer_id, item_name, price)
-        SELECT COALESCE(MAX(appetizer_id), 0) + 1, $1, $2
+        INSERT INTO appetizer (app_id, item_name, price)
+        SELECT COALESCE(MAX(app_id), 0) + 1, $1, $2
         FROM appetizer
         RETURNING *;
     `;
