@@ -4,15 +4,48 @@
     justify-content: center;
     align-items: center;
     
+    
     width: 100vw;
     height: 100vh;
     
 }
 
+
+
+.headerSection {
+    display: flex;
+    width: 100%;
+    gap: 18%;
+    
+}
+
+
 .manager-page-header {
     font-size: 2.2em;
     flex-shrink: 0;
     color: #1a1a1a;
+   
+    
+}
+
+.manager-back {
+    background-color: white;
+    margin-left: 5%;
+    margin-top: 2%;
+    height: 40%;
+    
+  
+
+    
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+.manager-back:hover {
+    background-color: #0056b3;
 }
 
 

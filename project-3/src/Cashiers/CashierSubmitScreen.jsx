@@ -16,6 +16,7 @@ function CashierSubmitScreen({ priceModifier }) {
     const navigate = useNavigate();
     const { order, setOrder } = useOrder();
     const [selectedIndex, setSelectedIndex] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     // Calculates the total price of the order
     const getTotalPrice = useMemo(() => {
@@ -72,6 +73,33 @@ function CashierSubmitScreen({ priceModifier }) {
         navigate("/cashiers/home", { state: order });
     }
 
+    const submitOrder = async (paymentType) => {
+        setLoading(true);
+        const cost = getTotalPrice;
+        try {
+            const result = await fetch("http://localhost:5001/api/process-order", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    totalCost: cost || 0,
+                    paymentType,
+                }),
+            });
+            const resultText = await result.text();
+            const data = JSON.parse(resultText);
+            alert("Order submitted! Number: " + data.order?.order_id);
+        } catch (error) {
+            alert(`Error processing your payment: ${error.message}`);
+        } finally {
+            setLoading(false);
+
+            clearOrder();
+            navigate("/cashiers/home");
+        }
+    }
+
     return (
         <div className="cashier-home">
             <div className="order-list-container">
@@ -118,13 +146,13 @@ function CashierSubmitScreen({ priceModifier }) {
             </div>
             <div className="pay-buttons">
                 <div className="pay-button-container">
-                    <button>Credit / Debit Card</button>
+                    <button onClick={() => submitOrder("card")}>Credit / Debit Card</button>
                 </div>
                 <div className="pay-button-container">
-                    <button>Cash</button>
+                    <button onClick={() => submitOrder("cash")}>Cash</button>
                 </div>
                 <div className="pay-button-container">
-                    <button>Gift Card</button>
+                    <button onClick={() => submitOrder("gift card")}>Gift Card</button>
                 </div>
             </div>
         </div>
