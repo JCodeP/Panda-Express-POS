@@ -1,7 +1,16 @@
 import express from 'express'
-import assert from 'assert';
-import enTranslation from './Locales/en/translation.json' assert { type: "json" };
-import esTranslation from './Locales/es/translation.json' assert { type: "json" };
+// import enTranslation from './Locales/en/translation.json' assert { type: "json" };
+// const enTranslation = await import('./Locales/en/translation.json');
+
+// import esTranslation from './Locales/es/translation.json' assert { type: "json" };
+// const esTranslation = await import('./Locales/es/translation.json');
+
+import fs from 'fs/promises';
+
+const enTranslation = JSON.parse(await fs.readFile('./Locales/en/translation.json', 'utf8'));
+const esTranslation = JSON.parse(await fs.readFile('./Locales/es/translation.json', 'utf8'));
+
+
 import bodyParser from "body-parser";
 
 const translateRouter = express.Router();
