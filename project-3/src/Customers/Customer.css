@@ -548,39 +548,3 @@
     background-color: black;
     z-index: 999
 }
-
-.login-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px; 
-}
-
-.login-box {
-    width: 100%;
-    max-width: 300px; 
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.login-heading {
-    font-size: 2em;
-    font-weight: bold;
-    color: black;
-}
-
-.logged-in-text,
-.login-discount-text {
-    font-size: 1.2em;
-    margin: 10px 0;
-    color: #555;
-    text-align: center;
-}
-
-.google-button {
-    margin-top: 20px;
-}

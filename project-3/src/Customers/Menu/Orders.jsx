@@ -49,15 +49,13 @@ function Orders( {order, setOrder, language, changeLanguage} ) {
                         >
                             X
                         </button>
-<<<<<<< HEAD
-                        <span className="item-name"><Tran word={item.name} lang={language} /></span>
+
+                        <span className="item-name"><Tran word={item.item_name || item.name} lang={language} /></span>
                         {item.side && <span className="side-name">{item.side.name}</span>}
                         {item.entrees && item.entrees.map((entree, i) => (
                             <span key={i} className="entree-name">{entree.name} x{entree.quantity}</span>
                         ))}   
-=======
                         <span className="item-name"><Tran word={item.item_name || item.name} lang={language} /></span>
->>>>>>> main
                         {item.price > 0 && <span className="item-price">${item.price.toFixed(2)}</span>}
                     </li>
                 ))}

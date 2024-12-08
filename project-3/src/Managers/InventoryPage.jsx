@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { OrderContext } from './OrderContext';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -23,6 +24,7 @@ import './InventoryPageStyle.css';
 function InventoryPage() {
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+  const navigate = useNavigate();
 
   const [inventoryData, setData] = useState([]);
   const { orderData } = useContext(OrderContext);
@@ -30,6 +32,7 @@ function InventoryPage() {
   const { deleteRow } = useContext(OrderContext);
   const { editRow } = useContext(OrderContext);
   const { updateRowCost } = useContext(OrderContext);
+  const { clear } = useContext(OrderContext);
   useEffect(() => {
     // Listen for SSE updates when the component mounts
 
@@ -42,6 +45,11 @@ function InventoryPage() {
       // If the message contains the full employee list (on initial connection)
       if (Array.isArray(message)) {
         setData(message);  // Set the initial list of employees
+      } else if (message.addOrder) {
+        console.log("data changed");
+        console.log(message.addOrder);
+        
+        setData(message.addOrder);
       }
     };
 
@@ -130,8 +138,15 @@ function InventoryPage() {
   const [activePopup, setActivePopup] = useState(null);
 
 
+  function initialize() {
+    setFoodSelectError(null);
+    setQuantityError(null);
+  }
+
+
   const openPopup = (type) => {
     setActivePopup(type);
+    initialize();
 
   };
 
@@ -140,18 +155,63 @@ function InventoryPage() {
   };
 
   const [selectedOption, setSelectedOption] = useState('');
+  const [foodSelectError, setFoodSelectError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
 
 
   const handleDropdownChange = (event) => {
     setSelectedOption(event.target.value);
+    if (event.target.value !== "") {
+      setFoodSelectError("");
+    }
   };
 
   const [quantity, setQuantity] = useState('');
 
+  const [quantityError, setQuantityError] = useState(null);
+
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
+    if (/^(?!0(\.0+)?$)0\d+/.test(event.target.value)) {
+      setQuantityError("Please do not enter leading zeroes");
+      return;
+    } 
+    if (/(\.\d+|\d+\.)/.test(event.target.value)) {
+      setQuantityError("Please enter whole numbers no decimals");
+      return;
+    }
+    if (/[^0-9]/.test(event.target.value)) {
+      setQuantityError("Please enter a valid number.");
+      return;
+      
+    }
+    if (/^$/.test(event.target.value) || /[0-9]/.test(event.target.value)) {
+      setQuantityError('');
+    }
   };
+
+  const handleTableChange = (index, type, value) => {
+    if (/^(?!0(\.0+)?$)0\d+/.test(value)) {
+      console.log("hello");
+      
+      return;
+    } 
+    if (/(\.\d+|\d+\.)/.test(value)) {
+      console.log("hello");
+      return;
+    }
+    if (/[^0-9]/.test(value)) {
+      console.log("hello");
+      return;
+      
+    }
+    editRow(index, type, value);
+    
+
+  };
+
+  
 
   function getUnitCost(name) {
     const row = inventoryData.find(ingredient => ingredient.ingredient_name === name);
@@ -161,26 +221,62 @@ function InventoryPage() {
   }
 
   const getTotalCost = () => {
-    return orderData.reduce((sum, row) => sum + row.cost, 0);
+    const total = orderData.reduce((sum, row) => sum + row.cost, 0);
+    console.log(parseFloat(total.toFixed(2)));
+    return total.toFixed(2);
   };
 
 
 
   const handleSubmit = () => {
-    const cost = getUnitCost(selectedOption) * quantity;
+    let cost = getUnitCost(selectedOption) * quantity;
+    cost = Math.round(cost * 100) / 100;
+    let selectEmpty = false;
+    let quantityEmpty = false;
+    console.log(selectedOption);
+    if (selectedOption.trim() === "") {
+      setFoodSelectError("Please select an item");
+      selectEmpty = true;
+    }
+    if (quantity.trim() === "") {
+      setQuantityError("Please fill out box");
+      quantityEmpty = true;
+    }
+    console.log(orderData);
+
+
+
+    if (selectEmpty || foodSelectError || quantityEmpty || quantityError) {
+      return;
+    }
+
+
     addRow({ name: selectedOption, quantity, cost });
     setQuantity('');
     setSelectedOption('');
-
-
-
-
     closePopup();
 
   };
 
   const handleOrderSubmit = () => {
-    closePopup();
+    setIsLoading(true);
+    fetch('http://localhost:5001/api/add-inventory', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      setIsLoading(false);
+      clear();
+
+      closePopup();
+    })
+    .catch(err => {
+      console.error(err);
+      setIsLoading(false);
+    })
   };
 
   const [editId, setEditId] = useState(null);
@@ -202,7 +298,16 @@ function InventoryPage() {
 
   return (
     <div className="inventory-page-container">
-      <h1 className="inventory-header"> Amount of Inventory Needed</h1>
+      <div className='inventoryHeaderSection'>
+                <button onClick={() => navigate('/managers')} className="manager-back">
+                    Back to Manager Home
+                </button>
+                
+               
+                <h1 className="inventory-header"> Amount of Inventory Needed</h1>
+                
+      </div>
+      
       <div className="inventory-graph">
         <Bar data={data} options={options} />
       </div>
@@ -228,6 +333,7 @@ function InventoryPage() {
                   ))}
                 </select>
               </label>
+              {foodSelectError && <p style={{ color: "red" }}>{foodSelectError}</p>}
 
               <label>
                 Quantity:
@@ -237,6 +343,7 @@ function InventoryPage() {
                   onChange={handleQuantityChange}
                 />
               </label>
+              {quantityError && <p style={{ color: "red" }}>{quantityError}</p>}
 
               <button className="addSubmit" onClick={handleSubmit}>Submit</button>
 
@@ -300,7 +407,7 @@ function InventoryPage() {
                           )}
                         </div>
                         <div className="orderTable-cell">
-                          <button className="deleteButtonInv" onClick={() => deleteRow(row.name)}>Delete</button>
+                          <button className="deleteButtonInv" onClick={() => deleteRow(index)}>Delete</button>
                         </div>
 
 
@@ -309,7 +416,12 @@ function InventoryPage() {
                   )}
                 </div>
               </div>
-              <button className="orderSubmit" onClick={handleOrderSubmit}>Submit: ${getTotalCost()}</button>
+              {isLoading ? (
+                <div className='loading'></div>
+
+              ) : (
+                <button className="orderSubmit" onClick={handleOrderSubmit}>Submit: ${getTotalCost()}</button>
+              )}
 
 
 

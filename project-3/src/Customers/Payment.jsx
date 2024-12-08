@@ -82,9 +82,6 @@ function Payment({language, changeLanguage, priceModifier}) {
             )}
             <div className="payment-info">
                 <h1><Tran word="Payment" lang={language} /></h1>
-<<<<<<< HEAD
-                <p><Tran word="Total" lang={language} />: ${discount?.toFixed(2) || "0.00"}</p>
-=======
                 <div className="order-list">
                     <li>
                         <span className="item-name"><p><Tran word="Subtotal:" lang={language} /></p></span>
@@ -104,7 +101,6 @@ function Payment({language, changeLanguage, priceModifier}) {
                     <p><Tran word="Total" lang={language} />: ${totalCost?.toFixed(2) || "0.00"}</p> */}
                 </div>
                 
->>>>>>> main
                 <div className="payment-types">
                     <button className={paymentType === "card" ? "selected" : ""} onClick={() => setPaymentType("card")} disabled={loading}>
                         <Tran word="Card" lang={language} />

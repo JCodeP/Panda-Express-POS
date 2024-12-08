@@ -90,15 +90,12 @@ function Combos({addItems, language, changeLanguage}) {
     };
 
     const placeOrder = () => {
-<<<<<<< HEAD
         const newOrderItems = [{ id: currentCombo.id, name: currentCombo.name, price: currentCombo.price, side: selectedSide, 
             entrees: selectedEntrees.map(entree => ({
                 name: entree.name,
                 quantity: entreeQuantities[entree.id] || 1
             }))
         }];
-=======
-        const newOrderItems = [{ name: currentCombo.item_name, price: currentCombo.price }];
         if (selectedSide) {
             newOrderItems.push({ name: selectedSide.item_name, price: 0 });
         }
@@ -108,7 +105,6 @@ function Combos({addItems, language, changeLanguage}) {
                 newOrderItems.push({ name: entree.item_name, price: 0 });
             }
         });
->>>>>>> main
         addItems(newOrderItems);
         cancelCombo();
     };
