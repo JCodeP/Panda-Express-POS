@@ -10,7 +10,7 @@ function QuantityButton({ quantity, updateQuantity, maxQuantity, entree, removeE
             updateQuantity(quantity - 1);
         }
         else {
-            removeEntree(entree.id);
+            removeEntree(entree.entree_id);
         }
     };
     return (
@@ -72,18 +72,18 @@ function Combos({addItems, language, changeLanguage}) {
         if (selectedEntrees.includes(entree)) {
             setSelectedEntrees(selectedEntrees.filter(e => e !== entree));
             const updatedQuantities = { ...entreeQuantities };
-            delete updatedQuantities[entree.id];
+            delete updatedQuantities[entree.entree_id];
             setEntreeQuantities(updatedQuantities);
         }
         else if (totalQuantity < combo.maxEntrees) {
             setSelectedEntrees([...selectedEntrees, entree]);
-            setEntreeQuantities({ ...entreeQuantities, [entree.id]: 1 });
+            setEntreeQuantities({ ...entreeQuantities, [entree.entree_id]: 1 });
         }
 
     }
 
     const removeEntree = (id) => {
-        setSelectedEntrees(selectedEntrees.filter(entree => entree.id !== id));
+        setSelectedEntrees(selectedEntrees.filter(entree => entree.entree_id !== id));
         const updatedQuantities = { ...entreeQuantities };
         delete updatedQuantities[id];
         setEntreeQuantities(updatedQuantities);
@@ -95,9 +95,9 @@ function Combos({addItems, language, changeLanguage}) {
             newOrderItems.push({ name: selectedSide.name, price: 0 });
         }
         selectedEntrees.forEach((entree) => {
-            const quantity = entreeQuantities[entree.id] || 1;
+            const quantity = entreeQuantities[entree.entree_id] || 1;
             for (let i = 0; i < quantity; i++) {
-                newOrderItems.push({ name: entree.name, price: 0 });
+                newOrderItems.push({ name: entree.item_name, price: 0 });
             }
         });
         addItems(newOrderItems);
@@ -157,17 +157,17 @@ function Combos({addItems, language, changeLanguage}) {
                     <div className="item-button-box">
                         {showEntrees ? (
                             entreeOptions.map(entree => (
-                                <div className={`entree-item ${selectedEntrees.includes(entree) ? "selected" : ""}`} key={entree.id}>
-                                    <button className = {`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key = {entree.id} onClick = {() => handleSelectEntrees(entree, currentCombo)}>
-                                        <img src= {entree.imageURL} alt={entree.name} />
-                                        <span><Tran word={entree.name} lang={language} /></span>
+                                <div className={`entree-item ${selectedEntrees.includes(entree) ? "selected" : ""}`} key={entree.entree_id}>
+                                    <button className = {`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key = {entree.entree_id} onClick = {() => handleSelectEntrees(entree, currentCombo)}>
+                                        <img src= {entree.image} alt={entree.item_name} />
+                                        <span><Tran word={entree.item_name} lang={language} /></span>
                                     </button>
                                     {selectedEntrees.includes(entree) && (
                                         <QuantityButton
                                             entree={entree}
-                                            quantity={entreeQuantities[entree.id] || 1}
-                                            maxQuantity={currentCombo.maxEntrees - Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0) + (entreeQuantities[entree.id] || 0)}
-                                            updateQuantity={(quantity) => { setEntreeQuantities({ ...entreeQuantities, [entree.id]: quantity }); }}
+                                            quantity={entreeQuantities[entree.entree_id] || 1}
+                                            maxQuantity={currentCombo.maxEntrees - Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0) + (entreeQuantities[entree.entreeid] || 0)}
+                                            updateQuantity={(quantity) => { setEntreeQuantities({ ...entreeQuantities, [entree.entree_id]: quantity }); }}
                                             removeEntree={removeEntree}
                                         />
                                     )}
