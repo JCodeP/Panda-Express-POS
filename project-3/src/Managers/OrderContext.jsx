@@ -28,6 +28,19 @@ export const OrderProvider = ({ children }) => {
     };
 
     const editRow = (index, colName, value) => {
+      if (/^(?!0(\.0+)?$)0\d+/.test(value)) {
+        
+        return;
+      } 
+      if (/(\.\d+|\d+\.)/.test(value)) {
+        
+        return;
+      }
+      if (/[^0-9]/.test(value)) {
+  
+        return;
+        
+      }
       setOrderData((prevData) => 
         prevData.map((row, i) => 
           i === index ? {...row, [colName]: value} : row

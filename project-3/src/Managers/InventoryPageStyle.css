@@ -121,7 +121,7 @@
     align-items: center;
     text-align: center;
     width: 25%;
-    height: 40%;
+    height: 60%;
     color: #1a1a1a;
     margin: auto;
     font-size: 1.2em;
@@ -157,7 +157,7 @@
 .addSubmit {
     background-color: green;
     min-width: 40%;
-    height: 25%;
+    height: 20%;
     text-align: center;
     
 }

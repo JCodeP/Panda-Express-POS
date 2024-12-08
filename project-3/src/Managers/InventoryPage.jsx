@@ -132,8 +132,15 @@ function InventoryPage() {
   const [activePopup, setActivePopup] = useState(null);
 
 
+  function initialize() {
+    setFoodSelectError(null);
+    setQuantityError(null);
+  }
+
+
   const openPopup = (type) => {
     setActivePopup(type);
+    initialize();
 
   };
 
@@ -142,18 +149,62 @@ function InventoryPage() {
   };
 
   const [selectedOption, setSelectedOption] = useState('');
+  const [foodSelectError, setFoodSelectError] = useState(null);
 
 
 
   const handleDropdownChange = (event) => {
     setSelectedOption(event.target.value);
+    if (event.target.value !== "") {
+      setFoodSelectError("");
+    }
   };
 
   const [quantity, setQuantity] = useState('');
 
+  const [quantityError, setQuantityError] = useState(null);
+
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
+    if (/^(?!0(\.0+)?$)0\d+/.test(event.target.value)) {
+      setQuantityError("Please do not enter leading zeroes");
+      return;
+    } 
+    if (/(\.\d+|\d+\.)/.test(event.target.value)) {
+      setQuantityError("Please enter whole numbers no decimals");
+      return;
+    }
+    if (/[^0-9]/.test(event.target.value)) {
+      setQuantityError("Please enter a valid number.");
+      return;
+      
+    }
+    if (/^$/.test(event.target.value) || /[0-9]/.test(event.target.value)) {
+      setQuantityError('');
+    }
   };
+
+  const handleTableChange = (index, type, value) => {
+    if (/^(?!0(\.0+)?$)0\d+/.test(value)) {
+      console.log("hello");
+      
+      return;
+    } 
+    if (/(\.\d+|\d+\.)/.test(value)) {
+      console.log("hello");
+      return;
+    }
+    if (/[^0-9]/.test(value)) {
+      console.log("hello");
+      return;
+      
+    }
+    editRow(index, type, value);
+    
+
+  };
+
+  
 
   function getUnitCost(name) {
     const row = inventoryData.find(ingredient => ingredient.ingredient_name === name);
@@ -163,20 +214,37 @@ function InventoryPage() {
   }
 
   const getTotalCost = () => {
-    return orderData.reduce((sum, row) => sum + row.cost, 0);
+    const total = orderData.reduce((sum, row) => sum + row.cost, 0);
+    console.log(parseFloat(total.toFixed(2)));
+    return total.toFixed(2);
   };
 
 
 
   const handleSubmit = () => {
     const cost = getUnitCost(selectedOption) * quantity;
+    let selectEmpty = false;
+    let quantityEmpty = false;
+    console.log(selectedOption);
+    if (selectedOption.trim() === "") {
+      setFoodSelectError("Please select an item");
+      selectEmpty = true;
+    }
+    if (quantity.trim() === "") {
+      setQuantityError("Please fill out box");
+      quantityEmpty = true;
+    }
+
+
+
+    if (selectEmpty || foodSelectError || quantityEmpty || quantityError) {
+      return;
+    }
+
+
     addRow({ name: selectedOption, quantity, cost });
     setQuantity('');
     setSelectedOption('');
-
-
-
-
     closePopup();
 
   };
@@ -239,6 +307,7 @@ function InventoryPage() {
                   ))}
                 </select>
               </label>
+              {foodSelectError && <p style={{ color: "red" }}>{foodSelectError}</p>}
 
               <label>
                 Quantity:
@@ -248,6 +317,7 @@ function InventoryPage() {
                   onChange={handleQuantityChange}
                 />
               </label>
+              {quantityError && <p style={{ color: "red" }}>{quantityError}</p>}
 
               <button className="addSubmit" onClick={handleSubmit}>Submit</button>
 
@@ -293,7 +363,7 @@ function InventoryPage() {
                               type="text"
                               value={row.quantity}
                               onChange={(e) => 
-                                editRow(index, "quantity", e.target.value)
+                                handleTableChange(index, "quantity", e.target.value)
                               }
                             />
                           ) : (
