@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import "../Customer.css";
-import { useNavigate } from "react-router-dom";
 import { useMenu } from "../../MenuContext";
-
-import Tran from "../Translation.jsx"
+import Tran from "../Translation.jsx";
 
 function QuantityButton({ quantity, updateQuantity, maxQuantity, entree, removeEntree }) {
     const increaseQuantity = () => { if (quantity < maxQuantity) updateQuantity(quantity + 1); };
@@ -12,7 +10,7 @@ function QuantityButton({ quantity, updateQuantity, maxQuantity, entree, removeE
             updateQuantity(quantity - 1);
         }
         else {
-            removeEntree(entree.id);
+            removeEntree(entree.entree_id);
         }
     };
     return (
@@ -74,45 +72,58 @@ function Combos({addItems, language, changeLanguage}) {
         if (selectedEntrees.includes(entree)) {
             setSelectedEntrees(selectedEntrees.filter(e => e !== entree));
             const updatedQuantities = { ...entreeQuantities };
-            delete updatedQuantities[entree.id];
+            delete updatedQuantities[entree.entree_id];
             setEntreeQuantities(updatedQuantities);
         }
         else if (totalQuantity < combo.maxEntrees) {
             setSelectedEntrees([...selectedEntrees, entree]);
-            setEntreeQuantities({ ...entreeQuantities, [entree.id]: 1 });
+            setEntreeQuantities({ ...entreeQuantities, [entree.entree_id]: 1 });
         }
 
     }
 
     const removeEntree = (id) => {
-        setSelectedEntrees(selectedEntrees.filter(entree => entree.id !== id));
+        setSelectedEntrees(selectedEntrees.filter(entree => entree.entree_id !== id));
         const updatedQuantities = { ...entreeQuantities };
         delete updatedQuantities[id];
         setEntreeQuantities(updatedQuantities);
     };
 
     const placeOrder = () => {
+<<<<<<< HEAD
         const newOrderItems = [{ id: currentCombo.id, name: currentCombo.name, price: currentCombo.price, side: selectedSide, 
             entrees: selectedEntrees.map(entree => ({
                 name: entree.name,
                 quantity: entreeQuantities[entree.id] || 1
             }))
         }];
+=======
+        const newOrderItems = [{ name: currentCombo.item_name, price: currentCombo.price }];
+        if (selectedSide) {
+            newOrderItems.push({ name: selectedSide.item_name, price: 0 });
+        }
+        selectedEntrees.forEach((entree) => {
+            const quantity = entreeQuantities[entree.entree_id] || 1;
+            for (let i = 0; i < quantity; i++) {
+                newOrderItems.push({ name: entree.item_name, price: 0 });
+            }
+        });
+>>>>>>> main
         addItems(newOrderItems);
         cancelCombo();
     };
 
     const getComboAltText = (combo) => {
-        if (combo.name === "A La Carte") {
+        if (combo.item_name === "A La Carte") {
             return "A La Carte, 1 entree or side";
         }
-        if (combo.name === "Bowl") {
+        if (combo.item_name === "Bowl") {
             return "Bowl, 1 entree and 1 side";
         }
-        if (combo.name === "Plate") {
+        if (combo.item_name === "Plate") {
             return "Plate, 2 entrees and 1 side";
         }
-        if (combo.name === "Bigger Plate") {
+        if (combo.item_name === "Bigger Plate") {
             return "Bigger Plate, 3 entrees and 1 sides";
         }
         return "";
@@ -130,7 +141,7 @@ function Combos({addItems, language, changeLanguage}) {
                             <button className="combo-button" key={combo.id} onClick={() => chooseCombo(combo)}>
                                 <img src={combo.imageURL} alt={getComboAltText(combo)} />
                                 {/* <div className="separator" /> */}
-                                <span><Tran word={combo.name} lang={language} /></span>
+                                <span><Tran word={combo.item_name} lang={language} /></span>
                             </button>
                         ))}
                     </div>
@@ -155,17 +166,17 @@ function Combos({addItems, language, changeLanguage}) {
                     <div className="item-button-box">
                         {showEntrees ? (
                             entreeOptions.map(entree => (
-                                <div className={`entree-item ${selectedEntrees.includes(entree) ? "selected" : ""}`} key={entree.id}>
-                                    <button className = {`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key = {entree.id} onClick = {() => handleSelectEntrees(entree, currentCombo)}>
-                                        <img src= {entree.imageURL} alt={entree.name} />
-                                        <span><Tran word={entree.name} lang={language} /></span>
+                                <div className={`entree-item ${selectedEntrees.includes(entree) ? "selected" : ""}`} key={entree.entree_id}>
+                                    <button className = {`entree-button ${selectedEntrees.includes(entree) ? "selected" : ""}`} key = {entree.entree_id} onClick = {() => handleSelectEntrees(entree, currentCombo)}>
+                                        <img src= {entree.image} alt={entree.item_name} />
+                                        <span><Tran word={entree.item_name} lang={language} /></span>
                                     </button>
                                     {selectedEntrees.includes(entree) && (
                                         <QuantityButton
                                             entree={entree}
-                                            quantity={entreeQuantities[entree.id] || 1}
-                                            maxQuantity={currentCombo.maxEntrees - Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0) + (entreeQuantities[entree.id] || 0)}
-                                            updateQuantity={(quantity) => { setEntreeQuantities({ ...entreeQuantities, [entree.id]: quantity }); }}
+                                            quantity={entreeQuantities[entree.entree_id] || 1}
+                                            maxQuantity={currentCombo.maxEntrees - Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0) + (entreeQuantities[entree.entreeid] || 0)}
+                                            updateQuantity={(quantity) => { setEntreeQuantities({ ...entreeQuantities, [entree.entree_id]: quantity }); }}
                                             removeEntree={removeEntree}
                                         />
                                     )}
@@ -173,9 +184,9 @@ function Combos({addItems, language, changeLanguage}) {
                             ))
                         ) : (
                             sideOptions.map(side => (
-                                <button className = {`side-button ${selectedSide === side ? "selected" : ""}`} key = {side.id} onClick = {() => handleSelectSide(side)}>
-                                    <img src={side.imageURL} alt= "side.name" />
-                                    <span><Tran word={side.name} lang={language} /></span>
+                                <button className = {`side-button ${selectedSide === side ? "selected" : ""}`} key = {side.side_id} onClick = {() => handleSelectSide(side)}>
+                                    <img src={side.image} alt= "side.item_name" />
+                                    <span><Tran word={side.item_name} lang={language} /></span>
                                 </button>
                             ))
                         )}

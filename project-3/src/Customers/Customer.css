@@ -30,9 +30,17 @@
     line-height: normal;
 }
 
+.addon-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: black;
+    line-height: normal;
+    margin-bottom: 0.5vh;
+}
+
 .separator {
     width: 80%;
-    height: 1px;
+    height: .1vh;
     background-color: black;
     color: black;
     margin: 10px 0;
@@ -41,7 +49,7 @@
 .order-box {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 18vw;
     height: 95vh;
@@ -122,10 +130,56 @@
     height: 95vh;
     background-color: white;
     border-radius: 30px;
-    /* border: 3px;
-    border-style: solid;
-    border-color: black; */
+
+    justify-content: flex-start; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+
+    display: flex;
+    flex-direction: column;
+
     flex: 0 1 auto;
+    margin: 0 20px;
+    text-align: center;
+    color: black;
+}
+
+.addon-button-box {
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    flex: 0 1 auto;
+    margin: 0 10px;
+    text-align: center;
+    color: black;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.addon-button {
+    width: 10.7vw;
+    height: 9vw;
+    background-color: white;
+    border-radius: 20px;
+    border-color:whitesmoke;
+    border-width: 2px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0.1vw;
+    color: black;
+    font-size: 18px;
+}
+
+.addon-button img {
+    width: 75px;
+    height: 75px;
 }
 
 .combo-box {
@@ -134,11 +188,12 @@
     background-color: white;
     border-radius: 30px;
 
-    justify-content: center; /* Centers horizontally */
+    justify-content: flex-start; /* Centers horizontally */
     align-items: center; /* Centers vertically */
 
     display: flex;
     flex-direction: column;
+    
 
     flex: 0 1 auto;
     margin: 0 20px;
@@ -171,7 +226,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 1vw;
+    margin: .5vw;
     color: black;
     font-size: 18px;
 }
@@ -337,7 +392,7 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    background-color: #f4f4f4;
+    background-color: #f4f4f400;
     padding: 20px;
     box-sizing: border-box;
     gap: 20px;
@@ -357,8 +412,9 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     gap: 15px;
-    height: 60vh;
+    height: 65vh;
 }
+
 
 .payment-info h1 {
     font-size: 1.8em;
@@ -380,6 +436,7 @@
     gap: 10px;
     margin: 15px 0;
 }
+
 
 .payment-types button {
     color: #007bff;
@@ -428,7 +485,7 @@
 
 .translate-button {
     position:fixed;
-    bottom: 20px;    /* Distance from the bottom of the screen */
+    bottom: 10px;    /* Distance from the bottom of the screen */
     left: 50%;       /* Move to the horizontal center */
     transform: translateX(-50%); /* Center-align the component */
     z-index: 1000;   /* Ensures it stays on top of other elements if needed */
@@ -442,6 +499,54 @@
     color: black;
     align-items: center;
     justify-content: center;
+}
+
+.zodiac-button {
+    position:fixed;
+    bottom: 10px;    /* Distance from the bottom of the screen */
+    left: 30%;       /* Move to the horizontal center */
+    transform: translateX(-50%); /* Center-align the component */
+    z-index: 1000;   /* Ensures it stays on top of other elements if needed */
+
+    background-color: white;
+    width: 18vw;
+    height: 4vw;
+    border-style: solid;
+    border-color: black;
+    border-radius: 5px;
+    font-size: 1.5em;
+    color: black;
+    align-items: center;
+    justify-content: center;
+}
+
+.zodiac-popup {
+    position: fixed;
+     top: 50%; 
+     left: 50%;
+     transform: translate(-50%, -50%);
+               
+     background-color: white;
+     color: black;
+     padding: 20px;
+     border: 1px solid black;
+     border-radius: 10px;                
+     z-index: 1000;
+}
+
+.zodiac-close { 
+    margin-top: 10px;
+    padding: 5px 10px; 
+}
+
+.zodiac-close-popup {
+    position: "fixed";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    z-index: 999
 }
 
 .login-container {

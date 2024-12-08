@@ -4,7 +4,7 @@ import "./Customer.css";
 import Tran from "./Translation.jsx"
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
-function Payment({language, changeLanguage}) {
+function Payment({language, changeLanguage, priceModifier}) {
     const { state } = useLocation();
     const { order, totalCost } = state || {};
     const [paymentType, setPaymentType] = useState("");
@@ -82,7 +82,29 @@ function Payment({language, changeLanguage}) {
             )}
             <div className="payment-info">
                 <h1><Tran word="Payment" lang={language} /></h1>
+<<<<<<< HEAD
                 <p><Tran word="Total" lang={language} />: ${discount?.toFixed(2) || "0.00"}</p>
+=======
+                <div className="order-list">
+                    <li>
+                        <span className="item-name"><p><Tran word="Subtotal:" lang={language} /></p></span>
+                        <span className="item-price"><p>${totalCost?.toFixed(2) || "0.00"}</p></span>
+                    </li>
+                    <li>
+                        <span className="item-name"><p><Tran word="Discount:" lang={language} /></p></span>
+                        <span className="item-price"><p>${(totalCost?.toFixed(2) * (1-priceModifier).toFixed(2)).toFixed(2) || "0.00"}</p></span>
+                    </li>
+                    <li>
+                        <span className="item-name"><p><Tran word="Total:" lang={language} /></p></span>
+                        <span className="item-price"><p>${(totalCost?.toFixed(2) * priceModifier.toFixed(2)).toFixed(2) || "0.00"}</p></span>
+                    </li>
+                    
+                    {/* <p><Tran word="Subtotal" lang={language} />: ${totalCost?.toFixed(2) || "0.00"}</p>
+                    <p><Tran word="Discount" lang={language} />: ${totalCost?.toFixed(2) || "0.00"}</p>
+                    <p><Tran word="Total" lang={language} />: ${totalCost?.toFixed(2) || "0.00"}</p> */}
+                </div>
+                
+>>>>>>> main
                 <div className="payment-types">
                     <button className={paymentType === "card" ? "selected" : ""} onClick={() => setPaymentType("card")} disabled={loading}>
                         <Tran word="Card" lang={language} />
