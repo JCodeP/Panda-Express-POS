@@ -1,4 +1,5 @@
 import express from 'express'
+import assert from 'assert';
 import enTranslation from './Locales/en/translation.json' assert { type: "json" };
 import esTranslation from './Locales/es/translation.json' assert { type: "json" };
 import bodyParser from "body-parser";
