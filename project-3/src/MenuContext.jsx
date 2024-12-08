@@ -50,36 +50,39 @@ export const MenuProvider = ({ children }) => {
         { id: 4, name: "Super Greens", imageURL: "https://i.imgur.com/QHWRw40.png" },
     ]);
 
-    /*const [entrees, setEntrees] = useState([
-        { id: 1, name: "Beijing Beef", imageURL: "https://i.imgur.com/nGs4uXa.png" },
-        { id: 2, name: "Broccoli Beef", imageURL: "https://i.imgur.com/4ZwloQc.png" },
-        { id: 3, name: "Black Pepper Angus Steak", imageURL: "https://i.imgur.com/x1dPPWf.png" },
-        { id: 4, name: "Black Pepper Chicken", imageURL: "https://i.imgur.com/K1iPAOl.png" },
-        { id: 5, name: "Grilled Teriyaki Chicken", imageURL: "https://i.imgur.com/zEPSr9C.png" },
-        { id: 6, name: "Honey Sesame Chicken Breast", imageURL: "https://i.imgur.com/p8OLsll.png" },
-        { id: 7, name: "Kung Pao Chicken", imageURL: "https://i.imgur.com/lcBELCI.png" },
-        { id: 8, name: "Mushroom Chicken", imageURL: "https://i.imgur.com/kHSVkTe.png" },
-        { id: 9, name: "Orange Chicken", imageURL: "https://i.imgur.com/6iVwEfs.png" },
-        { id: 10, name: "Sweet Fire Chicken Breast", imageURL: "https://i.imgur.com/qQPCCeW.jpeg" },
-        { id: 11, name: "String Bean Chicken Breast", imageURL: "https://i.imgur.com/YxcPkcd.jpeg" },
-        { id: 12, name: "Honey Walnut Shrimp", imageURL: "https://i.imgur.com/9zZIa3I.png" },
-    ]);*/
-
     const [entrees, setEntrees] = useState([]);
 
+    const fetchEntreeData = async (setEntrees) => {
+        console.log("Entered fetch Entree Data");
+        try {
+            const response = await fetch('http://localhost:5001/api/get-entree-context');
+            const data = await response.json();
+            setEntrees(data);
+        } catch (error) {
+            console.error('Error fetching food data:', error);
+        }
+    };
+
     useEffect(()=>{
-        const fetchEntreeData = async () => {
-            console.log("Entered fetch Entree Data")
-            try {
-                const response = await fetch('http://localhost:5001/api/get-entree-context');
-                const data = await response.json();
-                setEntrees(data);
-            } catch (error) {
-                console.error('Error fetching food data:', error);
-            }
-        };
-        fetchEntreeData();
+        fetchEntreeData(setEntrees);
     },[]);
+
+    const addEntree = (newItem) => {
+        console.log('entered add');
+        setEntrees((prevItems) => [...prevItems, newItem]);
+        console.log(entrees);
+    }
+
+    const removeEntree = (item_name) => {
+        console.log('entered remove');
+        setEntrees((prevItems) => prevItems.filter((item) => item.item_name !== item_name));
+    };
+    
+    // Log updated entrees using useEffect
+    useEffect(() => {
+        console.log('Updated entrees:', entrees);
+    }, [entrees]);  // This ensures it logs whenever `entrees` changes
+    
 
     const addMenuItem = (newItem) => {
         setMenuItems((prevItems) => [...prevItems, newItem]);
@@ -90,7 +93,7 @@ export const MenuProvider = ({ children }) => {
     };
 
     return (
-        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem, entrees, sides, comboOptions, appetizers, drinks }}>
+        <MenuContext.Provider value={{ menuItems,addEntree, removeEntree, addMenuItem, removeMenuItem, fetchEntreeData, entrees, sides, comboOptions, appetizers, drinks }}>
             {children}
         </MenuContext.Provider>
     );

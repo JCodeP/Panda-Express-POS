@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './ManageMenu.css';
+import {useMenu} from '../MenuContext'
 
 function ManageMenu() {
+    const { addEntree, removeEntree, entrees } = useMenu();
     const [foodItems, setFoodItems] = useState([]);
     const [menuItems, setMenuItems] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false); // For adding items
@@ -63,6 +65,7 @@ function ManageMenu() {
                 setFoodItems(foodItems.filter((item) => item.item_name !== itemToDelete));
                 setDeletePopupOpen(false); // Close popup
                 setItemToDelete(null);
+                removeEntree(itemToDelete);
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to delete item');
@@ -131,6 +134,7 @@ function ManageMenu() {
                 setIsPopupOpen(false);
                 setNewItemName('');
                 setNewItemPrice('');
+                addEntree(addedItem);
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to add item');
