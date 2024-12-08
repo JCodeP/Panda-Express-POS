@@ -96,7 +96,7 @@ router.post('/add-drink', async (req, res) => {
 });
 
 router.post('/add-menu-item', async(req, res) =>{
-    const query = `INSERT INTO MENU (id, item_name, price, category) SELECT COALESCE(MAX(id), 0) + 1, $1, $2, $3 FROM menu;`
+    const query = `INSERT INTO MENU (id, item_name, price, category) SELECT COALESCE(MAX(id), 0) + 1, $1, $2, $3 FROM menu RETURNING *;`
     const {item_name, price, category} = req.body;
     const value = [item_name, price, category];
     try{
@@ -208,7 +208,8 @@ router.post('/change-price', async(req, res) => {
     const values = [item_name, price];
     try{
         const db = req.app.get('db');
-        let result = await db.query('UPDATE drink SET price = $2 WHERE item_name = $1 RETURNING *;', values);
+        let result = await db.query('UPDATE menu SET price = $2 WHERE item_name = $1',values);
+        result = await db.query('UPDATE drink SET price = $2 WHERE item_name = $1 RETURNING *;', values);
         if (result.rowCount > 0) {
             return res.status(200).json({ message: 'Item changed from drink', deletedItem: result.rows[0] });
         }

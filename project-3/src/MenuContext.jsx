@@ -5,7 +5,7 @@ const MenuContext = createContext();
 export const useMenu = () => useContext(MenuContext);
 
 export const MenuProvider = ({ children }) => {
-    const [menuItems, setMenuItems] = useState([
+    /*const [menuItems, setMenuItems] = useState([
         { id: 1, item_name: "Bowl", price: 7.80, category: "Combos" },
         { id: 2, item_name: "Plate", price: 8.90, category: "Combos" },
         { id: 3, item_name: "Bigger Plate", price: 10.00, category: "Combos" },
@@ -18,21 +18,21 @@ export const MenuProvider = ({ children }) => {
         { id: 10, item_name: "Medium Drink", price: 2.29, category: "Drinks" },
         { id: 11, item_name: "Large Drink", price: 2.59, category: "Drinks" },
         { id: 12, item_name: "Water Bottle", price: 1.99, category: "Drinks" },
-    ]);
+    ]);*/
 
     const [comboOptions, setComboOptions] = useState([
-        { id: 1, name: "Bowl", maxEntrees: 1, price: 7.80, imageURL: "https://i.imgur.com/L4nkahG.png" },
-        { id: 2, name: "Plate", maxEntrees: 2, price: 8.90, imageURL: "https://i.imgur.com/JkZ0zxo.png" },
-        { id: 3, name: "Bigger Plate", maxEntrees: 3, price: 10.00, imageURL: "https://i.imgur.com/j42Ulmf.png" },
-        { id: 4, name: "A La Carte", maxEntrees: 1, price: 4.00, imageURL: "https://i.imgur.com/mMWZbJW.png" }
+        { id: 1, item_name: "Bowl", maxEntrees: 1, price: 7.80, imageURL: "https://i.imgur.com/L4nkahG.png" },
+        { id: 2, item_name: "Plate", maxEntrees: 2, price: 8.90, imageURL: "https://i.imgur.com/JkZ0zxo.png" },
+        { id: 3, item_name: "Bigger Plate", maxEntrees: 3, price: 10.00, imageURL: "https://i.imgur.com/j42Ulmf.png" },
+        { id: 4, item_name: "A La Carte", maxEntrees: 1, price: 4.00, imageURL: "https://i.imgur.com/mMWZbJW.png" }
     ]);
-    //const [menuItems, setMenuItems] = useState([]);
+    const [menuItems, setMenuItems] = useState([]);
     const [appetizers, setAppetizers] = useState([]);
     const [drinks, setDrinks] = useState([]);
     const [sides, setSides] = useState([]);
     const [entrees, setEntrees] = useState([]);
 
-    /*const fetchMenuData = async (setMenuItems) => {
+    const fetchMenuData = async (setMenuItems) => {
         try {
             const response = await fetch('http://localhost:5001/api/get-menu-context');
             const data = await response.json();
@@ -40,7 +40,7 @@ export const MenuProvider = ({ children }) => {
         } catch (error) {
             console.error('Error fetching food data:', error);
         }
-    };*/
+    };
 
     const fetchDrinkData = async (setDrinks) => {
         try {
@@ -89,7 +89,7 @@ export const MenuProvider = ({ children }) => {
         fetchSideData(setSides);
         fetchDrinkData(setDrinks);
         fetchAppetizerData(setAppetizers);
-        //fetchMenuData(setMenuItems);
+        fetchMenuData(setMenuItems);
     },[]);
 
     const addSide = (newItem) => {
@@ -116,6 +116,38 @@ export const MenuProvider = ({ children }) => {
         setAppetizers((prevItems) => prevItems.filter((item) => item.item_name !== item_name));
     };
 
+    const changeAppetizerPrice = (item_name, new_price) => {
+        setAppetizers((prevItems) =>
+            prevItems.map((item) =>
+                item.item_name === item_name
+                    ? { ...item, price: parseFloat(new_price) } // Update the price for the matching item
+                    : item // Keep other items unchanged
+            )
+        );
+        changeMenuPrice(item_name, new_price);
+        changeDrinkPrice(item_name, new_price);
+    };
+    
+    const changeDrinkPrice = (item_name, new_price) => {
+        setDrinks((prevItems) =>
+            prevItems.map((item) =>
+                item.item_name === item_name
+                    ? { ...item, price: parseFloat(new_price) } // Update the price for the matching item
+                    : item // Keep other items unchanged
+            )
+        );
+    }; 
+
+    const changeMenuPrice = (item_name, new_price) => {
+        setMenuItems((prevItems) =>
+            prevItems.map((item) =>
+                item.item_name === item_name
+                    ? { ...item, price: parseFloat(new_price) } // Update the price for the matching item
+                    : item // Keep other items unchanged
+            )
+        );
+    };    
+
     const addEntree = (newItem) => {
         console.log('entered add');
         setEntrees((prevItems) => [...prevItems, newItem]);
@@ -135,6 +167,7 @@ export const MenuProvider = ({ children }) => {
 
     const addMenuItem = (newItem) => {
         setMenuItems((prevItems) => [...prevItems, newItem]);
+        console.log(menuItems);
     };
 
     const removeMenuItem = (item_name) => {
@@ -142,7 +175,7 @@ export const MenuProvider = ({ children }) => {
     };
 
     return (
-        <MenuContext.Provider value={{ menuItems,addDrink,addAppetizer,removeAppetizer, removeDrink, addSide, removeSide, addEntree, removeEntree, addMenuItem, removeMenuItem, fetchEntreeData, entrees, sides, comboOptions, appetizers, drinks }}>
+        <MenuContext.Provider value={{ menuItems,addDrink,addAppetizer,removeAppetizer, changeAppetizerPrice, removeDrink, addSide, removeSide, addEntree, removeEntree, addMenuItem, removeMenuItem, fetchEntreeData, entrees, sides, comboOptions, appetizers, drinks }}>
             {children}
         </MenuContext.Provider>
     );

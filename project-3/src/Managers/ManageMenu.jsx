@@ -3,7 +3,7 @@ import './ManageMenu.css';
 import {useMenu} from '../MenuContext'
 
 function ManageMenu() {
-    const { addEntree, removeEntree, entrees, removeSide, addSide, addDrink, removeDrink, addAppetizer, removeAppetizer, addMenuItem, removeMenuItem } = useMenu();
+    const { addEntree, removeEntree, changeAppetizerPrice, entrees, removeSide, addSide, addDrink, removeDrink, addAppetizer, removeAppetizer, addMenuItem, removeMenuItem } = useMenu();
     const [foodItems, setFoodItems] = useState([]);
     const [menuItems, setMenuItems] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false); // For adding items
@@ -182,14 +182,12 @@ function ManageMenu() {
     
             if (response.ok) {
                 const addedItem = await response.json();
-                console.log('Added item:', addedItem);
     
                 // Update the foodItems state with the newly added item
                 setMenuItems([...menuItems, addedItem]);
     
                 // Close the popup and reset the input
                 setIsMenuPopupOpen(false);
-                console.log(itemType);
                 if (itemType === 'drink'){
                     addDrink(addedItem);
                     
@@ -222,7 +220,6 @@ function ManageMenu() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ item_name: newItemName, price: newItemPrice, category: newCategory }),
             });
-    
             if (response.ok) {
                 const addedItem = await response.json();
                 console.log('Added item:', addedItem);
@@ -286,6 +283,9 @@ function ManageMenu() {
                             : item
                     )
                 );
+                console.log(itemToChange);
+                console.log(newItemPrice);
+                changeAppetizerPrice(itemToChange, newItemPrice);
 
                 setChangePricePopupOpen(false);
                 setItemToChange('');
