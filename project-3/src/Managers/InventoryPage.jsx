@@ -32,6 +32,7 @@ function InventoryPage() {
   const { deleteRow } = useContext(OrderContext);
   const { editRow } = useContext(OrderContext);
   const { updateRowCost } = useContext(OrderContext);
+  const { clear } = useContext(OrderContext);
   useEffect(() => {
     // Listen for SSE updates when the component mounts
 
@@ -44,6 +45,11 @@ function InventoryPage() {
       // If the message contains the full employee list (on initial connection)
       if (Array.isArray(message)) {
         setData(message);  // Set the initial list of employees
+      } else if (message.addOrder) {
+        console.log("data changed");
+        console.log(message.addOrder);
+        
+        setData(message.addOrder);
       }
     };
 
@@ -150,6 +156,7 @@ function InventoryPage() {
 
   const [selectedOption, setSelectedOption] = useState('');
   const [foodSelectError, setFoodSelectError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
 
 
@@ -222,7 +229,8 @@ function InventoryPage() {
 
 
   const handleSubmit = () => {
-    const cost = getUnitCost(selectedOption) * quantity;
+    let cost = getUnitCost(selectedOption) * quantity;
+    cost = Math.round(cost * 100) / 100;
     let selectEmpty = false;
     let quantityEmpty = false;
     console.log(selectedOption);
@@ -234,6 +242,7 @@ function InventoryPage() {
       setQuantityError("Please fill out box");
       quantityEmpty = true;
     }
+    console.log(orderData);
 
 
 
@@ -250,7 +259,24 @@ function InventoryPage() {
   };
 
   const handleOrderSubmit = () => {
-    closePopup();
+    setIsLoading(true);
+    fetch('http://localhost:5001/api/add-inventory', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      setIsLoading(false);
+      clear();
+
+      closePopup();
+    })
+    .catch(err => {
+      console.error(err);
+      setIsLoading(false);
+    })
   };
 
   const [editId, setEditId] = useState(null);
@@ -390,7 +416,12 @@ function InventoryPage() {
                   )}
                 </div>
               </div>
-              <button className="orderSubmit" onClick={handleOrderSubmit}>Submit: ${getTotalCost()}</button>
+              {isLoading ? (
+                <div className='loading'></div>
+
+              ) : (
+                <button className="orderSubmit" onClick={handleOrderSubmit}>Submit: ${getTotalCost()}</button>
+              )}
 
 
 

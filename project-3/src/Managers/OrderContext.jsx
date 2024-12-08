@@ -10,6 +10,10 @@ export const OrderProvider = ({ children }) => {
         return savedOrder ? JSON.parse(savedOrder) : [];
     });
 
+    const clear = () => {
+      setOrderData([]);
+    }
+
 
 
     useEffect(() => {
@@ -58,7 +62,7 @@ export const OrderProvider = ({ children }) => {
     };
   
     return (
-      <OrderContext.Provider value={{ orderData, addRow, deleteRow, editRow, updateRowCost }}>
+      <OrderContext.Provider value={{ orderData, addRow, deleteRow, editRow, updateRowCost, clear }}>
         {children}
       </OrderContext.Provider>
     );
