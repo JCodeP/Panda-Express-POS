@@ -27,7 +27,7 @@ function CashierComboScreen({ priceModifier }) {
     useEffect(() => {
         // This useEffect can still be used for any additional logic that needs to be run when the page loads
         // In this case, we're not calling fetchEntreeData, we're just accessing the data
-        console.log(entrees); // Log the entrees to ensure you have the correct data
+         // Log the entrees to ensure you have the correct data
     }, [entrees]); 
 
     // Adds item to order; used in duplicateSelectedItem()
@@ -248,14 +248,14 @@ function CashierComboScreen({ priceModifier }) {
             <div className="buttons">
                 <div className="button-container">
                     {sides.map((side) => (
-                        <button key={side.id} onClick={() => addSideToCombo(side)}>
-                            {side.name}
+                        <button key={side.side_id} onClick={() => addSideToCombo(side)}>
+                            {side.item_name}
                         </button>
                     ))}
                 </div>
                 <div className="button-container">
                     {entrees.map((entree) => (
-                        <button key={entree.id} onClick={() => addEntreeToCombo(entree)}>
+                        <button key={entree.entree_id} onClick={() => addEntreeToCombo(entree)}>
                             {entree.item_name}
                         </button>
                     ))}

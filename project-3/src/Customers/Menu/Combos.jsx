@@ -92,7 +92,7 @@ function Combos({addItems, language, changeLanguage}) {
     const placeOrder = () => {
         const newOrderItems = [{ name: currentCombo.name, price: currentCombo.price }];
         if (selectedSide) {
-            newOrderItems.push({ name: selectedSide.name, price: 0 });
+            newOrderItems.push({ name: selectedSide.item_name, price: 0 });
         }
         selectedEntrees.forEach((entree) => {
             const quantity = entreeQuantities[entree.entree_id] || 1;
@@ -175,9 +175,9 @@ function Combos({addItems, language, changeLanguage}) {
                             ))
                         ) : (
                             sideOptions.map(side => (
-                                <button className = {`side-button ${selectedSide === side ? "selected" : ""}`} key = {side.id} onClick = {() => handleSelectSide(side)}>
-                                    <img src={side.imageURL} alt= "side.name" />
-                                    <span><Tran word={side.name} lang={language} /></span>
+                                <button className = {`side-button ${selectedSide === side ? "selected" : ""}`} key = {side.side_id} onClick = {() => handleSelectSide(side)}>
+                                    <img src={side.image} alt= "side.item_name" />
+                                    <span><Tran word={side.item_name} lang={language} /></span>
                                 </button>
                             ))
                         )}

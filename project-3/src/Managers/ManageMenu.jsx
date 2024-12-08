@@ -3,7 +3,7 @@ import './ManageMenu.css';
 import {useMenu} from '../MenuContext'
 
 function ManageMenu() {
-    const { addEntree, removeEntree, entrees } = useMenu();
+    const { addEntree, removeEntree, entrees, removeSide, addSide } = useMenu();
     const [foodItems, setFoodItems] = useState([]);
     const [menuItems, setMenuItems] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false); // For adding items
@@ -66,6 +66,7 @@ function ManageMenu() {
                 setDeletePopupOpen(false); // Close popup
                 setItemToDelete(null);
                 removeEntree(itemToDelete);
+                removeSide(itemToDelete);
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to delete item');
@@ -134,7 +135,12 @@ function ManageMenu() {
                 setIsPopupOpen(false);
                 setNewItemName('');
                 setNewItemPrice('');
-                addEntree(addedItem);
+                if (itemType === 'entree'){
+                    addEntree(addedItem);
+                }
+                else{
+                    addSide(addedItem);
+                }
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to add item');

@@ -14,6 +14,17 @@ router.get('/get-entree-context', async(req, res) =>{
     }
 });
 
+router.get('/get-side-context', async(req, res) =>{
+    try{
+        const query = "SELECT * FROM side";
+        const result = await req.app.get('db').query(query);
+        res.json(result.rows);
+    }catch(err){
+        console.error('Error fetching sides: ', err);
+        res.status(500).json({ message: 'Error fetching sides', error: err.message });
+    }
+});
+
 export default (connection) => {
     return (req, res, next) => {
         // Store connection on the app object

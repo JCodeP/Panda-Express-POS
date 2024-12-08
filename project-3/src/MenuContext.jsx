@@ -43,13 +43,13 @@ export const MenuProvider = ({ children }) => {
         { id: 4, name: "A La Carte", maxEntrees: 1, price: 4.00, imageURL: "https://i.imgur.com/mMWZbJW.png" }
     ]);
 
-    const [sides, setSides] = useState([
+    /*const [sides, setSides] = useState([
         { id: 1, name: "White Rice", imageURL: "https://i.imgur.com/jOAR92e.png" },
         { id: 2, name: "Fried Rice", imageURL: "https://i.imgur.com/riymn3i.png" },
         { id: 3, name: "Chow Mein", imageURL: "https://i.imgur.com/o1JMHr0.png" },
         { id: 4, name: "Super Greens", imageURL: "https://i.imgur.com/QHWRw40.png" },
-    ]);
-
+    ]);*/
+    const [sides, setSides] = useState([]);
     const [entrees, setEntrees] = useState([]);
 
     const fetchEntreeData = async (setEntrees) => {
@@ -63,9 +63,29 @@ export const MenuProvider = ({ children }) => {
         }
     };
 
+    const fetchSideData = async (setEntrees) => {
+        try {
+            const response = await fetch('http://localhost:5001/api/get-side-context');
+            const data = await response.json();
+            setSides(data);
+        } catch (error) {
+            console.error('Error fetching food data:', error);
+        }
+    };
+
     useEffect(()=>{
         fetchEntreeData(setEntrees);
+        fetchSideData(setSides);
     },[]);
+
+    const addSide = (newItem) => {
+        setSides((prevItems) => [...prevItems, newItem]);
+    }
+
+    const removeSide = (item_name) => {
+        setSides((prevItems) => prevItems.filter((item) => item.item_name !== item_name));
+    };
+
 
     const addEntree = (newItem) => {
         console.log('entered add');
@@ -93,7 +113,7 @@ export const MenuProvider = ({ children }) => {
     };
 
     return (
-        <MenuContext.Provider value={{ menuItems,addEntree, removeEntree, addMenuItem, removeMenuItem, fetchEntreeData, entrees, sides, comboOptions, appetizers, drinks }}>
+        <MenuContext.Provider value={{ menuItems,addSide, removeSide, addEntree, removeEntree, addMenuItem, removeMenuItem, fetchEntreeData, entrees, sides, comboOptions, appetizers, drinks }}>
             {children}
         </MenuContext.Provider>
     );

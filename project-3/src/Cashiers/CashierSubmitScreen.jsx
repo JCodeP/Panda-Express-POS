@@ -94,7 +94,7 @@ function CashierSubmitScreen({ priceModifier }) {
                             <ul>
                                 {item.side && (
                                     <li>
-                                        {item.side.name}
+                                        {item.side.item_name}
                                     </li>
                                 )}
                                 {item.entrees && item.entrees.length > 0 && (
