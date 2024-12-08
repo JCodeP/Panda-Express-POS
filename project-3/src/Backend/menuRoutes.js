@@ -28,13 +28,13 @@ router.get('/get-menu-data', async (req, res) => {
 });
 
 router.post('/add-side', async (req, res) => {
-    const query = 'INSERT INTO side (side_id, item_name, is_prem, image) SELECT COALESCE(MAX(side_id),0) + 1, $1, False, NULL FROM side RETURNING *;';
-    const { item_name } = req.body; // Destructure item_name from the request body
+    const query = 'INSERT INTO side (side_id, item_name, is_prem, image, alt_text) SELECT COALESCE(MAX(side_id),0) + 1, $1, False, $2, $3 FROM side RETURNING *;';
+    const { item_name, image, alt_text } = req.body; // Destructure item_name from the request body
 
     if (!item_name) {
         return res.status(400).json({ message: 'item_name is required' }); // Handle missing item_name
     }
-    const value = [item_name];
+    const value = [item_name, image, alt_text];
     try {
         const result = await req.app.get('db').query(query, value);
         res.status(200).json(result.rows[0]); // Return the newly inserted side item
@@ -47,19 +47,19 @@ router.post('/add-side', async (req, res) => {
 
 router.post('/add-entree', async (req, res) => {
     const query = `
-        INSERT INTO entree (entree_id, item_name, is_prem, image)
-        SELECT COALESCE(MAX(entree_id), 0) + 1, $1, False, NULL
+        INSERT INTO entree (entree_id, item_name, is_prem, image, alt_text)
+        SELECT COALESCE(MAX(entree_id), 0) + 1, $1, False, $2, $3
         FROM entree
         RETURNING *;
     `;
 
-    const { item_name } = req.body; // Destructure item_name from the request body
+    const { item_name, image, alt_text } = req.body; // Destructure item_name from the request body
 
     if (!item_name) {
         return res.status(400).json({ message: 'item_name is required' }); // Handle missing item_name
     }
 
-    const value = [item_name];
+    const value = [item_name, image, alt_text];
 
     try {
         const result = await req.app.get('db').query(query, value);
@@ -72,19 +72,19 @@ router.post('/add-entree', async (req, res) => {
 
 router.post('/add-drink', async (req, res) => {
     const query = `
-        INSERT INTO drink (drink_id, item_name, price)
-        SELECT COALESCE(MAX(drink_id), 0) + 1, $1, $2
+        INSERT INTO drink (drink_id, item_name, price, image, alt_text)
+        SELECT COALESCE(MAX(drink_id), 0) + 1, $1, $2, $3, $4
         FROM drink
         RETURNING *;
     `;
 
-    const { item_name, price } = req.body; // Destructure item_name from the request body
+    const { item_name, price, image, alt_text } = req.body; // Destructure item_name from the request body
 
     if (!item_name || !price) {
         return res.status(400).json({ message: 'Please fill out all required fields' }); // Handle missing item_name
     }
 
-    const value = [item_name, price];
+    const value = [item_name, price, image, alt_text];
 
     try {
         const result = await req.app.get('db').query(query, value);
@@ -95,21 +95,34 @@ router.post('/add-drink', async (req, res) => {
     }
 });
 
+router.post('/add-menu-item', async(req, res) =>{
+    const query = `INSERT INTO MENU (id, item_name, price, category) SELECT COALESCE(MAX(id), 0) + 1, $1, $2, $3 FROM menu RETURNING *;`
+    const {item_name, price, category} = req.body;
+    const value = [item_name, price, category];
+    try{
+        const result = await req.app.get('db').query(query, value);
+        res.status(200).json(result.rows[0]);
+    } catch(err){
+        console.error('Database query error:', err);
+        res.status(500).json({ message: 'Error adding menu item', error: err.message });
+    }
+});
+
 router.post('/add-appetizer', async (req, res) => {
     const query = `
-        INSERT INTO appetizer (appetizer_id, item_name, price)
-        SELECT COALESCE(MAX(appetizer_id), 0) + 1, $1, $2
+        INSERT INTO appetizer (app_id, item_name, price, image, alt_text)
+        SELECT COALESCE(MAX(app_id), 0) + 1, $1, $2, $3, $4
         FROM appetizer
         RETURNING *;
     `;
 
-    const { item_name, price } = req.body; // Destructure item_name from the request body
+    const { item_name, price, image, alt_text } = req.body; // Destructure item_name from the request body
 
     if (!item_name || !price) {
         return res.status(400).json({ message: 'Please fill out all required fields' }); // Handle missing item_name
     }
 
-    const value = [item_name, price];
+    const value = [item_name, price, image, alt_text];
 
     try {
         const result = await req.app.get('db').query(query, value);
@@ -130,8 +143,10 @@ router.delete('/delete-item', async (req, res) => {
     try {
         const db = req.app.get('db');
 
+        let result = await db.query('DELETE FROM menu WHERE item_name = $1 RETURNING *;', [item_name]);
+
         // Check and delete from `entree`
-        let result = await db.query('DELETE FROM entree WHERE item_name = $1 RETURNING *;', [item_name]);
+        result = await db.query('DELETE FROM entree WHERE item_name = $1 RETURNING *;', [item_name]);
         if (result.rowCount > 0) {
             return res.status(200).json({ message: 'Item deleted from entree', deletedItem: result.rows[0] });
         }
@@ -193,7 +208,8 @@ router.post('/change-price', async(req, res) => {
     const values = [item_name, price];
     try{
         const db = req.app.get('db');
-        let result = await db.query('UPDATE drink SET price = $2 WHERE item_name = $1 RETURNING *;', values);
+        let result = await db.query('UPDATE menu SET price = $2 WHERE item_name = $1',values);
+        result = await db.query('UPDATE drink SET price = $2 WHERE item_name = $1 RETURNING *;', values);
         if (result.rowCount > 0) {
             return res.status(200).json({ message: 'Item changed from drink', deletedItem: result.rows[0] });
         }

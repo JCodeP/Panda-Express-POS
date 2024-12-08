@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useMenu } from "../MenuContext";
@@ -13,7 +13,7 @@ import "./CashierHome.css";
  */
 function CashierComboScreen({ priceModifier }) {
     const { order, setOrder } = useOrder();
-    const { entrees, comboOptions, sides } = useMenu();
+    const { entrees, comboOptions, sides, fetchEntreeData, setEntrees } = useMenu();
     const [selectedIndex, setSelectedIndex] = useState(null);
 
     const location = useLocation();
@@ -23,6 +23,12 @@ function CashierComboScreen({ priceModifier }) {
     const comboIndex = order.length - 1;
     const combo = order[comboIndex];
     const maxEntrees = comboOptions.find(option => option.id === comboId)?.maxEntrees || 0;
+
+    useEffect(() => {
+        // This useEffect can still be used for any additional logic that needs to be run when the page loads
+        // In this case, we're not calling fetchEntreeData, we're just accessing the data
+         // Log the entrees to ensure you have the correct data
+    }, [entrees]); 
 
     // Adds item to order; used in duplicateSelectedItem()
     const addItemToOrder = (item) => {
@@ -112,7 +118,7 @@ function CashierComboScreen({ priceModifier }) {
     // Adds 1 side to a combo object
     const addSideToCombo = (side) => {
         if (combo) {
-            if (combo.name === "A La Carte") {
+            if (combo.item_name === "A La Carte") {
                 // Clear previous selection and replace with the new side
                 const updatedCombo = {
                     ...combo,
@@ -138,7 +144,7 @@ function CashierComboScreen({ priceModifier }) {
     // Adds 1 entree to a combo object
     const addEntreeToCombo = (entree) => {
         if (combo) {
-            if (combo.name === "A La Carte") {
+            if (combo.item_name === "A La Carte") {
                 // Clear previous selection and replace with the new entree
                 const updatedCombo = {
                     ...combo,
@@ -214,17 +220,17 @@ function CashierComboScreen({ priceModifier }) {
                                     deleteItem(index);
                                 }}
                             >X</button>
-                            {item.name} - ${item.price.toFixed(2)}
+                            {item.item_name} - ${item.price.toFixed(2)}
                             <ul>
                                 {item.side && (
                                     <li>
-                                        {item.side.name}
+                                        {item.side.item_name}
                                     </li>
                                 )}
                                 {item.entrees && item.entrees.length > 0 && (
                                     item.entrees.map((entree, i) => (
                                         <li key={i}>
-                                            {entree.name}
+                                            {entree.item_name}
                                         </li>
                                     )))}
                             </ul>
@@ -242,15 +248,15 @@ function CashierComboScreen({ priceModifier }) {
             <div className="buttons">
                 <div className="button-container">
                     {sides.map((side) => (
-                        <button key={side.id} onClick={() => addSideToCombo(side)}>
-                            {side.name}
+                        <button key={side.side_id} onClick={() => addSideToCombo(side)}>
+                            {side.item_name}
                         </button>
                     ))}
                 </div>
                 <div className="button-container">
                     {entrees.map((entree) => (
-                        <button key={entree.id} onClick={() => addEntreeToCombo(entree)}>
-                            {entree.name}
+                        <button key={entree.entree_id} onClick={() => addEntreeToCombo(entree)}>
+                            {entree.item_name}
                         </button>
                     ))}
                 </div>

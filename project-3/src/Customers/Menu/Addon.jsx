@@ -15,10 +15,10 @@ function Addon({addItems, language, changeLanguage}) {
             <div className="addon-title"><Tran word="Appetizers" lang={language} /></div>
             <div className="addon-button-box">
             {appetizers.map(appetizer => (
-                    <button className="addon-button" key={appetizer.id} onClick={() => addItems([appetizer])}>
-                        <img src={appetizer.imageURL} alt={appetizer.name} />
+                    <button className="addon-button" key={appetizer.appetizer_id} onClick={() => addItems([appetizer])}>
+                        <img src={appetizer.image} alt={appetizer.item_name} />
                         {/* <div className="separator" /> */}
-                        <span><Tran word={appetizer.name} lang={language} /></span>
+                        <span><Tran word={appetizer.item_name} lang={language} /></span>
                     </button>
                 ))}
             </div>
@@ -27,10 +27,10 @@ function Addon({addItems, language, changeLanguage}) {
             <div className="addon-title"><Tran word="Drinks" lang={language} /></div>
             <div className="addon-button-box">
             {drinks.map(drink => (
-                    <button className="addon-button" key={drink.id} onClick={() => addItems([drink])}>
-                        <img src={drink.imageURL} alt={drink.name} />
+                    <button className="addon-button" key={drink.drink_id} onClick={() => addItems([drink])}>
+                        <img src={drink.image} alt={drink.item_name} />
                         {/* <div className="separator" /> */}
-                        <span><Tran word={drink.name} lang={language} /></span>
+                        <span><Tran word={drink.item_name} lang={language} /></span>
                     </button>
                 ))}
             </div>

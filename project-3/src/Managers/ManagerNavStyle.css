@@ -2,6 +2,11 @@
     text-align: center;
     padding: 20px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+   
+    height: 57vh;
+    
 }
 
 .manager-home-heading {
@@ -57,4 +62,35 @@
 .box img {
     max-width: 100%; /* Makes the image responsive */
     height: auto; /* Maintains aspect ratio */
+}
+
+
+.manager-home-back-container {
+    
+    height: 50%;
+  
+}
+
+
+.manager-home-back {
+    background-color: white;
+    
+   
+    height: 50%;
+    width:23%;
+    margin-top: 4%;
+    font-size: 1.5em;
+    
+  
+
+    
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+    font-weight: bold;
+}
+.manager-home-back:hover {
+    background-color: #0056b3;
 }

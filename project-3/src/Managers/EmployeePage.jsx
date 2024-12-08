@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './EmployeePageStyle.css';
 
 
@@ -6,6 +7,7 @@ import './EmployeePageStyle.css';
 function EmployeePage() {
 
     const [activePopup, setActivePopup] = useState(null);
+    const navigate = useNavigate();
 
     const openPopup = (type) => {
         setActivePopup(type);
@@ -57,6 +59,7 @@ function EmployeePage() {
 
     function initialize() {
         setPositionError('');
+        setNameSelectError('');
         setError('');
         setNameError('');
         setHoursError('');
@@ -304,7 +307,15 @@ function EmployeePage() {
 
     return (
         <div className="employeePageContainer">
-            <h1 className="manager-page-header">Employee Management</h1>
+            <div className='headerSection'>
+                <button onClick={() => navigate('/managers')} className="manager-back">
+                    Back to Manager Home
+                </button>
+                
+               
+                <h1 className="manager-page-header">Employee Management</h1>
+                
+            </div>
             <div className="tableContainer">
                 <div className="table-header">
                     <div className="table-cell">id</div>
