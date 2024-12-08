@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // For navigation
 import './ManageMenu.css';
+import {useMenu} from '../MenuContext'
 
 function ManageMenu() {
     const navigate = useNavigate();
+    const { addEntree, removeEntree, changeAppetizerPrice, entrees, removeSide, addSide, addDrink, removeDrink, addAppetizer, removeAppetizer, addMenuItem, removeMenuItem } = useMenu();
     const [foodItems, setFoodItems] = useState([]);
     const [menuItems, setMenuItems] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false); // For adding items
@@ -19,6 +21,17 @@ function ManageMenu() {
     const [itemToChange, setItemToChange] = useState('');
 
     useEffect(() => {
+        if (isMenuPopupOpen) {
+            setItemType("drink"); // Set default to "drink" when popup opens
+        }
+
+        if (isPopupOpen){
+            setItemType("entree");
+        }
+
+        setNewItemName('');
+        setNewItemPrice('');
+
         const fetchFoodData = async () => {
             try {
                 const response = await fetch('http://localhost:5001/api/get-food-data');
@@ -41,7 +54,7 @@ function ManageMenu() {
 
         fetchFoodData();
         fetchMenuData();
-    }, []);
+    }, [isMenuPopupOpen, isPopupOpen]);
 
     // Function to handle deletion
     const handleDeleteItem = async () => {
@@ -65,6 +78,8 @@ function ManageMenu() {
                 setFoodItems(foodItems.filter((item) => item.item_name !== itemToDelete));
                 setDeletePopupOpen(false); // Close popup
                 setItemToDelete(null);
+                removeEntree(itemToDelete);
+                removeSide(itemToDelete);
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to delete item');
@@ -96,6 +111,9 @@ function ManageMenu() {
                 setMenuItems(menuItems.filter((item) => item.item_name !== itemToDelete));
                 setMenuDeletePopupOpen(false); // Close popup
                 setItemToDelete(null);
+                removeDrink(itemToDelete);
+                removeAppetizer(itemToDelete);
+                removeMenuItem(itemToDelete);
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to delete item');
@@ -133,6 +151,12 @@ function ManageMenu() {
                 setIsPopupOpen(false);
                 setNewItemName('');
                 setNewItemPrice('');
+                if (itemType === 'entree'){
+                    addEntree(addedItem);
+                }
+                else{
+                    addSide(addedItem);
+                }
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to add item');
@@ -150,25 +174,59 @@ function ManageMenu() {
         }
 
         try{
-            const endpoint = itemType === 'appetizer' ? 'http://localhost:5001/api/add-appetizer' : 'http://localhost:5001/api/add-drink';
-
+            const endpoint = itemType === 'drink' ? 'http://localhost:5001/api/add-drink' : 'http://localhost:5001/api/add-appetizer';
+            const newCategory = itemType === 'drink' ? 'Drinks' : 'Appetizers';
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ item_name: newItemName, price: newItemPrice }),
+                body: JSON.stringify({ item_name: newItemName, price: newItemPrice, category: newCategory }),
             });
     
             if (response.ok) {
                 const addedItem = await response.json();
-                console.log('Added item:', addedItem);
     
                 // Update the foodItems state with the newly added item
                 setMenuItems([...menuItems, addedItem]);
     
                 // Close the popup and reset the input
                 setIsMenuPopupOpen(false);
-                setNewItemName('');
-                setNewItemPrice('');
+                if (itemType === 'drink'){
+                    addDrink(addedItem);
+                    
+                }
+                else{
+                    addAppetizer(addedItem);
+                }
+                handleAddAnotherMenuItem();
+            } else {
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || 'Failed to add item');
+            }
+
+        } catch(err){
+            console.error('Error adding item:', error);
+            setErrorMessage('An unexpected error occurred');
+        }
+    }
+
+    const handleAddAnotherMenuItem = async() => {
+        if (!newItemName.trim() || !newItemPrice.trim()) {
+            setErrorMessage('Item name or price cannot be empty');
+            return;
+        }
+
+        try{
+            const newCategory = itemType === 'drink' ? 'Drinks' : 'Appetizers';
+            const response = await fetch('http://localhost:5001/api/add-menu-item', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item_name: newItemName, price: newItemPrice, category: newCategory }),
+            });
+            if (response.ok) {
+                const addedItem = await response.json();
+                console.log('Added item:', addedItem);
+                console.log(itemType);
+                addMenuItem(addedItem);
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Failed to add item');
@@ -227,6 +285,9 @@ function ManageMenu() {
                             : item
                     )
                 );
+                console.log(itemToChange);
+                console.log(newItemPrice);
+                changeAppetizerPrice(itemToChange, newItemPrice);
 
                 setChangePricePopupOpen(false);
                 setItemToChange('');
