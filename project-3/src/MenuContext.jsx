@@ -20,6 +20,22 @@ export const MenuProvider = ({ children }) => {
         { id: 12, name: "Water Bottle", price: 1.99, category: "Drinks" },
     ]);
 
+    const [appetizers, setAppetizers] = useState([
+        { id: 5, name: "Egg Roll", price: 1.99, category: "Appetizers", imageURL: "https://i.imgur.com/Ah9KkZA.png" },
+        { id: 6, name: "Spring Roll", price: 1.99, category: "Appetizers", imageURL: "https://i.imgur.com/KMa6KVU.png" },
+        { id: 7, name: "Cream Cheese Rangoon", price: 1.99, category: "Appetizers", imageURL: "https://i.imgur.com/wZTyu3W.png" },
+        { id: 8, name: "Apple Pie Egg Roll", price: 1.99, category: "Appetizers", imageURL: "https://i.imgur.com/RyGK27Y.jpeg" },
+        // { id: 9, name: "Poop", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
+    ]);
+
+    const [drinks, setDrinks] = useState([
+        { id: 9, name: "Small Drink", price: 1.99, category: "Drinks", imageURL: "https://i.imgur.com/ufrbISK.jpeg" },
+        { id: 10, name: "Medium Drink", price: 2.29, category: "Drinks", imageURL: "https://i.imgur.com/ufrbISK.jpeg" },
+        { id: 11, name: "Large Drink", price: 2.59, category: "Drinks", imageURL: "https://i.imgur.com/ufrbISK.jpeg" },
+        { id: 12, name: "Water Bottle", price: 1.99, category: "Drinks", imageURL: "https://pngimg.com/uploads/water_bottle/water_bottle_PNG10169.png" },
+        // { id: 13, name: "Poop", price: 1.99, category: "Appetizers", imageURL: "https://placehold.co/75x75" },
+    ]);
+
     const [comboOptions, setComboOptions] = useState([
         { id: 1, name: "Bowl", maxEntrees: 1, price: 7.80, imageURL: "https://i.imgur.com/L4nkahG.png" },
         { id: 2, name: "Plate", maxEntrees: 2, price: 8.90, imageURL: "https://i.imgur.com/JkZ0zxo.png" },
@@ -59,7 +75,7 @@ export const MenuProvider = ({ children }) => {
     };
 
     return (
-        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem, entrees, sides, comboOptions }}>
+        <MenuContext.Provider value={{ menuItems, addMenuItem, removeMenuItem, entrees, sides, comboOptions, appetizers, drinks }}>
             {children}
         </MenuContext.Provider>
     );
