@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { OrderContext } from './OrderContext';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -23,6 +24,7 @@ import './InventoryPageStyle.css';
 function InventoryPage() {
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+  const navigate = useNavigate();
 
   const [inventoryData, setData] = useState([]);
   const { orderData } = useContext(OrderContext);
@@ -202,7 +204,16 @@ function InventoryPage() {
 
   return (
     <div className="inventory-page-container">
-      <h1 className="inventory-header"> Amount of Inventory Needed</h1>
+      <div className='inventoryHeaderSection'>
+                <button onClick={() => navigate('/managers')} className="manager-back">
+                    Back to Manager Home
+                </button>
+                
+               
+                <h1 className="inventory-header"> Amount of Inventory Needed</h1>
+                
+      </div>
+      
       <div className="inventory-graph">
         <Bar data={data} options={options} />
       </div>
