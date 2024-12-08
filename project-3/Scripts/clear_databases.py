@@ -17,7 +17,7 @@ try:
     cursor.execute("TRUNCATE TABLE inventory, employees, food_ingredients;")
     cursor.execute("TRUNCATE TABLE orders;")
     cursor.execute("TRUNCATE TABLE food, meal_options;")
-    cursor.execute("TRUNCATE TABLE entree, side, appetizer, drink, combo")
+    cursor.execute("TRUNCATE TABLE entree, side,menu, appetizer, drink, combo")
 
     connection.commit()
 

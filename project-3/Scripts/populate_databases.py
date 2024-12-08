@@ -61,6 +61,10 @@ try:
     combo_path = "CSVs/Combo.csv"
     with open(combo_path, "r") as combo:
         cursor.copy_expert(f"COPY combo FROM STDIN WITH CSV", combo)
+
+    menu_path = "CSVs/Menu.csv"
+    with open(menu_path, "r") as menu:
+        cursor.copy_expert(f"COPY menu FROM STDIN WITH CSV", menu)
     
     connection.commit()
 
