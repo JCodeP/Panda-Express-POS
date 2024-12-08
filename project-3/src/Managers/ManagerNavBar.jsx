@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './ManagerNavStyle.css';
 
 
 function ManagerNavBar() {
+    const navigate = useNavigate();
     return (
+        
         <div className="manager-home">
             <h1 className="manager-home-heading">Manager Home</h1>
             <div className="box-container">
@@ -48,6 +51,12 @@ function ManagerNavBar() {
                         </div>
                     </Link>
                 </div>
+            </div>
+            <div className="manager-home-back-container">
+                <button onClick={() => navigate('/')} className="manager-home-back">
+                Back to Home Page
+                </button>
+
             </div>
             
             

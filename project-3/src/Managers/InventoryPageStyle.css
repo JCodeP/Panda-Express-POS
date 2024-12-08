@@ -121,7 +121,7 @@
     align-items: center;
     text-align: center;
     width: 25%;
-    height: 40%;
+    height: 60%;
     color: #1a1a1a;
     margin: auto;
     font-size: 1.2em;
@@ -157,7 +157,7 @@
 .addSubmit {
     background-color: green;
     min-width: 40%;
-    height: 25%;
+    height: 20%;
     text-align: center;
     
 }
@@ -170,6 +170,20 @@
     margin: auto;
 
 }
+
+.loading {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 .editButton {
     text-align: center;
     background-color: darkgrey;
@@ -181,6 +195,14 @@
     text-align: center;
     
 }
+
+.inventoryHeaderSection {
+    display: flex;
+    width: 100%;
+    gap: 14%;
+    
+}
+
 
 
 .orderTableContainer {

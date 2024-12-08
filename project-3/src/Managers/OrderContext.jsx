@@ -10,6 +10,10 @@ export const OrderProvider = ({ children }) => {
         return savedOrder ? JSON.parse(savedOrder) : [];
     });
 
+    const clear = () => {
+      setOrderData([]);
+    }
+
 
 
     useEffect(() => {
@@ -22,12 +26,25 @@ export const OrderProvider = ({ children }) => {
       setOrderData((prevOrder) => [...prevOrder, newRow]);
     };
 
-    const deleteRow = (name) => {
-        const updatedOrder = orderData.filter(row => row.name !== name);
+    const deleteRow = (index) => {
+        const updatedOrder = orderData.filter((row, i) => i !== index);
         setOrderData(updatedOrder);
     };
 
     const editRow = (index, colName, value) => {
+      if (/^(?!0(\.0+)?$)0\d+/.test(value)) {
+        
+        return;
+      } 
+      if (/(\.\d+|\d+\.)/.test(value)) {
+        
+        return;
+      }
+      if (/[^0-9]/.test(value)) {
+  
+        return;
+        
+      }
       setOrderData((prevData) => 
         prevData.map((row, i) => 
           i === index ? {...row, [colName]: value} : row
@@ -45,7 +62,7 @@ export const OrderProvider = ({ children }) => {
     };
   
     return (
-      <OrderContext.Provider value={{ orderData, addRow, deleteRow, editRow, updateRowCost }}>
+      <OrderContext.Provider value={{ orderData, addRow, deleteRow, editRow, updateRowCost, clear }}>
         {children}
       </OrderContext.Provider>
     );
