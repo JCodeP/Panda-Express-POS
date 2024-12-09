@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // For navigation
 import './ManageMenu.css';
-import {useMenu} from '../MenuContext'
+import { useMenu } from '../MenuContext'
 
 function ManageMenu() {
     const navigate = useNavigate();
@@ -27,7 +27,7 @@ function ManageMenu() {
             setItemType("drink"); // Set default to "drink" when popup opens
         }
 
-        if (isPopupOpen){
+        if (isPopupOpen) {
             setItemType("entree");
         }
 
@@ -36,7 +36,7 @@ function ManageMenu() {
 
         const fetchFoodData = async () => {
             try {
-                const response = await fetch('http://localhost:5001/api/get-food-data');
+                const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-food-data');
                 const data = await response.json();
                 setFoodItems(data);
             } catch (error) {
@@ -46,7 +46,7 @@ function ManageMenu() {
 
         const fetchMenuData = async () => {
             try {
-                const response = await fetch('http://localhost:5001/api/get-menu-data');
+                const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-menu-data');
                 const data = await response.json();
                 setMenuItems(data);
             } catch (error) {
@@ -64,18 +64,18 @@ function ManageMenu() {
             setErrorMessage('No item selected for deletion');
             return;
         }
-    
+
         try {
-            const response = await fetch('http://localhost:5001/api/delete-item', {
+            const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/delete-item', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ item_name: itemToDelete }),
             });
-    
+
             if (response.ok) {
                 const deletedItem = await response.json();
                 console.log('Deleted item:', deletedItem);
-    
+
                 // Remove deleted item from foodItems state
                 setFoodItems(foodItems.filter((item) => item.item_name !== itemToDelete));
                 setDeletePopupOpen(false); // Close popup
@@ -97,18 +97,18 @@ function ManageMenu() {
             setErrorMessage('No item selected for deletion');
             return;
         }
-    
+
         try {
-            const response = await fetch('http://localhost:5001/api/delete-item', {
+            const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/delete-item', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ item_name: itemToDelete }),
             });
-    
+
             if (response.ok) {
                 const deletedItem = await response.json();
                 console.log('Deleted item:', deletedItem);
-    
+
                 // Remove deleted item from menuItems state
                 setMenuItems(menuItems.filter((item) => item.item_name !== itemToDelete));
                 setMenuDeletePopupOpen(false); // Close popup
@@ -131,32 +131,32 @@ function ManageMenu() {
             setErrorMessage('Item name cannot be empty');
             return;
         }
-    
+
         try {
             // Determine the correct endpoint based on itemType (entree or side)
-            const endpoint = itemType === 'entree' ? 'http://localhost:5001/api/add-entree' : 'http://localhost:5001/api/add-side';
-    
+            const endpoint = itemType === 'entree' ? 'https://panda-webapp-deployment-3ro1.onrender.com/api/add-entree' : 'https://panda-webapp-deployment-3ro1.onrender.com/api/add-side';
+
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ item_name: newItemName, image: newImage, alt_text: newAltText }),
             });
-    
+
             if (response.ok) {
                 const addedItem = await response.json();
                 console.log('Added item:', addedItem);
-    
+
                 // Update the foodItems state with the newly added item
                 setFoodItems([...foodItems, addedItem]);
-    
+
                 // Close the popup and reset the input
                 setIsPopupOpen(false);
                 setNewItemName('');
                 setNewItemPrice('');
-                if (itemType === 'entree'){
+                if (itemType === 'entree') {
                     addEntree(addedItem);
                 }
-                else{
+                else {
                     addSide(addedItem);
                 }
             } else {
@@ -169,34 +169,34 @@ function ManageMenu() {
         }
     };
 
-    const handleAddMenuItem = async() => {
+    const handleAddMenuItem = async () => {
         if (!newItemName.trim() || !newItemPrice.trim()) {
             setErrorMessage('Item name or price cannot be empty');
             return;
         }
 
-        try{
-            const endpoint = itemType === 'drink' ? 'http://localhost:5001/api/add-drink' : 'http://localhost:5001/api/add-appetizer';
+        try {
+            const endpoint = itemType === 'drink' ? 'https://panda-webapp-deployment-3ro1.onrender.com/api/add-drink' : 'https://panda-webapp-deployment-3ro1.onrender.com/api/add-appetizer';
             const newCategory = itemType === 'drink' ? 'Drinks' : 'Appetizers';
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ item_name: newItemName, price: newItemPrice, image: newImage, alt_text: newAltText }),
             });
-    
+
             if (response.ok) {
                 const addedItem = await response.json();
-    
+
                 // Update the foodItems state with the newly added item
                 setMenuItems([...menuItems, addedItem]);
-    
+
                 // Close the popup and reset the input
                 setIsMenuPopupOpen(false);
-                if (itemType === 'drink'){
+                if (itemType === 'drink') {
                     addDrink(addedItem);
-                    
+
                 }
-                else{
+                else {
                     addAppetizer(addedItem);
                 }
                 handleAddAnotherMenuItem();
@@ -205,21 +205,21 @@ function ManageMenu() {
                 setErrorMessage(errorData.message || 'Failed to add item');
             }
 
-        } catch(err){
+        } catch (err) {
             console.error('Error adding item:', error);
             setErrorMessage('An unexpected error occurred');
         }
     }
 
-    const handleAddAnotherMenuItem = async() => {
+    const handleAddAnotherMenuItem = async () => {
         if (!newItemName.trim() || !newItemPrice.trim()) {
             setErrorMessage('Item name or price cannot be empty');
             return;
         }
 
-        try{
+        try {
             const newCategory = itemType === 'drink' ? 'Drinks' : 'Appetizers';
-            const response = await fetch('http://localhost:5001/api/add-menu-item', {
+            const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/add-menu-item', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ item_name: newItemName, price: newItemPrice, category: newCategory }),
@@ -234,7 +234,7 @@ function ManageMenu() {
                 setErrorMessage(errorData.message || 'Failed to add item');
             }
 
-        } catch(err){
+        } catch (err) {
             console.error('Error adding item:', error);
             setErrorMessage('An unexpected error occurred');
         }
@@ -243,7 +243,7 @@ function ManageMenu() {
     // Function to handle changing premium status
     const handleChangePremium = async (itemName) => {
         try {
-            const response = await fetch('http://localhost:5001/api/change-premium', {
+            const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/change-premium', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ item_name: itemName }),
@@ -252,7 +252,7 @@ function ManageMenu() {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Changed premium status:', result);
-                
+
                 // Update the foodItems state to reflect the change
                 setFoodItems(foodItems.map((item) =>
                     item.item_name === itemName ? { ...item, is_prem: !item.is_prem } : item
@@ -269,7 +269,7 @@ function ManageMenu() {
 
     const handleChangePrice = async () => {
         try {
-            const response = await fetch('http://localhost:5001/api/change-price', {
+            const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/change-price', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ item_name: itemToChange, price: newItemPrice }),
@@ -278,7 +278,7 @@ function ManageMenu() {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Changed price:', result);
-                
+
                 // Update the menuItems state to reflect the change
                 setMenuItems((prevMenuItems) =>
                     prevMenuItems.map((item) =>
@@ -307,109 +307,109 @@ function ManageMenu() {
     return (
         <div className="create-order-page">
             {/* Back Button */}
-                <button onClick={() => navigate('/managers')} className="back-button">
+            <button onClick={() => navigate('/managers')} className="back-button">
                 Back to Manager Home
             </button>
 
             <h1>Manage Menu</h1>
             <div className="table-container-wrapper">
-            {/* First Table */}
-            <div className="table-container">
-                <h2>Food Items</h2>
-                <table className="food-table">
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Premium</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {foodItems.map((item, index) => (
-                            <tr key={index}>
-                                <td>{item.item_name}</td>
-                                <td>{item.is_prem !== undefined ? item.is_prem.toString() : 'N/A'}</td>
-                                <td>
-                                    {/* Delete Item Button */}
-                                    <button
-                                        onClick={() => {
-                                            setDeletePopupOpen(true); // Open delete popup
-                                            setItemToDelete(item.item_name); // Store the specific item name
-                                        }}
-                                    >
-                                        Delete Item
-                                    </button>
-
-                                    {/* Change Premium Button */}
-                                    <button
-                                        onClick={() => handleChangePremium(item.item_name)}
-                                    >
-                                        Change Premium
-                                    </button>
-                                </td>
+                {/* First Table */}
+                <div className="table-container">
+                    <h2>Food Items</h2>
+                    <table className="food-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Premium</th>
+                                <th>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {foodItems.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.item_name}</td>
+                                    <td>{item.is_prem !== undefined ? item.is_prem.toString() : 'N/A'}</td>
+                                    <td>
+                                        {/* Delete Item Button */}
+                                        <button
+                                            onClick={() => {
+                                                setDeletePopupOpen(true); // Open delete popup
+                                                setItemToDelete(item.item_name); // Store the specific item name
+                                            }}
+                                        >
+                                            Delete Item
+                                        </button>
 
-                {/* Add Item Button - Global Control */}
-                <div className="button-group">
-                    <button onClick={() => setIsPopupOpen(true)}>Add Item</button>
+                                        {/* Change Premium Button */}
+                                        <button
+                                            onClick={() => handleChangePremium(item.item_name)}
+                                        >
+                                            Change Premium
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    {/* Add Item Button - Global Control */}
+                    <div className="button-group">
+                        <button onClick={() => setIsPopupOpen(true)}>Add Item</button>
+                    </div>
+                </div>
+
+                {/* Second Table (Modified) */}
+                <div className="table-container">
+                    <h2>Menu Items</h2>
+                    <table className="food-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Actions</th> {/* Added Actions column */}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {menuItems.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.item_name}</td>
+                                    <td>{item.price || 'N/A'}</td>
+                                    <td>
+                                        {/* Delete Item Button */}
+                                        <button
+                                            onClick={() => {
+                                                setMenuDeletePopupOpen(true); // Open delete popup
+                                                setItemToDelete(item.item_name); // Store the specific item name
+                                            }}
+                                        >
+                                            Delete Item
+                                        </button>
+
+                                        {/* Change Price Button */}
+                                        <button
+                                            onClick={() => {
+                                                setChangePricePopupOpen(true);
+                                                setItemToChange(item.item_name);
+                                            }}>
+                                            Change Price
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    {/* Add Item Button - Same as in the left table */}
+                    <div className="button-group">
+                        <button
+                            onClick={() => {
+                                setIsMenuPopupOpen(true)
+                            }}>
+                            Add Item
+                        </button>
+                    </div>
                 </div>
             </div>
-
-            {/* Second Table (Modified) */}
-            <div className="table-container">
-                <h2>Menu Items</h2>
-                <table className="food-table">
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Price</th>
-                            <th>Actions</th> {/* Added Actions column */}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {menuItems.map((item, index) => (
-                            <tr key={index}>
-                                <td>{item.item_name}</td>
-                                <td>{item.price || 'N/A'}</td>
-                                <td>
-                                    {/* Delete Item Button */}
-                                    <button
-                                        onClick={() => {
-                                            setMenuDeletePopupOpen(true); // Open delete popup
-                                            setItemToDelete(item.item_name); // Store the specific item name
-                                        }}
-                                    >
-                                        Delete Item
-                                    </button>
-
-                                    {/* Change Price Button */}
-                                    <button
-                                        onClick={()=>{
-                                            setChangePricePopupOpen(true);
-                                            setItemToChange(item.item_name);
-                                        }}>
-                                        Change Price
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-
-                {/* Add Item Button - Same as in the left table */}
-                <div className="button-group">
-                    <button
-                        onClick={()=>{
-                            setIsMenuPopupOpen(true)
-                        }}>
-                        Add Item
-                    </button>
-                </div>
-            </div>
-        </div>
 
 
             {/* Popup for Adding Items */}

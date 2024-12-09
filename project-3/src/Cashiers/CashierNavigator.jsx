@@ -19,7 +19,7 @@ function CashierNavigator() {
         // Makes API call to weather api and calculates the price modifier
         const fetchAndCalculate = async () => {
             try {
-                const response = await fetch("http://localhost:5001/api/weather");
+                const response = await fetch("https://panda-webapp-deployment-3ro1.onrender.com/api/weather");
                 if (!response.ok) {
                     throw new Error(`Error fetching weather data: ${response.status}`);
                 }

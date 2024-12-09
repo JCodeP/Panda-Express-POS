@@ -7,10 +7,10 @@ function Tran({ word, lang }) {
 
     const fetchTranslation = async () => {
         try {
-            let response = await fetch(`http://localhost:5001/api/translate/${lang}/${word}`);
+            let response = await fetch(`https://panda-webapp-deployment-3ro1.onrender.com/api/translate/${lang}/${word}`);
             if (!response.ok) {
                 //if GET fails; PUT into json
-                response = await fetch(`http://localhost:5001/api/translate/${lang}/${word}`, { method: "PUT" });
+                response = await fetch(`https://panda-webapp-deployment-3ro1.onrender.com/api/translate/${lang}/${word}`, { method: "PUT" });
                 if (!response.ok) {
                     throw new Error("Translation failed");
                 }

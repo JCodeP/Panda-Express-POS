@@ -19,38 +19,38 @@ function EmployeePage() {
     };
 
 
-    
-    
+
+
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const wsURL = 'ws://localhost:5001';
-    
+
     useEffect(() => {
         // Listen for SSE updates when the component mounts
-        const eventSource = new EventSource('http://localhost:5001/api/events'); // URL to the SSE endpoint on the backend
-    
+        const eventSource = new EventSource('https://panda-webapp-deployment-3ro1.onrender.com/api/events'); // URL to the SSE endpoint on the backend
+
         eventSource.onmessage = (event) => {
-          const message = JSON.parse(event.data);
-          console.log('Received SSE message:', message);
-    
-          // If the message contains the full employee list (on initial connection)
-          if (Array.isArray(message)) {
-            setData(message);  // Set the initial list of employees
-          } else if (message.employee) {
-            // If the message contains a new employee, add it to the list
-            setData(prevEmployees => [...prevEmployees, message.employee]);
-          } else if (message.deleteName) {
-            // Remove the deleted employee from the table
-            setData((prevEmployees) => prevEmployees.filter((emp) => emp.name !== message.deleteName));
-          } else if (message.nameUpdated) {
-            console.log('update condition worked');
-            setData(prevData => prevData.map(row => (row.name === message.nameUpdated.name ? message.nameUpdated : row)));
-          }
+            const message = JSON.parse(event.data);
+            console.log('Received SSE message:', message);
+
+            // If the message contains the full employee list (on initial connection)
+            if (Array.isArray(message)) {
+                setData(message);  // Set the initial list of employees
+            } else if (message.employee) {
+                // If the message contains a new employee, add it to the list
+                setData(prevEmployees => [...prevEmployees, message.employee]);
+            } else if (message.deleteName) {
+                // Remove the deleted employee from the table
+                setData((prevEmployees) => prevEmployees.filter((emp) => emp.name !== message.deleteName));
+            } else if (message.nameUpdated) {
+                console.log('update condition worked');
+                setData(prevData => prevData.map(row => (row.name === message.nameUpdated.name ? message.nameUpdated : row)));
+            }
         };
-    
+
         return () => {
-          eventSource.close(); // Clean up when component is unmounted
+            eventSource.close(); // Clean up when component is unmounted
         };
     }, []);
 
@@ -76,7 +76,7 @@ function EmployeePage() {
     const [salaryInput, setSalaryInput] = useState('');
 
     const [weeklyHoursInput, setWeeklyHoursInput] = useState('');
-    
+
     // State to store the selected option from dropdown
     const [selectedOption, setSelectedOption] = useState('');
 
@@ -92,12 +92,12 @@ function EmployeePage() {
 
     const [nameSelectError, setNameSelectError] = useState(null);
 
-    
+
     // Handler for text input changes
     const handleNameChange = (e) => {
         setNameInput(e.target.value);
         setNameError("");
-        
+
     };
 
     const handleSalaryChange = (e) => {
@@ -107,17 +107,17 @@ function EmployeePage() {
             setError("Please do not enter leading zeroes before decimal place");
             console.log("yesyes");
             return;
-        } 
+        }
         if (/^$/.test(e.target.value) || /^\d*\.?\d{0,2}$/.test(e.target.value)) { // Allows only numbers
             setError(""); // Clear error if valid
             console.log("yesno");
             return;
-            
+
         }
         if (/^\d*\.\d{3,}(?=\d*[^0]$)/.test(e.target.value)) {
             setError("Cannot enter more than 2 decimal places");
             return;
-            
+
         }
         else if (/[^0-9.]|(\..*\..*)/.test(e.target.value)) {
             setError("Please enter a valid number.");
@@ -129,7 +129,7 @@ function EmployeePage() {
         if (/^(?!0(\.0+)?$)0\d+/.test(e.target.value)) {
             setHoursError("Please do not enter leading zeroes");
             return;
-        } 
+        }
         if (/(\.\d+|\d+\.)/.test(e.target.value)) {
             setHoursError("Please enter whole numbers no decimals");
             return;
@@ -137,7 +137,7 @@ function EmployeePage() {
         if (/[^0-9]/.test(e.target.value)) {
             setHoursError("Please enter a valid number.");
             return;
-            
+
         }
         if (/^$/.test(e.target.value) || /[0-9]/.test(e.target.value)) {
             setHoursError('');
@@ -173,19 +173,19 @@ function EmployeePage() {
         console.log(isNaN(salary));
         if (salary.endsWith('.')) {
             setError("Number can't end with dot");
-            return; 
+            return;
         }
         if (!right) {
             salary = `${left}.00`;
-            
+
         }
         else if (right.length === 1) {
             salary = `${left}.${right}0`;
-            
-        }
-        
 
-        const addedData = {id, nameInput, selectedOption, salary, weeklyHoursInput};
+        }
+
+
+        const addedData = { id, nameInput, selectedOption, salary, weeklyHoursInput };
         let salaryEmpty;
         let hoursEmpty;
         let nameEmpty;
@@ -214,11 +214,11 @@ function EmployeePage() {
         if (error || hoursError || positionError || nameError) {
             return;
         } else {
-            fetch('http://localhost:5001/api/addData', {
+            fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/addData', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(addedData),
-              })
+            })
                 .then((response) => response.json())
                 .then((data) => {
                     console.log('Employee added:', data);
@@ -228,14 +228,14 @@ function EmployeePage() {
                     setWeeklyHoursInput('');
                 })
                 .catch((error) => console.error('Error adding employee:', error));
-    
-    
-    
+
+
+
             closePopup();
 
         }
 
-        
+
 
     };
 
@@ -243,15 +243,15 @@ function EmployeePage() {
         if (name === 'null') {
             name = ' ';
         }
-        fetch(`http://localhost:5001/api/delete/${name}`, {
-          method: 'DELETE',
+        fetch(`https://panda-webapp-deployment-3ro1.onrender.com/api/delete/${name}`, {
+            method: 'DELETE',
         })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('Employee deleted:', data);
-            // Optimistic update handled by SSE
-          })
-          .catch((error) => console.error('Error deleting employee:', error));
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Employee deleted:', data);
+                // Optimistic update handled by SSE
+            })
+            .catch((error) => console.error('Error deleting employee:', error));
     };
     const handleUpdate = (name, attributeName, newValue) => {
         let salaryEmpty;
@@ -267,7 +267,7 @@ function EmployeePage() {
             console.log(isNaN(salary));
             if (!right) {
                 salary = `${left}.00`;
-            
+
             }
             else if (right.length === 1) {
                 salary = `${left}.${right}0`;
@@ -289,13 +289,13 @@ function EmployeePage() {
         if (salaryEmpty || positionEmpty || hoursEmpty) {
             return;
         }
-        fetch('http://localhost:5001/api/update-row', {
+        fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/update-row', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, attributeName, newValue }),
         })
             .then(response => response.json())
-            .then(data =>  {
+            .then(data => {
                 console.log('Row updated:', data);
             })
             .catch(error => console.error('Error updating row:', error));
@@ -311,35 +311,35 @@ function EmployeePage() {
                 <button onClick={() => navigate('/managers')} className="manager-back">
                     Back to Manager Home
                 </button>
-                
-               
+
+
                 <h1 className="manager-page-header">Employee Management</h1>
-                
+
             </div>
             <div className="tableContainer">
                 <div className="table-header">
                     <div className="table-cell">id</div>
-                        <div className="table-cell">Name</div>
-                        <div className="table-cell">Role</div>
-                        <div className="table-cell">Salary</div>
-                        <div className="table-cell">Weekly Hours</div>
-                        <div className="table-cell">Actions</div>
+                    <div className="table-cell">Name</div>
+                    <div className="table-cell">Role</div>
+                    <div className="table-cell">Salary</div>
+                    <div className="table-cell">Weekly Hours</div>
+                    <div className="table-cell">Actions</div>
                 </div>
                 <div className="table-body">
                     {data.length === 0 ? (
                         <div className="table-row">
-                        <div className="table-cell" colSpan="3">No data available</div>
+                            <div className="table-cell" colSpan="3">No data available</div>
                         </div>
                     ) : (
                         data.map((row) => (
                             <div className="table-row" key={row.employee_id}>
-                            <div className="table-cell">{row.employee_id}</div>
-                            <div className="table-cell">{row.name}</div>
-                            <div className="table-cell">{row.role}</div>
-                            <div className="table-cell">{row.pay_rate}</div>
-                            <div className="table-cell">{row.weekly_hours}</div>
-                            <div className="table-cell">
-                                <button className="deleteButton" onClick={() => handleDeleteEmployee(row.name)}>Delete</button>
+                                <div className="table-cell">{row.employee_id}</div>
+                                <div className="table-cell">{row.name}</div>
+                                <div className="table-cell">{row.role}</div>
+                                <div className="table-cell">{row.pay_rate}</div>
+                                <div className="table-cell">{row.weekly_hours}</div>
+                                <div className="table-cell">
+                                    <button className="deleteButton" onClick={() => handleDeleteEmployee(row.name)}>Delete</button>
                                 </div>
                             </div>
                         ))
@@ -356,7 +356,7 @@ function EmployeePage() {
                             <div className="popupHeader">
                                 <h2>Enter Employee Information</h2>
                                 <button className="x" onClick={closePopup}>&times;</button>
-                                
+
 
 
                             </div>
@@ -377,7 +377,7 @@ function EmployeePage() {
                                     <option value="Manager">Manager</option>
                                     <option value="Cook">Cook</option>
                                     <option value="Janitor">Janitor</option>
-                                    
+
                                 </select>
                             </label>
                             {positionError && <p style={{ color: "red" }}>{positionError}</p>}
@@ -400,14 +400,14 @@ function EmployeePage() {
                             </label>
                             {hoursError && <p style={{ color: "red" }}>{hoursError}</p>}
                             <button className="employeeSubmit" onClick={handleSubmit}>Submit</button>
-                            
+
 
                         </div>
-                    </div>    
+                    </div>
                 )}
-                
 
-            
+
+
                 <button onClick={() => openPopup('salary')}> Change Salary</button>
 
 
@@ -440,9 +440,9 @@ function EmployeePage() {
                             </label>
                             {error && <p style={{ color: "red" }}>{error}</p>}
                             <button className="employeeSubmit" onClick={() => handleUpdate(employeeOption, 'pay_rate', salaryInput)}>Submit</button>
-                            
+
                         </div>
-                    </div>    
+                    </div>
                 )}
                 <button onClick={() => openPopup('hours')}> Change Weekly Hours</button>
                 {activePopup == 'hours' && (
@@ -474,9 +474,9 @@ function EmployeePage() {
                             </label>
                             {hoursError && <p style={{ color: "red" }}>{hoursError}</p>}
                             <button className="employeeSubmit" onClick={() => handleUpdate(employeeOption, 'weekly_hours', weeklyHoursInput)}>Submit</button>
-                            
+
                         </div>
-                    </div>    
+                    </div>
                 )}
             </div>
         </div>
