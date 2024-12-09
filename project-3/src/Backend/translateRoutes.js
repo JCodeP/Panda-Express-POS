@@ -6,9 +6,18 @@ import express from 'express'
 // const esTranslation = await import('./Locales/es/translation.json');
 
 import fs from 'fs/promises';
+import path from 'path';
 
-const enTranslation = JSON.parse(await fs.readFile('./Locales/en/translation.json', 'utf8'));
-const esTranslation = JSON.parse(await fs.readFile('./Locales/es/translation.json', 'utf8'));
+
+const enFilePath = path.resolve('./Locales/en/translation.json');
+const esFilePath = path.resolve('./Locales/es/translation.json');
+
+
+    const enTranslation = JSON.parse(await fs.readFile(enFilePath, 'utf8')); 
+    const esTranslation = JSON.parse(await fs.readFile(esFilePath, 'utf8')); 
+    console.log('Translations loaded:');
+
+
 
 
 import bodyParser from "body-parser";
