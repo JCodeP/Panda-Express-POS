@@ -39,7 +39,7 @@ function ManagerNavBar() {
                     <Link to="/managers/inventorypage" className="box-link">
                         <div className="box-content"> {/* New div for content */}
                             <img src="https://placehold.co/150x100" alt="placeholder" />
-                            <h2>Inventory</h2>
+                            <h2>Create Inventory Order</h2>
                         </div>
                     </Link>
                 </div>
