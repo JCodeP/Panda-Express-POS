@@ -9,13 +9,13 @@ import fs from 'fs/promises';
 import path from 'path';
 
 
-const enFilePath = path.resolve('./Locales/en/translation.json');
-const esFilePath = path.resolve('./Locales/es/translation.json');
+const enFilePath = path.resolve('./src/Backend/Locales/en/translation.json');
+const esFilePath = path.resolve('./src/Backend/Locales/es/translation.json');
 
 
-    const enTranslation = JSON.parse(await fs.readFile(enFilePath, 'utf8')); 
-    const esTranslation = JSON.parse(await fs.readFile(esFilePath, 'utf8')); 
-    console.log('Translations loaded:');
+const enTranslation = JSON.parse(await fs.readFile(enFilePath, 'utf8')); 
+const esTranslation = JSON.parse(await fs.readFile(esFilePath, 'utf8')); 
+console.log('Translations loaded:');
 
 
 
