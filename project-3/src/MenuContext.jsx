@@ -34,7 +34,7 @@ export const MenuProvider = ({ children }) => {
 
     const fetchMenuData = async (setMenuItems) => {
         try {
-            const response = await fetch('http://localhost:5001/api/get-menu-context');
+            const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-menu-context');
             const data = await response.json();
             setMenuItems(data);
         } catch (error) {
@@ -44,7 +44,7 @@ export const MenuProvider = ({ children }) => {
 
     const fetchDrinkData = async (setDrinks) => {
         try {
-            const response = await fetch('http://localhost:5001/api/get-drink-context');
+            const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-drink-context');
             const data = await response.json();
             setDrinks(data);
         } catch (error) {
@@ -54,7 +54,7 @@ export const MenuProvider = ({ children }) => {
 
     const fetchAppetizerData = async (setAppetizers) => {
         try {
-            const response = await fetch('http://localhost:5001/api/get-appetizer-context');
+            const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-appetizer-context');
             const data = await response.json();
             setAppetizers(data);
         } catch (error) {
@@ -66,7 +66,7 @@ export const MenuProvider = ({ children }) => {
     const fetchEntreeData = async (setEntrees) => {
         console.log("Entered fetch Entree Data");
         try {
-            const response = await fetch('http://localhost:5001/api/get-entree-context');
+            const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-entree-context');
             const data = await response.json();
             setEntrees(data);
         } catch (error) {
@@ -76,7 +76,7 @@ export const MenuProvider = ({ children }) => {
 
     const fetchSideData = async (setEntrees) => {
         try {
-            const response = await fetch('http://localhost:5001/api/get-side-context');
+            const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-side-context');
             const data = await response.json();
             setSides(data);
         } catch (error) {
@@ -84,13 +84,13 @@ export const MenuProvider = ({ children }) => {
         }
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchEntreeData(setEntrees);
         fetchSideData(setSides);
         fetchDrinkData(setDrinks);
         fetchAppetizerData(setAppetizers);
         fetchMenuData(setMenuItems);
-    },[]);
+    }, []);
 
     const addSide = (newItem) => {
         setSides((prevItems) => [...prevItems, newItem]);
@@ -127,7 +127,7 @@ export const MenuProvider = ({ children }) => {
         changeMenuPrice(item_name, new_price);
         changeDrinkPrice(item_name, new_price);
     };
-    
+
     const changeDrinkPrice = (item_name, new_price) => {
         setDrinks((prevItems) =>
             prevItems.map((item) =>
@@ -136,7 +136,7 @@ export const MenuProvider = ({ children }) => {
                     : item // Keep other items unchanged
             )
         );
-    }; 
+    };
 
     const changeMenuPrice = (item_name, new_price) => {
         setMenuItems((prevItems) =>
@@ -146,7 +146,7 @@ export const MenuProvider = ({ children }) => {
                     : item // Keep other items unchanged
             )
         );
-    };    
+    };
 
     const addEntree = (newItem) => {
         console.log('entered add');
@@ -158,12 +158,12 @@ export const MenuProvider = ({ children }) => {
         console.log('entered remove');
         setEntrees((prevItems) => prevItems.filter((item) => item.item_name !== item_name));
     };
-    
+
     // Log updated entrees using useEffect
     useEffect(() => {
         console.log('Updated entrees:', entrees);
     }, [entrees]);  // This ensures it logs whenever `entrees` changes
-    
+
 
     const addMenuItem = (newItem) => {
         setMenuItems((prevItems) => [...prevItems, newItem]);
@@ -175,7 +175,7 @@ export const MenuProvider = ({ children }) => {
     };
 
     return (
-        <MenuContext.Provider value={{ menuItems,addDrink,addAppetizer,removeAppetizer, changeAppetizerPrice, removeDrink, addSide, removeSide, addEntree, removeEntree, addMenuItem, removeMenuItem, fetchEntreeData, entrees, sides, comboOptions, appetizers, drinks }}>
+        <MenuContext.Provider value={{ menuItems, addDrink, addAppetizer, removeAppetizer, changeAppetizerPrice, removeDrink, addSide, removeSide, addEntree, removeEntree, addMenuItem, removeMenuItem, fetchEntreeData, entrees, sides, comboOptions, appetizers, drinks }}>
             {children}
         </MenuContext.Provider>
     );

@@ -19,7 +19,7 @@ function HistoryGraphs() {
 
     // Fetch initial data when component mounts
     useEffect(() => {
-        fetch('http://localhost:5001/get-sales-data', {
+        fetch('https://panda-webapp-deployment-3ro1.onrender.com/get-sales-data', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ function HistoryGraphs() {
 
     // Handle submit button to fetch filtered data
     const handleSubmit = () => {
-        fetch('http://localhost:5001/get-sales-data', {
+        fetch('https://panda-webapp-deployment-3ro1.onrender.com/get-sales-data', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

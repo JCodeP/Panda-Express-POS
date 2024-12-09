@@ -89,11 +89,11 @@ function Payment({language, changeLanguage, priceModifier}) {
                     </li>
                     <li>
                         <span className="item-name"><p><Tran word="Discount:" lang={language} /></p></span>
-                        <span className="item-price"><p>${(totalCost?.toFixed(2) * (1-priceModifier).toFixed(2)).toFixed(2) || "0.00"}</p></span>
+                        <span className="item-price"><p>${((totalCost || 0) * (1 - (priceModifier || 0) + (isLoggedIn ? 0.1 : 0))).toFixed(2)}</p></span>
                     </li>
                     <li>
                         <span className="item-name"><p><Tran word="Total:" lang={language} /></p></span>
-                        <span className="item-price"><p>${(totalCost?.toFixed(2) * priceModifier.toFixed(2)).toFixed(2) || "0.00"}</p></span>
+                        <span className="item-price"><p>${(totalCost - ((totalCost || 0) * (1 - (priceModifier || 0) + (isLoggedIn ? 0.1 : 0)))).toFixed(2)}</p></span>
                     </li>
                     
                     {/* <p><Tran word="Subtotal" lang={language} />: ${totalCost?.toFixed(2) || "0.00"}</p>

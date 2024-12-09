@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Routes, Route, Outlet, Navigate} from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import Welcome from "./Welcome.jsx";
 import Menu from "./Menu/Menu.jsx";
 import Payment from "./Payment.jsx";
@@ -18,7 +18,7 @@ function CustomerHome() {
         // Makes API call to weather api and calculates the price modifier
         const fetchAndCalculate = async () => {
             try {
-                const response = await fetch("http://localhost:5001/api/weather");
+                const response = await fetch("https://panda-webapp-deployment-3ro1.onrender.com/api/weather");
                 if (!response.ok) {
                     throw new Error(`Error fetching weather data: ${response.status}`);
                 }
@@ -60,7 +60,7 @@ function CustomerHome() {
     const [language, setLanguage] = useState("en");
 
     const changeLanguage = () => {
-        if(language === "en") {
+        if (language === "en") {
             setLanguage("es");
         }
         else {
@@ -72,15 +72,15 @@ function CustomerHome() {
         <>
             <Routes>
                 <Route index element={<Navigate to="welcome" replace />} />
-                <Route path = "welcome" element = {<Welcome language={language} changeLanguage={changeLanguage} />} />
-                <Route path = "menu" element = {<Menu language={language} changeLanguage={changeLanguage} />} />
-                <Route path = "payment" element = {<Payment language={language} changeLanguage={changeLanguage} priceModifier={priceModifier} />} />
-                <Route path = "orderComplete" element = {<OrderComplete language={language} changeLanguage={changeLanguage} />} />
+                <Route path="welcome" element={<Welcome language={language} changeLanguage={changeLanguage} />} />
+                <Route path="menu" element={<Menu language={language} changeLanguage={changeLanguage} />} />
+                <Route path="payment" element={<Payment language={language} changeLanguage={changeLanguage} priceModifier={priceModifier} />} />
+                <Route path="orderComplete" element={<OrderComplete language={language} changeLanguage={changeLanguage} />} />
             </Routes>
 
             <Outlet />
         </>
-        
+
     );
 }
 
