@@ -27,7 +27,7 @@ function ManagerReports() {
 
     try {
       // Modify the fetch to use GET method
-      const response = await fetch(`http://localhost:5001/api/get-total-sales?date=${encodeURIComponent(date)}`, {
+      const response = await fetch(`https://panda-webapp-deployment-3ro1.onrender.com/api/get-total-sales?date=${encodeURIComponent(date)}`, {
         method: 'GET',  // Change to GET request
       });
 
@@ -50,13 +50,13 @@ function ManagerReports() {
     } finally {
       setLoading(false); // Reset loading state
     }
-};
+  };
 
   return (
     <div className="manager-reports">
       {/* Back Button */}
       <button onClick={() => navigate('/managers')} className="back-button">
-                Back to Manager Home
+        Back to Manager Home
       </button>
       <h1>Manager Reports</h1>
       <div className="report-form">
