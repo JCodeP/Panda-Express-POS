@@ -39,7 +39,7 @@ function Payment({language, changeLanguage, priceModifier}) {
         }
         setLoading(true);
         try {
-            const result = await fetch("http://localhost:5001/api/process-order", {
+            const result = await fetch("https://panda-webapp-deployment-3ro1.onrender.com/api/process-order", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
