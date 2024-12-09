@@ -51,10 +51,10 @@ function Orders( {order, setOrder, language, changeLanguage} ) {
                             X
                         </button>
 
-                        <span className="item-name"><Tran word={item.name} lang={language} /></span>
-                        {item.side && <span className="side-name">{item.side.item_name}</span>}
+                        <span className="item-name"><Tran word={item.name || item.item_name} lang={language} /></span>
+                        {item.side && <span className="side-name"><Tran word={item.side.item_name} lang={language} /></span>}
                         {item.entrees && item.entrees.map((entree, i) => (
-                            <span key={i} className="entree-name">{entree.name} x{entree.quantity}</span>
+                            <span key={i} className="entree-name"><Tran word={entree.name} lang={language} /> x{entree.quantity}</span>
                         ))}   
                         {item.price > 0 && <span className="item-price">${item.price.toFixed(2)}</span>}
                     </li>
