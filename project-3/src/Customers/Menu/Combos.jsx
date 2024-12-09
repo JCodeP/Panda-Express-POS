@@ -90,21 +90,22 @@ function Combos({addItems, language, changeLanguage}) {
     };
 
     const placeOrder = () => {
-        const newOrderItems = [{ id: currentCombo.id, name: currentCombo.item_name, price: currentCombo.price, side: selectedSide, 
+        const newOrderItems = [{ id: currentCombo.id, name: currentCombo.item_name, price: currentCombo.price, 
+            side: selectedSide, 
             entrees: selectedEntrees.map(entree => ({
                 name: entree.item_name,
                 quantity: entreeQuantities[entree.id] || 1
             }))
         }];
-        if (selectedSide) {
-            newOrderItems.push({ name: selectedSide.item_name, price: 0 });
-        }
-        selectedEntrees.forEach((entree) => {
-            const quantity = entreeQuantities[entree.entree_id] || 1;
-            for (let i = 0; i < quantity; i++) {
-                newOrderItems.push({ name: entree.item_name, price: 0 });
-            }
-        });
+        // if (selectedSide) {
+        //     newOrderItems.push({ name: selectedSide.item_name, price: 0 });
+        // }
+        // selectedEntrees.forEach((entree) => {
+        //     const quantity = entreeQuantities[entree.entree_id] || 1;
+        //     for (let i = 0; i < quantity; i++) {
+        //         newOrderItems.push({ name: entree.item_name, price: 0 });
+        //     }
+        // });
         addItems(newOrderItems);
         cancelCombo();
     };

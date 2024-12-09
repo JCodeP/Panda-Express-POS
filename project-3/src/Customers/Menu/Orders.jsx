@@ -37,6 +37,7 @@ function Orders( {order, setOrder, language, changeLanguage} ) {
             <div className = "separator" />
             <ul className = "order-list">
                 {order.map((item, index) => (
+                    
                     <li
                         key={index}
                     >
@@ -50,12 +51,11 @@ function Orders( {order, setOrder, language, changeLanguage} ) {
                             X
                         </button>
 
-                        <span className="item-name"><Tran word={item.item_name || item.name} lang={language} /></span>
-                        {item.side && <span className="side-name">{item.side.name}</span>}
+                        <span className="item-name"><Tran word={item.name} lang={language} /></span>
+                        {item.side && <span className="side-name">{item.side.item_name}</span>}
                         {item.entrees && item.entrees.map((entree, i) => (
                             <span key={i} className="entree-name">{entree.name} x{entree.quantity}</span>
                         ))}   
-                        <span className="item-name"><Tran word={item.item_name || item.name} lang={language} /></span>
                         {item.price > 0 && <span className="item-price">${item.price.toFixed(2)}</span>}
                     </li>
                 ))}
