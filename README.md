@@ -7,5 +7,8 @@ The frontend web application is built with React.js, and the Express.js backend 
 ## Low Level
 ### Manager Interface
 ### Cashier Interface
+- Connects to the OpenWeather API to apply dynamic menu pricing based on College Station weather conditions
+- Reads entree, drink, appetizer, and combo option data from the PostgreSQL database to display menu options
+- Posts orders, payment types, and amounts to database
 ### Customer Interface
 ### Static Display Interface
