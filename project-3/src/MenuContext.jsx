@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-
+/**
+ * @author Zachary Williams
+ * 
+ * Integrates the menu with the database
+ */
 const MenuContext = createContext();
 
 export const useMenu = () => useContext(MenuContext);
@@ -32,6 +36,7 @@ export const MenuProvider = ({ children }) => {
     const [sides, setSides] = useState([]);
     const [entrees, setEntrees] = useState([]);
 
+    //puts the appetizers, drinks, and combos all in a list for cashier to use
     const fetchMenuData = async (setMenuItems) => {
         try {
             const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-menu-context');
@@ -42,6 +47,7 @@ export const MenuProvider = ({ children }) => {
         }
     };
 
+    //gets the list of drinks from the database
     const fetchDrinkData = async (setDrinks) => {
         try {
             const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-drink-context');
@@ -52,6 +58,7 @@ export const MenuProvider = ({ children }) => {
         }
     };
 
+    //gets the list of appetizers from the database
     const fetchAppetizerData = async (setAppetizers) => {
         try {
             const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-appetizer-context');
@@ -63,6 +70,7 @@ export const MenuProvider = ({ children }) => {
         console.log(appetizers);
     };
 
+    //gets the list of entrees from the database
     const fetchEntreeData = async (setEntrees) => {
         console.log("Entered fetch Entree Data");
         try {
@@ -74,6 +82,7 @@ export const MenuProvider = ({ children }) => {
         }
     };
 
+    //gets the list of sides from the database
     const fetchSideData = async (setEntrees) => {
         try {
             const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/get-side-context');
@@ -84,6 +93,7 @@ export const MenuProvider = ({ children }) => {
         }
     };
 
+    //gets the list of sides at the beginning of the program
     useEffect(() => {
         fetchEntreeData(setEntrees);
         fetchSideData(setSides);
@@ -92,30 +102,37 @@ export const MenuProvider = ({ children }) => {
         fetchMenuData(setMenuItems);
     }, []);
 
+    //adds a side from the menu
     const addSide = (newItem) => {
         setSides((prevItems) => [...prevItems, newItem]);
     }
 
+    //removes a side from the menu
     const removeSide = (item_name) => {
         setSides((prevItems) => prevItems.filter((item) => item.item_name !== item_name));
     };
 
+    //adds a drink from the menu
     const addDrink = (newItem) => {
         setDrinks((prevItems) => [...prevItems, newItem]);
     }
 
+    //removes a drink from the menu
     const removeDrink = (item_name) => {
         setDrinks((prevItems) => prevItems.filter((item) => item.item_name !== item_name));
     };
 
+    //adds an appetizer from the menu
     const addAppetizer = (newItem) => {
         setAppetizers((prevItems) => [...prevItems, newItem]);
     }
 
+    //removes an appetizer from the menu
     const removeAppetizer = (item_name) => {
         setAppetizers((prevItems) => prevItems.filter((item) => item.item_name !== item_name));
     };
 
+    //changes the price of an appetizer
     const changeAppetizerPrice = (item_name, new_price) => {
         setAppetizers((prevItems) =>
             prevItems.map((item) =>
@@ -128,6 +145,7 @@ export const MenuProvider = ({ children }) => {
         changeDrinkPrice(item_name, new_price);
     };
 
+    //changes the price of a drink
     const changeDrinkPrice = (item_name, new_price) => {
         setDrinks((prevItems) =>
             prevItems.map((item) =>
@@ -138,6 +156,7 @@ export const MenuProvider = ({ children }) => {
         );
     };
 
+    //changes the price in the menu list
     const changeMenuPrice = (item_name, new_price) => {
         setMenuItems((prevItems) =>
             prevItems.map((item) =>
@@ -148,12 +167,14 @@ export const MenuProvider = ({ children }) => {
         );
     };
 
+    //adds an entree to the menu
     const addEntree = (newItem) => {
         console.log('entered add');
         setEntrees((prevItems) => [...prevItems, newItem]);
         console.log(entrees);
     }
 
+    //removes an entree from the menu
     const removeEntree = (item_name) => {
         console.log('entered remove');
         setEntrees((prevItems) => prevItems.filter((item) => item.item_name !== item_name));
@@ -164,12 +185,13 @@ export const MenuProvider = ({ children }) => {
         console.log('Updated entrees:', entrees);
     }, [entrees]);  // This ensures it logs whenever `entrees` changes
 
-
+    //adds and item to the menu list
     const addMenuItem = (newItem) => {
         setMenuItems((prevItems) => [...prevItems, newItem]);
         console.log(menuItems);
     };
 
+    //removes an item from the menu list
     const removeMenuItem = (item_name) => {
         setMenuItems((prevItems) => prevItems.filter((item) => item.item_name !== item_name));
     };
