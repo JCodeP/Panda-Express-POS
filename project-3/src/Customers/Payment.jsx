@@ -61,6 +61,9 @@ function Payment({language, changeLanguage, priceModifier}) {
 
     return (
         <div className="payment-section">
+            <button onClick={() => navigate('../menu/')} className="b-button"> 
+                Back to Menu
+            </button>
             {!isLoggedIn ? (
                 <div className="login-container">
                     <div className="login-box">
