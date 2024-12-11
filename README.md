@@ -13,7 +13,8 @@ The frontend web application is built with React.js, and the Express.js backend 
 ### Customer Interface
 - Utilized translate API for dynamic translations between English and Spanish
 - Connects with the PSQL DB to populate the menu with items
-- Allows for preference recommendations based upon astrological zodiac sign
+- Allows for preference recommendations based on astrological zodiac sign
 - Integrates Google OAuth API and OpenWeather API to give discounts
 - Sends finalized orders to the PSQL DB
 ### Static Display Interface
+- Displays order size, entrees, sides, and extra items on separate and non-interactive interfaces along with the image (and cost if it's needed) associated with each of those options/items
