@@ -1,5 +1,9 @@
 import express from 'express';
-
+/**
+ * @author Zachary Williams
+ * 
+ * The backend for the manage menu screen.
+ */
 // Create the router
 const router = express.Router();
 
@@ -27,6 +31,7 @@ router.get('/get-menu-data', async (req, res) => {
     }
 });
 
+//database query to add a side
 router.post('/add-side', async (req, res) => {
     const query = 'INSERT INTO side (side_id, item_name, is_prem, image, alt_text) SELECT COALESCE(MAX(side_id),0) + 1, $1, False, $2, $3 FROM side RETURNING *;';
     const { item_name, image, alt_text } = req.body; // Destructure item_name from the request body
@@ -44,7 +49,7 @@ router.post('/add-side', async (req, res) => {
     }
 });
 
-
+//database query to add an entree
 router.post('/add-entree', async (req, res) => {
     const query = `
         INSERT INTO entree (entree_id, item_name, is_prem, image, alt_text)
@@ -70,6 +75,7 @@ router.post('/add-entree', async (req, res) => {
     }
 });
 
+//database query to add a drink
 router.post('/add-drink', async (req, res) => {
     const query = `
         INSERT INTO drink (drink_id, item_name, price, image, alt_text)
@@ -95,6 +101,7 @@ router.post('/add-drink', async (req, res) => {
     }
 });
 
+//database query to add a menu item for cashier to use
 router.post('/add-menu-item', async(req, res) =>{
     const query = `INSERT INTO MENU (id, item_name, price, category) SELECT COALESCE(MAX(id), 0) + 1, $1, $2, $3 FROM menu RETURNING *;`
     const {item_name, price, category} = req.body;
@@ -108,6 +115,7 @@ router.post('/add-menu-item', async(req, res) =>{
     }
 });
 
+//database query to add an appetizer
 router.post('/add-appetizer', async (req, res) => {
     const query = `
         INSERT INTO appetizer (app_id, item_name, price, image, alt_text)
@@ -133,6 +141,7 @@ router.post('/add-appetizer', async (req, res) => {
     }
 });
 
+//database query to delete an item
 router.delete('/delete-item', async (req, res) => {
     const { item_name } = req.body;
 
@@ -176,6 +185,7 @@ router.delete('/delete-item', async (req, res) => {
     }
 });
 
+//database query to change an items premium status
 router.post('/change-premium', async(req, res) => {
     const {item_name} = req.body;
     try {
@@ -203,6 +213,7 @@ router.post('/change-premium', async(req, res) => {
 
 });
 
+//database query to change the price of an item
 router.post('/change-price', async(req, res) => {
     const{item_name, price} = req.body;
     const values = [item_name, price];

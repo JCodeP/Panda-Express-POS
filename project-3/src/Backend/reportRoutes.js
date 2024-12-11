@@ -1,9 +1,13 @@
 import express from 'express';
-
+/**
+ * @author Zachary Williams
+ * 
+ * The backend for the manager reports screen.
+ */
 // Create the router
 const router = express.Router();
 
-
+//database query that runs the report
 router.get('/get-total-sales', async(req,res) => {
     const query = `SELECT 
         SUM(payment_amount) AS total_sales,

@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // For navigation
 import './ManageMenu.css';
 import { useMenu } from '../MenuContext'
-
+/**
+ * @author Zachary Williams
+ * 
+ * Allows managers to add items, delete items, and change the price of menu items. 
+ */
 function ManageMenu() {
     const navigate = useNavigate();
     const { addEntree, removeEntree, changeAppetizerPrice, entrees, removeSide, addSide, addDrink, removeDrink, addAppetizer, removeAppetizer, addMenuItem, removeMenuItem } = useMenu();
@@ -92,6 +96,7 @@ function ManageMenu() {
         }
     };
 
+    //deletes items from the menu list
     const handleMenuDeleteItem = async () => {
         if (!itemToDelete) {
             setErrorMessage('No item selected for deletion');
@@ -126,6 +131,7 @@ function ManageMenu() {
         }
     };
 
+    //adds an item to the food list
     const handleAddFoodItem = async () => {
         if (!newItemName.trim()) {
             setErrorMessage('Item name cannot be empty');
@@ -169,6 +175,7 @@ function ManageMenu() {
         }
     };
 
+    //adds an item to the menu list
     const handleAddMenuItem = async () => {
         if (!newItemName.trim() || !newItemPrice.trim()) {
             setErrorMessage('Item name or price cannot be empty');
@@ -211,6 +218,7 @@ function ManageMenu() {
         }
     }
 
+    //adds the item to the menu context list
     const handleAddAnotherMenuItem = async () => {
         if (!newItemName.trim() || !newItemPrice.trim()) {
             setErrorMessage('Item name or price cannot be empty');
@@ -267,6 +275,7 @@ function ManageMenu() {
         }
     };
 
+    //changes the price of an item
     const handleChangePrice = async () => {
         try {
             const response = await fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/change-price', {

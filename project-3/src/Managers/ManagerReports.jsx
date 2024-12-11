@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // For navigation
 import './ManagerReports.css';
-
+/**
+ * @author Zachary Williams
+ * 
+ * Allows managers to run their reports
+ */
 function ManagerReports() {
   // State to store form input and report data
   const navigate = useNavigate();
@@ -15,7 +19,7 @@ function ManagerReports() {
   });
   const [loading, setLoading] = useState(false); // Loading state for the button
   const [error, setError] = useState(null); // Error state
-
+  //runs the manager report
   const handleRunReport = async () => {
     if (!date) {
       alert('Please select a date to run the report.');

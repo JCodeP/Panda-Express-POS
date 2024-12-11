@@ -8,7 +8,11 @@ import CreateOrderPage from './CreateOrderPage';
 import ManageMenu from './ManageMenu';
 import ManagerReports from './ManagerReports'
 import {OrderProvider} from './OrderContext';
-
+/**
+ * @author Zachary Williams
+ * 
+ * Allows managers to navigate to their desired screen
+ */
 
 function ManagerHome() {
     return (

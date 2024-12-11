@@ -1,5 +1,9 @@
 import express from 'express';
-
+/**
+ * @author Zachary Williams
+ * 
+ * The backend for the items sold screen.
+ */
 // Create the router
 const router = express.Router();
 

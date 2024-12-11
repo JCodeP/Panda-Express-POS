@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom'; // For navigation
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import './HistoryGraphs.css';
-
+/**
+ * @author Zachary Williams
+ * 
+ * Allows managers to see the history of items sold
+ */
 // Register chart components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
