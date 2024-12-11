@@ -11,4 +11,9 @@ The frontend web application is built with React.js, and the Express.js backend 
 - Reads entree, drink, appetizer, and combo option data from the PostgreSQL database to display menu options
 - Posts orders, payment types, and amounts to database
 ### Customer Interface
+- Utilized translate API for dynamic translations between English and Spanish
+- Connects with the PSQL DB to populate the menu with items
+- Allows for preference recommendations based upon astrological zodiac sign
+- Integrates Google OAuth API and OpenWeather API to give discounts
+- Sends finalized orders to the PSQL DB
 ### Static Display Interface
