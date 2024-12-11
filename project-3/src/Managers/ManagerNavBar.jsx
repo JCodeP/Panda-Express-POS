@@ -3,7 +3,12 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './ManagerNavStyle.css';
 
-
+/**
+ * 
+ * @author Joshua Park
+ * Function to set up the manager home page elements such as the buttons to click to 
+ * navigate to different manager sub pages
+ */
 function ManagerNavBar() {
     const navigate = useNavigate();
     return (

@@ -18,9 +18,15 @@ import './InventoryPageStyle.css';
 
 
 
-
-
-
+/**
+ * 
+ * @author Joshua Park
+ * 
+ * This component located in the manager interface displays quantity of ingredients in the inventory table
+ * as well as quantity needed as a bar graph. There is also functionality for adding an inventory order
+ * which would increase quantities of ingredients and functionality for editing a user order before submitting.
+ * 
+ */
 function InventoryPage() {
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -33,6 +39,8 @@ function InventoryPage() {
   const { editRow } = useContext(OrderContext);
   const { updateRowCost } = useContext(OrderContext);
   const { clear } = useContext(OrderContext);
+
+  //Listen for changes in the inventory table if any ingredients got added.
   useEffect(() => {
     // Listen for SSE updates when the component mounts
 
@@ -42,9 +50,9 @@ function InventoryPage() {
       const message = JSON.parse(event.data);
       console.log('Received SSE message:', message);
 
-      // If the message contains the full employee list (on initial connection)
+     
       if (Array.isArray(message)) {
-        setData(message);  // Set the initial list of employees
+        setData(message);  
       } else if (message.addOrder) {
         console.log("data changed");
         console.log(message.addOrder);
@@ -137,19 +145,19 @@ function InventoryPage() {
 
   const [activePopup, setActivePopup] = useState(null);
 
-
+  //function to reset input fields when opening a popup
   function initialize() {
     setFoodSelectError(null);
     setQuantityError(null);
   }
 
-
+  //function to open a popup
   const openPopup = (type) => {
     setActivePopup(type);
     initialize();
 
   };
-
+  //function to close a popup
   const closePopup = () => {
     setActivePopup(null);
   };
@@ -159,7 +167,7 @@ function InventoryPage() {
   const [isLoading, setIsLoading] = useState(false);
 
 
-
+  //handler for the dropdown menu in selecting a ingredient to add to order
   const handleDropdownChange = (event) => {
     setSelectedOption(event.target.value);
     if (event.target.value !== "") {
@@ -170,7 +178,7 @@ function InventoryPage() {
   const [quantity, setQuantity] = useState('');
 
   const [quantityError, setQuantityError] = useState(null);
-
+  //handler for inputting a quantity for adding to order or changing quantity of an item
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
     if (/^(?!0(\.0+)?$)0\d+/.test(event.target.value)) {
@@ -191,35 +199,17 @@ function InventoryPage() {
     }
   };
 
-  const handleTableChange = (index, type, value) => {
-    if (/^(?!0(\.0+)?$)0\d+/.test(value)) {
-      console.log("hello");
-
-      return;
-    }
-    if (/(\.\d+|\d+\.)/.test(value)) {
-      console.log("hello");
-      return;
-    }
-    if (/[^0-9]/.test(value)) {
-      console.log("hello");
-      return;
-
-    }
-    editRow(index, type, value);
+  
 
 
-  };
-
-
-
+  //function for getting the unit cost of an ingredient 
   function getUnitCost(name) {
     const row = inventoryData.find(ingredient => ingredient.ingredient_name === name);
 
 
     return row ? row.unit_cost : null;
   }
-
+  //function to get the total cost of an ingredient associated with ingredient by doing unit_cost * quantity
   const getTotalCost = () => {
     const total = orderData.reduce((sum, row) => sum + row.cost, 0);
     console.log(parseFloat(total.toFixed(2)));
@@ -227,7 +217,7 @@ function InventoryPage() {
   };
 
 
-
+  //handling submit of adding an order 
   const handleSubmit = () => {
     let cost = getUnitCost(selectedOption) * quantity;
     cost = Math.round(cost * 100) / 100;
@@ -257,7 +247,7 @@ function InventoryPage() {
     closePopup();
 
   };
-
+  //handling submit of an order to database sending request to backend
   const handleOrderSubmit = () => {
     setIsLoading(true);
     fetch('https://panda-webapp-deployment-3ro1.onrender.com/api/add-inventory', {
@@ -281,11 +271,11 @@ function InventoryPage() {
 
   const [editId, setEditId] = useState(null);
 
-
+  //handling for edit button to edit quantity 
   const handleEditClick = (index) => {
     setEditId(index);
   }
-
+  //handling for saving changes made to quantity
   const handleSaveClick = (name, index, quantity) => {
     setEditId(null);
     updateRowCost(index, getUnitCost(name) * quantity);
