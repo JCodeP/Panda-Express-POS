@@ -45,6 +45,11 @@ function Combos({addItems, language, changeLanguage}) {
     const chooseCombo = (combo) => {
         setCurrentCombo(combo);
         setShowCombos(false);
+        if (combo.item_name === "A La Carte") {
+            setShowEntrees(true); 
+        } else {
+            setShowEntrees(false); 
+        }
     };
     const cancelCombo = () => {
         setCurrentCombo(null);
@@ -90,16 +95,39 @@ function Combos({addItems, language, changeLanguage}) {
     };
 
     const placeOrder = () => {
-        const newOrderItems = [{ name: currentCombo.item_name, price: currentCombo.price }];
-        if (selectedSide) {
-            newOrderItems.push({ name: selectedSide.item_name, price: 0 });
+        const entreesQuantity = Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0)
+        if (currentCombo.item_name === "Bowl" && (!selectedSide || entreesQuantity.length < 1)) {
+            alert("1 side and 1 entree must be chosen to order a bowl.");
+            return;
         }
-        selectedEntrees.forEach((entree) => {
-            const quantity = entreeQuantities[entree.entree_id] || 1;
-            for (let i = 0; i < quantity; i++) {
-                newOrderItems.push({ name: entree.item_name, price: 0 });
-            }
-        });
+        if (currentCombo.item_name === "Plate" && (!selectedSide || entreesQuantity.length < 2)) {
+            alert("1 side and 2 entrees must be chosen to order a plate.");
+            return;
+        }
+        if (currentCombo.item_name === "Bigger Plate" && (!selectedSide || entreesQuantity.length < 3)) {
+            alert("1 side and 3 entrees must be chosen to order a bigger plate.");
+            return;
+        }
+        if (currentCombo.item_name === "A La Carte" && !(selectedSide || selectedEntrees.length)) {
+            alert("1 side or 1 entree must be chosen to order an A La Carte.");
+            return;
+        }
+        const newOrderItems = [{ id: currentCombo.id, name: currentCombo.item_name, price: currentCombo.price, 
+            side: selectedSide, 
+            entrees: selectedEntrees.map(entree => ({
+                name: entree.item_name,
+                quantity: entreeQuantities[entree.id] || 1
+            }))
+        }];
+        // if (selectedSide) {
+        //     newOrderItems.push({ name: selectedSide.item_name, price: 0 });
+        // }
+        // selectedEntrees.forEach((entree) => {
+        //     const quantity = entreeQuantities[entree.entree_id] || 1;
+        //     for (let i = 0; i < quantity; i++) {
+        //         newOrderItems.push({ name: entree.item_name, price: 0 });
+        //     }
+        // });
         addItems(newOrderItems);
         cancelCombo();
     };
@@ -166,7 +194,7 @@ function Combos({addItems, language, changeLanguage}) {
                                         <QuantityButton
                                             entree={entree}
                                             quantity={entreeQuantities[entree.entree_id] || 1}
-                                            maxQuantity={currentCombo.maxEntrees - Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0) + (entreeQuantities[entree.entreeid] || 0)}
+                                            maxQuantity={currentCombo.maxEntrees - Object.values(entreeQuantities).reduce((sum, qty) => sum + qty, 0) + (entreeQuantities[entree.entree_id] || 0)}
                                             updateQuantity={(quantity) => { setEntreeQuantities({ ...entreeQuantities, [entree.entree_id]: quantity }); }}
                                             removeEntree={removeEntree}
                                         />

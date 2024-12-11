@@ -6,6 +6,18 @@ The Panda Express Web Application aims to provide everything a Panda Express res
 The frontend web application is built with React.js, and the Express.js backend connects to the Google OAuth API, the Open Weather API, the Google Translate API, and a Postgresql database. 
 ## Low Level
 ### Manager Interface
+- Allows managers to update the menu by adding, deleting, and changing the price of items.
+- Allows managers to see a chart of the items sold during a given time period.
+- Allows managers to run reports to see their sales history.
 ### Cashier Interface
+- Connects to the OpenWeather API to apply dynamic menu pricing based on College Station weather conditions
+- Reads entree, drink, appetizer, and combo option data from the PostgreSQL database to display menu options
+- Posts orders, payment types, and amounts to database
 ### Customer Interface
+- Utilized translate API for dynamic translations between English and Spanish
+- Connects with the PSQL DB to populate the menu with items
+- Allows for preference recommendations based on astrological zodiac sign
+- Integrates Google OAuth API and OpenWeather API to give discounts
+- Sends finalized orders to the PSQL DB
 ### Static Display Interface
+- Displays order size, entrees, sides, and extra items on separate and non-interactive interfaces along with the image (and cost if it's needed) associated with each of those options/items

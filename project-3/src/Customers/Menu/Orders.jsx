@@ -9,9 +9,11 @@ function Orders( {order, setOrder, language, changeLanguage} ) {
 
     //Deletes item from list
     const deleteItem = (index) => {
-        setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
-        if (index === selectedIndex) {
-            setSelectedIndex(null);
+        const item = order[index];
+        if (item.id) {
+            setOrder(prevOrder => prevOrder.filter(orderItem => orderItem.id !== item.id));
+        } else {
+            setOrder((prevOrder) => prevOrder.filter((_, i) => i !== index));
         }
     };
 
@@ -20,6 +22,10 @@ function Orders( {order, setOrder, language, changeLanguage} ) {
     };
 
     const redirectComplete = () => {
+        if (order.length === 0) {
+            alert("At least add one combo to the order before continuing.");
+            return; 
+        }
         navigate("../payment", {state:{order, totalCost: calculatePrice(order)}});
     }
 
@@ -35,6 +41,7 @@ function Orders( {order, setOrder, language, changeLanguage} ) {
             <div className = "separator" />
             <ul className = "order-list">
                 {order.map((item, index) => (
+                    
                     <li
                         key={index}
                     >
@@ -47,7 +54,12 @@ function Orders( {order, setOrder, language, changeLanguage} ) {
                         >
                             X
                         </button>
-                        <span className="item-name"><Tran word={item.item_name || item.name} lang={language} /></span>
+
+                        <span className="item-name"><Tran word={item.name || item.item_name} lang={language} /></span>
+                        {item.side && <span className="side-name"><Tran word={item.side.item_name} lang={language} /></span>}
+                        {item.entrees && item.entrees.map((entree, i) => (
+                            <span key={i} className="entree-name"><Tran word={entree.name} lang={language} /> </span>
+                        ))}   
                         {item.price > 0 && <span className="item-price">${item.price.toFixed(2)}</span>}
                     </li>
                 ))}
