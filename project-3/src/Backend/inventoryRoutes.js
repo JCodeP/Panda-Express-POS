@@ -4,17 +4,23 @@ import express from 'express';
 const router = express.Router(); 
 
 
-
+/**
+ * 
+ * @author Joshua Park
+ * Sets up endpoints for the inventory order page and connecting to database and retrieving data, and 
+ * sending it to frontend.
+ */
 const inventoryRoutes = (pool) => {
 
     let clients = [];
-
+    //function to alert frontend that an order has been submitted and table is changed
     const broadcastAddOrder = (newOrder) => {
         // Broadcast the new employee to all connected clients
         clients.forEach(client =>
             client.write(`data: ${JSON.stringify({ message: 'New order submitted', addOrder: newOrder })}\n\n`)
         );
     };
+    //initial list of inventory
     router.get('/events/inventory', async (req, res) => {
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
@@ -39,6 +45,7 @@ const inventoryRoutes = (pool) => {
             clients = clients.filter(pool => pool !== res);
         });
     });
+    //Adds inventory order to database
     router.post('/add-inventory', async (req, res) => {
         const updateArray = req.body; // Array sent from the frontend
     

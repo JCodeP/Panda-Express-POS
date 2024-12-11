@@ -9,6 +9,8 @@ The frontend web application is built with React.js, and the Express.js backend 
 - Allows managers to update the menu by adding, deleting, and changing the price of items.
 - Allows managers to see a chart of the items sold during a given time period.
 - Allows managers to run reports to see their sales history.
+- Displays list of employees from database and allows for adding or deleting employees, or changing salary or hours
+- Displays food ingredients and quantities associated from database, allowing for submitting an inventory restock order
 ### Cashier Interface
 - Connects to the OpenWeather API to apply dynamic menu pricing based on College Station weather conditions
 - Reads entree, drink, appetizer, and combo option data from the PostgreSQL database to display menu options

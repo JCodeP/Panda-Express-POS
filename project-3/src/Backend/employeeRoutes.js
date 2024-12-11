@@ -2,11 +2,17 @@ import express from 'express';
 
 const router = express.Router();  // Express router to handle routes
 
-// This function will be called from the main file with the pool instance
+/**
+ * 
+ * @author Joshua Park
+ * Sets up employee related routes for the application. This handles connecting to database and 
+ * sending data to frontend.
+ */
 const employeeRoutes = (pool) => {
 
-  // POST endpoint to add a new employee
+    
     let clients = [];
+    //sending initial data to client
     router.get('/events', async (req, res) => {
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
@@ -35,25 +41,26 @@ const employeeRoutes = (pool) => {
 
   
 
-
+    //signaling frontend that a new employee is added so table can update
     const broadcastNewEmployee = (newEmployee) => {
         // Broadcast the new employee to all connected clients
         clients.forEach(client =>
             client.write(`data: ${JSON.stringify({ message: 'New employee added', employee: newEmployee })}\n\n`)
         );
     };
-
+    //signaling frontend that a employee was deleted so a table can update
     const broadcastDelete = (delName) => {
         clients.forEach(client =>
             client.write(`data: ${JSON.stringify({ message: 'employee deleted: ', deleteName: delName })}\n\n`)
         );
     }
+    //signaling to fronted that a employee attribute has changed so a table can update
     const broadcastUpdate = (rowChanged) => {
         clients.forEach(client =>
             client.write(`data: ${JSON.stringify({ message: 'employee updated: ', nameUpdated: rowChanged})}\n\n`)
         );
     }
-  
+    //Adds a new employee to database
     router.post('/addData', async (req, res) => {
         console.log("recieved data:", req.body);
         const { id, nameInput, selectedOption, salary, weeklyHoursInput } = req.body;
@@ -77,7 +84,7 @@ const employeeRoutes = (pool) => {
         }
     });
 
-    // DELETE endpoint to remove an employee by ID
+    // DELETE endpoint to remove an employee by name
     router.delete('/delete/:name', async (req, res) => {
         const { name } = req.params;
         console.log(req.params);
@@ -105,6 +112,8 @@ const employeeRoutes = (pool) => {
             res.status(500).json({ error: 'Unable to delete employee' });
         }
     });
+
+    //updates an employee attribute
     router.post('/update-row', async (req, res) => {
         const { name, attributeName, newValue } = req.body;
     

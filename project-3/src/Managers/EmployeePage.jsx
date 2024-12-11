@@ -2,7 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './EmployeePageStyle.css';
 
-
+/**
+ * 
+ * @author Joshua Park
+ * 
+ * This component located in the manager interface displays the list of employees, and functionality
+ * for adding an employee, updating salary or weekly hours, and deleting employees.
+ * 
+ */
 
 function EmployeePage() {
 
@@ -26,6 +33,7 @@ function EmployeePage() {
 
     const wsURL = 'ws://localhost:5001';
 
+    //Listens for events from server and updates employee data whenever employee table is changed in database.
     useEffect(() => {
         // Listen for SSE updates when the component mounts
         const eventSource = new EventSource('https://panda-webapp-deployment-3ro1.onrender.com/api/events'); // URL to the SSE endpoint on the backend
@@ -57,6 +65,7 @@ function EmployeePage() {
 
     const nameOptions = [...new Set(data.map((row) => row.name))];
 
+    //used to reset input fields in pop ups
     function initialize() {
         setPositionError('');
         setNameSelectError('');
@@ -93,13 +102,14 @@ function EmployeePage() {
     const [nameSelectError, setNameSelectError] = useState(null);
 
 
-    // Handler for text input changes
+    // Handler for inputting a name for adding an employee
     const handleNameChange = (e) => {
         setNameInput(e.target.value);
         setNameError("");
 
     };
 
+    //handler for the salary input and when changing salary
     const handleSalaryChange = (e) => {
 
         setSalaryInput(e.target.value);
@@ -124,6 +134,7 @@ function EmployeePage() {
         }
     };
 
+    //handler for inputting weekly hours or changing hours
     const handleHoursChange = (e) => {
         setWeeklyHoursInput(e.target.value);
         if (/^(?!0(\.0+)?$)0\d+/.test(e.target.value)) {
@@ -145,7 +156,7 @@ function EmployeePage() {
 
     };
 
-    // Handler for dropdown selection changes
+    // Handler for setting position of employee when adding an employee
     const handleDropdownChange = (e) => {
         setSelectedOption(e.target.value);
         if (e.target.value !== "") {
@@ -153,6 +164,7 @@ function EmployeePage() {
         }
     };
 
+    //handler for selecting a name employee when changing stats about an employee
     const handleEmployeeChange = (e) => {
         setEmployeeOption(e.target.value);
         if (nameSelectError !== "") {
@@ -160,12 +172,14 @@ function EmployeePage() {
         }
     };
 
+    //function used to give next available employee id to added employee
     const getNextId = () => {
         if (data.length === 0) return 1; // Start with 1 if the table is empty
         const maxId = Math.max(...data.map((emp) => emp.employee_id));
         return maxId + 1; // Increment the highest ID
     };
 
+    //handler for submitting a added employee and sending request to backend
     const handleSubmit = () => {
         const id = getNextId();
         let salary = salaryInput;
@@ -239,6 +253,7 @@ function EmployeePage() {
 
     };
 
+    //handler for deleting an employee from table 
     const handleDeleteEmployee = (name) => {
         if (name === 'null') {
             name = ' ';
@@ -253,6 +268,7 @@ function EmployeePage() {
             })
             .catch((error) => console.error('Error deleting employee:', error));
     };
+    //handler for changing an attribute in the employee table
     const handleUpdate = (name, attributeName, newValue) => {
         let salaryEmpty;
         let positionEmpty;
