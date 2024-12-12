@@ -1,6 +1,12 @@
 import React from 'react';
 import './MenuBoard.css';
 
+/**
+ * @author Allen Yu
+ * 
+ * Displays the names and images of entree items to the customers
+ */
+
 function Entrees() {
     return (
         <div className="menu entrees">
