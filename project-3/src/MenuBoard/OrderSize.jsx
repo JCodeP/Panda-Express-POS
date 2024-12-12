@@ -1,6 +1,12 @@
 import React from 'react';
 import './MenuBoard.css';
 
+/**
+ * @author Allen Yu
+ * 
+ * Displays the names and images of order sizes to customers
+ */
+
 function OrderSize() {
     return (
         <div className="menu size">
