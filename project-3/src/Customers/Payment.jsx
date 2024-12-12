@@ -4,6 +4,12 @@ import "./Customer.css";
 import Tran from "./Translation.jsx"
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
+/**
+ * @author Allen Yu
+ * 
+ * Allows for the customer to pay using several different methods and optionally log-in for a discount.
+ */
+
 function Payment({language, changeLanguage, priceModifier}) {
     const { state } = useLocation();
     const { order, totalCost } = state || {};
@@ -13,6 +19,7 @@ function Payment({language, changeLanguage, priceModifier}) {
     const [discount, setDiscount] = useState(totalCost);
     const navigate = useNavigate();
 
+    //sets up for discount on the total price if the user is logged in
     useEffect(() => {
         if (isLoggedIn && totalCost) {
             const discount = 0.1;
@@ -21,17 +28,18 @@ function Payment({language, changeLanguage, priceModifier}) {
         }
     }, [isLoggedIn, totalCost]);
     
-      const handleLogin = () => {
+    const handleLogin = () => {
         setIsLoggedIn(true);
         const discount = 0.1;
         const finalTotalCost = totalCost * (1 - discount);
         setDiscount(finalTotalCost);
-      };
+    };
     
-      const handleError = () => {
+    const handleError = () => {
 
-      };
+    };
 
+    //sets up error handling for the customer not submitting a payment and processes the payment
     const handlePayment = async () => {
         if (!paymentType) {
             alert("You must select either card, cash, or gift card before proceeding");
@@ -60,10 +68,12 @@ function Payment({language, changeLanguage, priceModifier}) {
     };
 
     return (
+        //sets up back button to go from payment to menu
         <div className="payment-section">
             <button onClick={() => navigate('../menu/')} className="b-button"> 
                 Back to Menu
             </button>
+            //Allows the user to sign in to their Google account and displays different text depending on whether the user is logged in or not
             {!isLoggedIn ? (
                 <div className="login-container">
                     <div className="login-box">
@@ -83,6 +93,8 @@ function Payment({language, changeLanguage, priceModifier}) {
                         discount was applied.</p>
                 </div>
             )}
+            
+            //Displays the price before discount, discount, and price after discount. The price stays the same if there is no discount.
             <div className="payment-info">
                 <h1><Tran word="Payment" lang={language} /></h1>
                 <div className="order-list">
@@ -103,7 +115,7 @@ function Payment({language, changeLanguage, priceModifier}) {
                     <p><Tran word="Discount" lang={language} />: ${totalCost?.toFixed(2) || "0.00"}</p>
                     <p><Tran word="Total" lang={language} />: ${totalCost?.toFixed(2) || "0.00"}</p> */}
                 </div>
-                
+                //Allows the user to pay using different payment methods
                 <div className="payment-types">
                     <button className={paymentType === "card" ? "selected" : ""} onClick={() => setPaymentType("card")} disabled={loading}>
                         <Tran word="Card" lang={language} />
@@ -119,6 +131,7 @@ function Payment({language, changeLanguage, priceModifier}) {
                     <Tran word={loading ? "Processing..." : "Complete Payment"} lang={language} />
                 </button>
             </div>
+            //button that translates text from English to Spanish and vice-versa 
             <button className="translate-button" onClick={() => changeLanguage()}>
                 <Tran word="Change Language" lang={language} />
             </button>
