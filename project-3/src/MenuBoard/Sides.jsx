@@ -3,6 +3,12 @@ import './MenuBoard.css';
 
 // FOOD DESCRIPTIONS FROM: https://www.pandaexpress.ca/our-food
 
+/**
+ * @author Allen Yu
+ * 
+ * Displays the names and images of sides to the customers
+ */
+
 function Sides() {
     return (
         <div className="menu sides">
