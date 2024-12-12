@@ -2,6 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './MenuBoard.css';
 
+/**
+ * @author Allen Yu
+ * 
+ * Creates menu board home page that directs to four separate, non-interactive pages: one page for order size, one page for sides, one page for entrees, and one page for extra items
+ */
+
 function MenuBoard() {
     return (
         <div className="menu-board">
