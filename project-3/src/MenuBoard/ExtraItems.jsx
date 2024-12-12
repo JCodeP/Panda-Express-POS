@@ -1,6 +1,12 @@
 import React from 'react';
 import './MenuBoard.css';
 
+/**
+ * @author Allen Yu
+ * 
+ * Displays the names and images of extra items to the customers
+ */
+
 function ExtraItems() {
     return (
         <div className="menu appetizers">
